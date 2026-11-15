@@ -1,0 +1,24 @@
+{% extends 'base.html' %}
+
+{% block title %}New Post | Blogger{% endblock %}
+
+{% block content %}
+<h1>Add a New Post</h1>
+
+<form method="post" class="form">
+    {% csrf_token %}
+
+    {% for field in form %}
+        <div class="field {% if field.field.widget.input_type == 'checkbox' %}checkbox{% endif %}">
+            {{ field.label_tag }}
+            {{ field }}
+            {% for error in field.errors %}
+                <small class="error">{{ error }}</small>
+            {% endfor %}
+        </div>
+    {% endfor %}
+
+    <button type="submit" class="btn">Save</button>
+    <a href="{% url 'blog:home' %}" class="link">Cancel</a>
+</form>
+{% endblock %}
