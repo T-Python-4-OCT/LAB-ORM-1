@@ -1,0 +1,31 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Blogger | Write a Post{% endblock %}
+
+{% block content %}
+
+<h1 class="page-title">Write a Post</h1>
+<p class="page-subtitle">Your words go straight to the front page.</p>
+
+<form action="{% url 'main:add_post_view' %}" method="post" class="post-form">
+    {% csrf_token %}
+
+    <label for="title" class="field-label">Title</label>
+    <input type="text" id="title" name="title" maxlength="2048" placeholder="Your post title" required>
+
+    <label for="content" class="field-label">Content</label>
+    <textarea id="content" name="content" placeholder="Start writing..." required></textarea>
+
+    <label class="checkbox">
+        <input type="checkbox" name="is_published" checked>
+        Publish now
+    </label>
+    <p class="hint">Uncheck it to keep the post as a draft. Drafts don't appear on the front page.</p>
+
+    <div class="form-actions">
+        <button type="submit" class="btn">Save Post</button>
+        <a href="{% url 'main:home_view' %}" class="cancel-link">Cancel</a>
+    </div>
+</form>
+
+{% endblock %}
