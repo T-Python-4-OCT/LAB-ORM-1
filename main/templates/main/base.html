@@ -21,7 +21,7 @@
         <a href="{% url 'main:home' %}"
            class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
         <a href="{% url 'main:add_post' %}"
-           class="{% if request.resolver_match.url_name == 'add_post' %}active{% endif %}">Write a post</a>
+           class="{% if request.resolver_match.url_name == 'add_post' %}active{% endif %}">Add new posts</a>
       </nav>
     </div>
     <div class="stars" aria-hidden="true"></div>
@@ -42,7 +42,7 @@
         <h2 class="footer-title">Pages</h2>
         <ul class="footer-links">
           <li><a href="{% url 'main:home' %}">Home</a></li>
-          <li><a href="{% url 'main:add_post' %}">Write a post</a></li>
+          <li><a href="{% url 'main:add_post' %}">Add new posts</a></li>
         </ul>
       </div>
     </div>
