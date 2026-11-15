@@ -1,0 +1,33 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Blogger{% endblock %}</title>
+    <link rel="icon" href="{% static 'main/images/logo.svg' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+</head>
+
+<body>
+    <header class="navbar">
+        <a href="{% url 'main:home_view' %}" class="logo">
+            <img src="{% static 'main/images/logo.svg' %}" alt="Blogger logo">
+            Blogger
+        </a>
+        <nav>
+            <a href="{% url 'main:home_view' %}">Home</a>
+            <a href="{% url 'main:add_post_view' %}" class="btn">+ New Post</a>
+        </nav>
+    </header>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Blogger</p>
+    </footer>
+</body>
+</html>
