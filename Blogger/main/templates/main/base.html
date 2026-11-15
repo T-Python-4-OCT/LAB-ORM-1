@@ -1,0 +1,46 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Blogger{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,800;1,6..72,400&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <link href="{% static 'css/style.css' %}" rel="stylesheet">
+</head>
+<body>
+
+    <header class="masthead">
+        <div class="container">
+            <div class="masthead-top">
+                <img src="{% static 'images/al-riyadh-logo.png' %}" alt="Al Riyadh" class="edition-logo">
+                <span>{% now "l, F j, Y" %}</span>
+            </div>
+
+            <a href="{% url 'main:home_view' %}" class="logo">Blogger</a>
+            <p class="tagline">Thoughts, stories &amp; ideas, fresh off the press.</p>
+
+           
+            <nav class="nav">
+    <a href="{% url 'main:home_view' %}" class="{% if request.resolver_match.url_name == 'home_view' %}active{% endif %}">Latest</a>
+    <a href="{% url 'main:add_post_view' %}" class="{% if request.resolver_match.url_name == 'add_post_view' %}active{% endif %}">Write a Post</a>
+</nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2026 Blogger</p>
+            <p class="footer-name">محمد النصافي</p>
+        </div>
+    </footer>
+
+</body>
+</html>
