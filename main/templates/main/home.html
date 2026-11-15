@@ -1,0 +1,41 @@
+{% extends "main/base.html" %}
+
+{% block title %}Blogger | Latest posts{% endblock %}
+
+{% block content %}
+<section class="container page">
+  <h1 class="page-title">Latest posts</h1>
+  <p class="page-subtitle">Stories and notes, newest first.</p>
+
+  {% if posts %}
+    <div class="post-list">
+      {% for post in posts %}
+        <article class="post {% if not post.is_published %}post--draft{% endif %}">
+          <div class="post-date">
+            <span class="post-day">{{ post.published_at|date:"j" }}</span>
+            <span>{{ post.published_at|date:"M Y" }}</span>
+            <span>{{ post.published_at|date:"g:i a" }}</span>
+          </div>
+
+          <div class="post-body">
+            <h2 class="post-title">{{ post.title }}</h2>
+            <div class="post-content">{{ post.content|linebreaks }}</div>
+
+            {% if post.is_published %}
+              <span class="badge badge--published">Published</span>
+            {% else %}
+              <span class="badge badge--draft">Not published</span>
+            {% endif %}
+          </div>
+        </article>
+      {% endfor %}
+    </div>
+  {% else %}
+    <div class="empty">
+      <p class="empty-title">No posts yet</p>
+      <p>Write the first story for Blogger.</p>
+      <a href="{% url 'main:add_post' %}" class="btn">Write a post</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}
