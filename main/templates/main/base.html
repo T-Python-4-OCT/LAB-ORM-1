@@ -1,0 +1,59 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Blogger{% endblock %}</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3/dist/tabler-icons.min.css">
+  <link href="https://fonts.googleapis.com/css2?family=Reem+Kufi:wght@500&family=Noto+Sans:wght@400;500&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+</head>
+<body>
+
+  <header class="site-header">
+    <div class="container">
+      <a href="{% url 'main:home' %}" class="logo">Blogger</a>
+      <nav class="nav">
+        <a href="{% url 'main:home' %}"
+           class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">Home</a>
+        <a href="{% url 'main:add_post' %}"
+           class="{% if request.resolver_match.url_name == 'add_post' %}active{% endif %}">Add new posts</a>
+      </nav>
+    </div>
+    <div class="stars" aria-hidden="true"></div>
+  </header>
+
+  <main>
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="site-footer">
+    <div class="stars" aria-hidden="true"></div>
+    <div class="container footer-grid">
+      <div>
+        <p class="footer-logo">Blogger</p>
+        <p class="footer-text">Stories and notes written under the Najd sky. Read the latest posts, or write your own.</p>
+      </div>
+      <div>
+        <h2 class="footer-title">Pages</h2>
+        <ul class="footer-links">
+          <li><a href="{% url 'main:home' %}">Home</a></li>
+          <li><a href="{% url 'main:add_post' %}">Add new posts</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <div class="container">
+        <span>© 2026 Blogger. Built with Django by Sami Al-Harbi.</span>
+        <span>Qassim, Saudi Arabia</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
