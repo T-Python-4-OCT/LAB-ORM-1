@@ -1,32 +1,72 @@
+
 {% extends 'BlogApp/base.html' %}
 
 {% block title %}{{ post.title }} | Blogger{% endblock %}
 
 {% block content %}
 
-<section class="post-detail-section">
-    {% if post.image %}
-    <img
-        src="{{ post.image.url }}"
-        alt="{{ post.title }}"
-        class="detail-post-image"
-    >
-{% endif %}
+<section class="article-page">
 
-    <h1>{{ post.title }}</h1>
+    <div class="article-container">
 
+        <a href="{% url 'home' %}" class="article-back-link">
+            <span>←</span> Back to Articles
+        </a>
 
-    <small>
-        Published on {{ post.published_at|date:"F d, Y - h:i A" }}
-    </small>
+        <header class="article-header">
 
-    <div class="post-content">
-        {{ post.content }}
+            <span class="article-category">
+                ✦ TECHNOLOGY · AI · DEVELOPMENT
+            </span>
+
+            <h1>{{ post.title }}</h1>
+
+            <div class="article-meta">
+                <span>✦ Blogger Editorial</span>
+                <span class="meta-divider">·</span>
+                <span>
+                    {{ post.published_at|date:"F d, Y" }}
+                </span>
+                <span class="meta-divider">·</span>
+                <span>
+                    {{ post.published_at|date:"h:i A" }}
+                </span>
+            </div>
+
+        </header>
+
+        {% if post.image %}
+            <div class="article-cover">
+                <img
+                    src="{{ post.image.url }}"
+                    alt="{{ post.title }}"
+                >
+            </div>
+        {% endif %}
+
+        <article class="article-body">
+
+            <div class="article-content">
+                {{ post.content|linebreaks }}
+            </div>
+
+        </article>
+
+        <div class="article-footer">
+
+            <div class="article-footer-text">
+                <span>END OF ARTICLE</span>
+                <h3>Thanks for reading.</h3>
+                <p>Explore more ideas and discover something new.</p>
+            </div>
+
+            <a href="{% url 'home' %}" class="article-home-button">
+                Explore More Articles →
+            </a>
+
+        </div>
+
     </div>
-
-    <a href="{% url 'home' %}" class="back-link">
-        ← Back to Home
-    </a>
 
 </section>
 
