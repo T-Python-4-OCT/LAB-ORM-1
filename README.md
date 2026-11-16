@@ -1,18 +1,88 @@
-# LAB-ORM-1
+# 📝 Blogger — Technology Blog
 
-## Using what you learned , Create a Blog website called `Blogger` . Has the following pages:
-- A homepage : displays the lates posts (Post title, content, date & time published) .
-- A page to add new posts.
+A modern blog website built with **Django** that allows users to create, publish, and explore technology articles.
 
+## ✨ Features
 
-### To Acheive that, you need to create model `Post` , it should have the following attributes :
-- title : char field (max 2048)
-- content : text field.
-- is_published : boolean field, default is True.
-- published_at : datetime field, default is now. (use auto_now_add parameter)
+- 🏠 **Homepage** — Clean layout with a welcoming hero section.
+- ✍️ **Create Posts** — Add new articles with a title, content, and image.
+- 🖼️ **Image Uploads** — Attach images to blog posts.
+- 🎠 **Posts Carousel** — Browse articles in a horizontal carousel with a highlighted center card.
+- 📖 **Article Preview** — Read the full article in a modal window.
+- 🌓 **Light & Dark Mode** — Switch between light and dark themes.
+- 📱 **Responsive Design** — User-friendly layout across different screen sizes.
 
-### Design & Layout:
-  - Make sure you use Templates & Templates inheritance to unify the look of the website.
-  - Make sure to use static files if needed, and dynamic URL resolving when linking to your pages.
-  - Generally use best practices (what you learned in previous lessons).
-  - It is up to you how you design it. Use whatever means you need (colors, icons, logo, images, fonts, etc.) .
+## 🛠️ Built With
+
+- Python
+- Django
+- HTML
+- CSS
+- JavaScript
+- SQLite
+
+## 📸 Screenshots
+
+### 🏠 Homepage — Light Mode
+![Blogger Light](Blogger/BlogApp/static/BlogApp/images/screenshot/BloggerLight.png)
+
+### 🌙 Homepage — Dark Mode
+![Blogger Dark](Blogger/BlogApp/static/BlogApp/images/screenshot/BloggerDark.png)
+
+### ✍️ Create New Article
+![Create Article](Blogger/BlogApp/static/BlogApp/images/screenshot/BloggerCreate.png)
+
+### 📖 Article Details
+![Article Details](Blogger/BlogApp/static/BlogApp/images/screenshot/BloggerArticle.png)
+
+## 🚀 Getting Started
+
+1. Clone the repository:
+
+   ```bash
+   git clone <your-repository-url>
+   ```
+
+2. Open the project folder:
+
+   ```bash
+   cd Blogger
+   ```
+
+3. Create and activate a virtual environment:
+
+   ```bash
+   python -m venv venv
+   source venv/bin/activate
+   ```
+
+   On Windows:
+
+   ```bash
+   venv\\Scripts\\activate
+   ```
+
+4. Install dependencies:
+
+   ```bash
+   pip install django pillow
+   ```
+
+5. Apply database migrations:
+
+   ```bash
+   python manage.py migrate
+   ```
+
+6. Start the development server:
+
+   ```bash
+   python manage.py runserver
+   ```
+
+7. Open the website at http://127.0.0.1:8000/
+
+## 👨‍💻 Project
+
+**Blogger** — Django Assignment
+
