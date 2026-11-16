@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}Latest posts · Blogger{% endblock %}
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">THE BLOGGER JOURNAL</p>
+    <h1>Ordinary words.<br><em>Extraordinary</em><br>perspectives.</h1>
+    <p class="intro">For the stories that stay with you.<br>The ideas that deserve a little more space.</p>
+    <a class="button" href="{% url 'posts:create' %}">Write your story <span aria-hidden="true">↗</span></a>
+    <div class="hero-art" aria-hidden="true"><span class="art-circle"></span><span class="art-paper">Good stories<br>start with<br><em>one idea.</em><span>✳</span></span></div>
+</section>
+<div class="journal-strip"><span>THINK FREELY</span><i aria-hidden="true">&#10038;</i><span>WRITE HONESTLY</span><i aria-hidden="true">&#10038;</i><span>SHARE SOMETHING REAL</span></div>
+<section class="feed" aria-labelledby="feed-title">
+    <div class="section-heading"><h2 id="feed-title">From the journal.</h2><span>New words. Fresh perspectives.</span></div>
+    <div class="post-grid">
+    {% for post in posts %}
+    <article class="post">
+        <div class="post-meta"><span class="post-label">JOURNAL ENTRY</span><time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:'M j, Y' }} · {{ post.published_at|date:'g:i A' }}</time></div>
+        <h3 dir="auto">{{ post.title }}</h3>
+        <div class="post-content" dir="auto">{{ post.content|linebreaks }}</div>
+    </article>
+    {% empty %}
+    <div class="empty-state"><span class="empty-icon" aria-hidden="true">✎</span><h3>Every journal starts somewhere.</h3><p>No posts yet. Share the first idea and make this space yours.</p><a class="button" href="{% url 'posts:create' %}">Write the first post <span aria-hidden="true">↗</span></a></div>
+    {% endfor %}
+    </div>
+</section>
+{% endblock %}

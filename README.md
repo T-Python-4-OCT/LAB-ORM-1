@@ -1,5 +1,35 @@
 # LAB-ORM-1
 
+## Run Blogger locally
+
+Requires Python 3.10 or newer.
+
+```powershell
+py -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+.\.venv\Scripts\python.exe manage.py migrate
+.\.venv\Scripts\python.exe manage.py runserver
+```
+
+Open http://127.0.0.1:8000/ to view published posts, or
+http://127.0.0.1:8000/posts/new/ to add a post. Dates use Asia/Riyadh time.
+Uncheck the publish option to save an unpublished post. To manage these posts,
+run `manage.py createsuperuser` using the virtual environment's Python and visit
+http://127.0.0.1:8000/admin/.
+
+Run checks and tests:
+
+```powershell
+.\.venv\Scripts\python.exe manage.py check
+.\.venv\Scripts\python.exe manage.py test
+```
+
+The default settings are for local development. For deployment, configure
+`DJANGO_SECRET_KEY`, set `DJANGO_DEBUG=False`, and configure `ALLOWED_HOSTS`
+for your domain.
+
+## Original lab requirements
+
 ## Using what you learned , Create a Blog website called `Blogger` . Has the following pages:
 - A homepage : displays the lates posts (Post title, content, date & time published) .
 - A page to add new posts.
