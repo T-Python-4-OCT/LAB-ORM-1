@@ -101,6 +101,11 @@
 
             <div class="post-card-content">
 
+                <div class="post-date">
+                    <span>✦</span>
+                    {{ post.published_at|date:"F d, Y" }}
+                </div>
+                
                 <h3>{{ post.title }}</h3>
 
                 <p>{{ post.content|truncatewords:20 }}</p>
