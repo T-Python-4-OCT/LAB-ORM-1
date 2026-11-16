@@ -1,0 +1,19 @@
+{% extends "main/base.html" %}
+{% block title %}حذف التدوينة{% endblock %}
+
+{% block content %}
+<section class="container page">
+  <div class="confirm">
+    {% if post.image %}<img class="confirm-image" src="{{ post.image.url }}" alt="">{% endif %}
+    <i class="bi bi-exclamation-octagon confirm-icon"></i>
+    <h1>تحذف «{{ post.title }}»؟</h1>
+    <p>التدوينة{% if post.image %} وصورتها{% endif %} بتنحذف من قاعدة البيانات نهائياً، وما تقدر ترجعها.</p>
+    {# Deleting happens only with POST (and the csrf token), never by just opening a link #}
+    <form method="post" action="{% url 'main:delete_post' post.id %}" class="confirm-actions">
+      {% csrf_token %}
+      <button class="btn btn-danger" type="submit"><i class="bi bi-trash3"></i> نعم، احذف</button>
+      <a class="btn btn-ghost" href="{% url 'main:post_detail' post.id %}">لا، رجّعني</a>
+    </form>
+  </div>
+</section>
+{% endblock %}

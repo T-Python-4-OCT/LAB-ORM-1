@@ -1,5 +1,6 @@
-{% load humanize %}
-{# One post: its title, content, and the date and time it was published #}
+{% load arabic_time %}
+{# One post on the home page: image, title, the first words of the content, date and time, and the buttons. #}
+{# The title and "اقرأ المزيد" open the whole post on /posts/<id>/ #}
 <article class="post {% if featured %}post-featured{% endif %}">
   <time class="post-date" datetime="{{ post.published_at|date:'c' }}">
     <strong>{{ post.published_at|date:"j" }}</strong>
@@ -15,12 +16,26 @@
         <span class="post-badge badge-unpublished"><i class="bi bi-eye-slash"></i> غير منشور</span>
       {% endif %}
     </div>
-    <h2>{{ post.title }}</h2>
-    <div class="post-content">{{ post.content|linebreaks }}</div>
-    <p class="post-meta">
-      <span><i class="bi bi-calendar3"></i> {{ post.published_at|date:"l j F Y" }}</span>
-      <span><i class="bi bi-clock"></i> {{ post.published_at|time:"g:i A" }}</span>
-      <span><i class="bi bi-hourglass-split"></i> {{ post.published_at|naturaltime }}</span>
-    </p>
+    <h2><a href="{% url 'main:post_detail' post.id %}">{{ post.title }}</a></h2>
+    {# Media file: post.image.url is the link of the uploaded image (/media/images/...) #}
+    {% if post.image %}
+      <a href="{% url 'main:post_detail' post.id %}"><img class="post-image" src="{{ post.image.url }}" alt="صورة {{ post.title }}" loading="lazy"></a>
+    {% endif %}
+    {# Only the first words; the whole text is on the post page #}
+    <div class="post-content">{{ post.content|truncatewords:excerpt_words|linebreaks }}</div>
+    {% if post.content|wordcount > excerpt_words %}
+      <a class="read-more" href="{% url 'main:post_detail' post.id %}">اقرأ المزيد <i class="bi bi-arrow-left"></i></a>
+    {% endif %}
+    <div class="post-foot">
+      <p class="post-meta">
+        <span><i class="bi bi-calendar3"></i> {{ post.published_at|date:"l j F Y" }}</span>
+        <span><i class="bi bi-clock"></i> {{ post.published_at|time:"g:i A" }}</span>
+        <span><i class="bi bi-hourglass-split"></i> {{ post.published_at|ago }}</span>
+      </p>
+      <div class="post-actions">
+        <a class="btn-small" href="{% url 'main:update_post' post.id %}"><i class="bi bi-pencil"></i> تعديل</a>
+        <a class="btn-small btn-small-danger" href="{% url 'main:delete_post' post.id %}"><i class="bi bi-trash3"></i> حذف</a>
+      </div>
+    </div>
   </div>
 </article>
