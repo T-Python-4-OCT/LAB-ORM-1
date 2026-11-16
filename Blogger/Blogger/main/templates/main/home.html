@@ -2,45 +2,163 @@
 
 {% block content %}
 
-<h1>Latest Posts</h1>
+<section class="home-section">
 
-{% for post in posts %}
+    <div class="page-heading">
 
-<div class="post-card">
+        <div>
 
-    {% if post.poster %}
-        <img src="{{ post.poster.url }}" alt="{{ post.title }}" class="post-image">
-    {% endif %}
+            <span class="eyebrow">
+                WELCOME TO BLOGGER
+            </span>
 
-    <div class="post-content">
+            <h1>
+                Stories, Ideas &
+                <span>Inspiration.</span>
+            </h1>
 
-        <h2>{{ post.title }}</h2>
+            <p class="page-description">
+                Discover interesting stories, explore new ideas
+                and share your thoughts with the world.
+            </p>
 
-        <p>{{ post.content }}</p>
-
-        <small>
-            Published on:
-            {{ post.published_at|date:"d M Y" }}
-            at
-            {{ post.published_at|time:"h:i A" }}
-        </small>
-
-        <div class="post-status">
-            {% if post.is_published %}
-                <span class="published">Published</span>
-            {% else %}
-                <span class="unpublished">Unpublished</span>
-            {% endif %}
         </div>
+
+        <a href="{% url 'add_post' %}" class="heading-button">
+            Create a Post <span>↗</span>
+        </a>
 
     </div>
 
-</div>
 
-{% empty %}
+    <div class="section-heading">
 
-<p>No posts available yet.</p>
+        <div>
+            <span class="eyebrow">EXPLORE</span>
+            <h2>Latest Posts</h2>
+        </div>
 
-{% endfor %}
+        <span class="posts-label">
+            {{ posts|length }} Posts
+        </span>
+
+    </div>
+
+
+    <div class="post-grid">
+
+        {% for post in posts %}
+
+        <a href="{% url 'post_detail' post.id %}"
+           class="post-card-link"
+           aria-label="View details for {{ post.title }}">
+
+            <article class="post-card">
+
+                <div class="post-image-wrapper">
+
+                    {% if post.poster %}
+
+                        <img
+                            src="{{ post.poster.url }}"
+                            alt="{{ post.title }}"
+                            class="post-image"
+                            loading="lazy"
+                        >
+
+                    {% else %}
+
+                        <div class="image-placeholder">
+                            BLOGGER
+                        </div>
+
+                    {% endif %}
+
+
+                    <div class="image-overlay"></div>
+
+
+                    {% if post.is_published %}
+
+                        <span class="status-badge published">
+                            Published
+                        </span>
+
+                    {% else %}
+
+                        <span class="status-badge unpublished">
+                            Unpublished
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+
+                <div class="post-content">
+
+                    <div class="post-meta">
+
+                        <span>ARTICLE</span>
+
+                        <span class="meta-dot">•</span>
+
+                        <time datetime="{{ post.published_at|date:'c' }}">
+                            {{ post.published_at|date:"d M Y" }}
+                        </time>
+
+                    </div>
+
+
+                    <h2>{{ post.title }}</h2>
+
+
+                    <p class="post-description">
+                        {{ post.content|truncatewords:25 }}
+                    </p>
+
+
+                    <div class="card-footer">
+
+                        <span class="read-more">
+                            Read Details
+                        </span>
+
+                        <span class="read-arrow">
+                            ↗
+                        </span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </a>
+
+        {% empty %}
+
+        <div class="empty-state">
+
+            <span class="empty-icon">✦</span>
+
+            <h2>No Posts Yet</h2>
+
+            <p>
+                Your stories will appear here.
+                Start by creating your first post.
+            </p>
+
+            <a href="{% url 'add_post' %}" class="heading-button">
+                Create Your First Post
+            </a>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
 
 {% endblock %}

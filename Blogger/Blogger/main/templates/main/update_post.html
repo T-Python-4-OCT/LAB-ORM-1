@@ -46,24 +46,39 @@
 
     <br><br>
 
-    <label>Current Image</label>
+    <label>Post Image</label>
 
-    {% if post.poster %}
-        <br>
-        <img src="{{ post.poster.url }}" width="200">
-    {% endif %}
+<div class="image-update-row">
 
-    <br><br>
+    <!-- Current Image -->
+    <div class="current-image-section">
 
-    <label>Change Image</label>
+        {% if post.poster %}
+            <img
+                src="{{ post.poster.url }}"
+                alt="{{ post.title }}"
+                class="current-image-preview"
+            >
+        {% else %}
+            <p>No image available.</p>
+        {% endif %}
 
-    <input
-        type="file"
-        name="poster"
-        accept="image/*"
-    >
+    </div>
 
-    <br><br>
+    <!-- Choose New Image -->
+    <div class="image-upload-section">
+
+        <label for="poster">Choose New Image</label>
+
+        <input
+            type="file"
+            id="poster"
+            name="poster"
+            accept="image/*"
+        >
+    </div>
+
+</div>
 
     <button type="submit">
         Update Post

@@ -42,6 +42,16 @@ def add_post(request):
 
     return render(request, 'main/add_post.html')
 
+
+def post_detail(request, post_id):
+
+    post = get_object_or_404(Post, id=post_id)
+
+    return render(request, 'main/post_detail.html', {
+        'post': post
+    })
+
+
 def update_post(request, post_id):
 
     post = get_object_or_404(Post, id=post_id)
@@ -64,3 +74,16 @@ def update_post(request, post_id):
     return render(request, 'main/update_post.html', {
         'post': post
     })
+
+# Delete Post
+def delete_post(request, post_id):
+
+    post = get_object_or_404(Post, id=post_id)
+
+    if request.method == 'POST':
+
+        post.delete()
+
+        return redirect('home')
+
+    return redirect('post_detail', post_id=post.id)
