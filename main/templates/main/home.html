@@ -1,0 +1,35 @@
+{% extends "main/base.html" %}
+
+{% block title %}الرئيسية{% endblock %}
+{% block nav_home %}active{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <h1>أحدث المقالات</h1>
+    <p>اقرأ آخر ما كتبه المدونون، أو شارك أفكارك بمقال جديد.</p>
+</section>
+
+{% if posts %}
+    <div class="posts">
+        {% for post in posts %}
+            <article class="post-card">
+                <div class="post-meta">
+                    <span><i class="bi bi-calendar3"></i> {{ post.published_at|date:"j F Y" }}</span>
+                    <span><i class="bi bi-clock"></i> {{ post.published_at|date:"g:i A" }}</span>
+                </div>
+                <h2 class="post-title">{{ post.title }}</h2>
+                <p class="post-content">{{ post.content|linebreaksbr }}</p>
+            </article>
+        {% endfor %}
+    </div>
+{% else %}
+    <div class="empty">
+        <i class="bi bi-journal-text"></i>
+        <h2>لا توجد مقالات بعد</h2>
+        <p>كن أول من يكتب في Blogger!</p>
+        <a href="{% url 'main:add_post' %}" class="btn-primary">اكتب أول مقال</a>
+    </div>
+{% endif %}
+
+{% endblock %}

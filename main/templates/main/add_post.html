@@ -1,0 +1,31 @@
+{% extends "main/base.html" %}
+
+{% block title %}مقال جديد{% endblock %}
+
+{% block content %}
+
+<section class="form-wrap">
+    <h1><i class="bi bi-pencil-square"></i> مقال جديد</h1>
+
+    <form method="post" action="{% url 'main:add_post' %}" class="post-form">
+        {% csrf_token %}
+
+        <label for="title">العنوان</label>
+        <input type="text" id="title" name="title" maxlength="2048" required placeholder="اكتب عنوان المقال">
+
+        <label for="content">المحتوى</label>
+        <textarea id="content" name="content" rows="10" required placeholder="وش في بالك؟"></textarea>
+
+        <label class="check">
+            <input type="checkbox" name="is_published" checked>
+            نشر المقال مباشرة
+        </label>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary"><i class="bi bi-send"></i> نشر</button>
+            <a href="{% url 'main:home' %}" class="btn-ghost">إلغاء</a>
+        </div>
+    </form>
+</section>
+
+{% endblock %}
