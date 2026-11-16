@@ -1,0 +1,15 @@
+{# بطاقة مقال واحدة: العنوان، والنص، وتاريخ ووقت النشر #}
+<article class="post {% if featured %}post--featured{% endif %}">
+  <div class="post__meta">
+    <span class="post__tag">{% if featured %}أحدث مقال{% else %}مقال{% endif %}</span>
+    <time datetime="{{ post.published_at|date:'c' }}">
+      <span><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>{{ post.published_at|date:"j F Y" }}</span>
+      <span><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>{{ post.published_at|time:"H:i" }}</span>
+    </time>
+  </div>
+  <h3 class="post__title">{{ post.title }}</h3>
+  <div class="post__content" data-collapsible>{{ post.content|linebreaks }}</div>
+  <button class="post__more" type="button" data-expand hidden>
+    اقرأ المقال كاملاً <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
+  </button>
+</article>

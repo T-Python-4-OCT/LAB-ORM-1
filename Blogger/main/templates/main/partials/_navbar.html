@@ -1,0 +1,28 @@
+{% load static %}
+<header class="navbar">
+  <div class="container navbar__inner">
+    <a class="brand" href="{% url 'main:home' %}" aria-label="Blogger — الرئيسية">
+      <img class="brand__logo" src="{% static 'main/img/logo.svg' %}" alt="" width="40" height="40">
+      <span class="brand__text">
+        <span class="brand__name">Blogger</span>
+        <span class="brand__tag">مقالات كرة القدم</span>
+      </span>
+    </a>
+
+    <button class="navbar__toggle" type="button" aria-controls="nav-links" aria-expanded="false" aria-label="القائمة" data-nav-toggle>
+      <svg class="icon" aria-hidden="true"><use href="#i-menu"/></svg>
+    </button>
+
+    <nav class="navbar__links" id="nav-links" aria-label="التنقل الرئيسي">
+      <a class="navbar__link {% if request.resolver_match.url_name == 'home' %}is-active{% endif %}" href="{% url 'main:home' %}">
+        <svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>الرئيسية
+      </a>
+      <a class="navbar__link" href="{% url 'main:home' %}#latest">
+        <svg class="icon" aria-hidden="true"><use href="#i-news"/></svg>أحدث المقالات
+      </a>
+      <a class="btn btn--accent btn--sm {% if request.resolver_match.url_name == 'add_post' %}is-active{% endif %}" href="{% url 'main:add_post' %}">
+        <svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>أضف مقالاً
+      </a>
+    </nav>
+  </div>
+</header>

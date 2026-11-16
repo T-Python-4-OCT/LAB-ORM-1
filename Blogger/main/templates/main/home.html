@@ -1,0 +1,53 @@
+{% extends "main/base.html" %}
+
+{% block title %}الرئيسية{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container hero__inner">
+    <p class="hero__kicker"><svg class="icon" aria-hidden="true"><use href="#i-whistle"/></svg>صافرة البداية</p>
+    <h1 class="hero__title">كرة القدم <span>كما نحبّها</span></h1>
+    <p class="hero__lead">تحليلات تكتيكية، وقصص من المدرجات، ونصائح للاعبين والمشجعين. اقرأ أحدث المقالات، أو شارك رأيك بمقال جديد.</p>
+    <div class="hero__actions">
+      <a class="btn btn--accent" href="{% url 'main:add_post' %}"><svg class="icon" aria-hidden="true"><use href="#i-pen"/></svg>اكتب مقالاً</a>
+      <a class="btn btn--ghost" href="#latest">تصفّح المقالات</a>
+    </div>
+    <div class="scoreboard" aria-label="إحصاءات المدونة">
+      <div><strong>{{ posts|length }}</strong><span>مقال منشور</span></div>
+      <div><strong>90'</strong><span>دقيقة من الشغف</span></div>
+      <div><strong>11</strong><span>لاعباً في كل قصة</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="section" id="latest">
+  <div class="container">
+    <div class="section__head">
+      <div>
+        <p class="section__kicker">من الملعب</p>
+        <h2 class="section__title">أحدث المقالات</h2>
+      </div>
+      <a class="btn btn--outline btn--sm" href="{% url 'main:add_post' %}"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>مقال جديد</a>
+    </div>
+
+    {% if posts %}
+      <div class="posts">
+        {% for post in posts %}
+          {% if forloop.first %}
+            {% include "main/partials/_post_card.html" with featured=True %}
+          {% else %}
+            {% include "main/partials/_post_card.html" with featured=False %}
+          {% endif %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty">
+        <div class="empty__ball" aria-hidden="true">⚽</div>
+        <h3>لا توجد مقالات بعد</h3>
+        <p>الملعب جاهز والمدرجات تنتظر… كن أول من يكتب.</p>
+        <a class="btn btn--accent" href="{% url 'main:add_post' %}"><svg class="icon" aria-hidden="true"><use href="#i-pen"/></svg>اكتب أول مقال</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

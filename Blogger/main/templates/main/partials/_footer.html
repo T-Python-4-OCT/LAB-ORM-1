@@ -1,0 +1,36 @@
+{% load static %}
+<footer class="footer">
+  <div class="footer__pitch" aria-hidden="true"></div>
+  <div class="container footer__inner">
+    <div class="footer__about">
+      <a class="brand brand--light" href="{% url 'main:home' %}">
+        <img class="brand__logo" src="{% static 'main/img/logo.svg' %}" alt="" width="40" height="40">
+        <span class="brand__text">
+          <span class="brand__name">Blogger</span>
+          <span class="brand__tag">مقالات كرة القدم</span>
+        </span>
+      </a>
+      <p>مدونة لمحبي الساحرة المستديرة: تحليلات تكتيكية، وقصص من المدرجات، ونصائح للاعبين والمشجعين.</p>
+    </div>
+
+    <div>
+      <h2 class="footer__title">روابط</h2>
+      <ul class="footer__list">
+        <li><a href="{% url 'main:home' %}">الرئيسية</a></li>
+        <li><a href="{% url 'main:home' %}#latest">أحدث المقالات</a></li>
+        <li><a href="{% url 'main:add_post' %}">أضف مقالاً</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h2 class="footer__title">أقسام نكتب عنها</h2>
+      <ul class="footer__tags">
+        <li>تكتيك</li><li>لياقة</li><li>جماهير</li><li>تحليل</li><li>مواهب</li>
+      </ul>
+    </div>
+  </div>
+  <div class="container footer__bottom">
+    <span>© {% now "Y" %} Blogger — جميع الحقوق محفوظة</span>
+    <span class="footer__ball" aria-hidden="true">⚽</span>
+  </div>
+</footer>

@@ -1,0 +1,65 @@
+{% extends "main/base.html" %}
+
+{% block title %}أضف مقالاً{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="مسار التصفح">
+      <a href="{% url 'main:home' %}">الرئيسية</a><span aria-hidden="true">‹</span><span>أضف مقالاً</span>
+    </nav>
+    <h1 class="page-head__title">اكتب مقالاً جديداً</h1>
+    <p class="page-head__lead">شارك تحليلك أو رأيك أو قصتك الكروية مع قرّاء Blogger.</p>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container editor">
+    <form class="card form" method="post" action="{% url 'main:add_post' %}" novalidate>
+      {% csrf_token %}
+
+      {% if form.non_field_errors %}
+      <div class="alert alert--error">{{ form.non_field_errors }}</div>
+      {% endif %}
+
+      <div class="field {% if form.title.errors %}has-error{% endif %}">
+        <label class="field__label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+        {{ form.title }}
+        <div class="field__foot">
+          {% for error in form.title.errors %}<span class="field__error">{{ error }}</span>{% endfor %}
+          <span class="field__count" data-count-for="{{ form.title.id_for_label }}">0 / 2048</span>
+        </div>
+      </div>
+
+      <div class="field {% if form.content.errors %}has-error{% endif %}">
+        <label class="field__label" for="{{ form.content.id_for_label }}">{{ form.content.label }}</label>
+        {{ form.content }}
+        {% for error in form.content.errors %}<span class="field__error">{{ error }}</span>{% endfor %}
+      </div>
+
+      <label class="switch" for="{{ form.is_published.id_for_label }}">
+        {{ form.is_published }}
+        <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+        <span class="switch__text">{{ form.is_published.label }}</span>
+      </label>
+      <p class="form__hint">سيُسجَّل تاريخ ووقت النشر تلقائياً لحظة الحفظ.</p>
+
+      <div class="form__actions">
+        <button class="btn btn--accent" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>انشر المقال</button>
+        <a class="btn btn--outline" href="{% url 'main:home' %}">إلغاء</a>
+      </div>
+    </form>
+
+    <aside class="card tips">
+      <h2 class="tips__title"><svg class="icon" aria-hidden="true"><use href="#i-bulb"/></svg>نصائح لمقال كروي ناجح</h2>
+      <ol class="tips__list">
+        <li><strong>عنوان واضح:</strong> اطرح سؤالاً أو فكرة يريد القارئ معرفتها.</li>
+        <li><strong>فكرة واحدة:</strong> ركّز على موضوع واحد، مثل خطة لعب أو مركز لاعب.</li>
+        <li><strong>فقرات قصيرة:</strong> اترك سطراً فارغاً بين الفقرات ليسهل القراءة.</li>
+        <li><strong>رأي محترم:</strong> انتقد الأداء لا الأشخاص، واحترم كل الجماهير.</li>
+      </ol>
+      <div class="tips__pitch" aria-hidden="true"></div>
+    </aside>
+  </div>
+</section>
+{% endblock %}
