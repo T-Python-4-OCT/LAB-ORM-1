@@ -44,126 +44,147 @@
 </section>
 
 <section class="posts-section" id="latest-posts">
+
     <h2>Latest Posts</h2>
+
     <div class="posts-carousel">
-    {% for post in posts %}
 
-    <article class="post-card">
+        {% for post in posts %}
 
-        {% if post.image %}
-            <img
-                src="{{ post.image.url }}"
-                alt="{{ post.title }}"
-                class="post-image"
-            >
-        {% endif %}
-
-        <div class="post-card-content">
-
-            <h3>{{ post.title }}</h3>
-
-            <p>{{ post.content|truncatewords:20 }}</p>
-
-            <button
-                type="button"
-                class="read-post-btn"
-                onclick="document.getElementById('post-modal-{{ post.pk }}').showModal()"
-            >
-                Read Full Article →
-            </button>
-
-        </div>
-
-    </article>
-
-    <dialog id="post-modal-{{ post.pk }}" class="post-modal">
-
-        <div class="post-modal-content">
+        <article class="post-card">
 
             {% if post.image %}
-                <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                <img
+                    src="{{ post.image.url }}"
+                    alt="{{ post.title }}"
+                    class="post-image"
+                >
             {% endif %}
 
-            <h2>{{ post.title }}</h2>
+            <div class="post-card-content">
 
-            <small>
-                Published on {{ post.published_at|date:"F d, Y - h:i A" }}
-            </small>
+                <h3>{{ post.title }}</h3>
 
-            <div class="post-full-content">
-                {{ post.content|linebreaks }}
+                <p>{{ post.content|truncatewords:20 }}</p>
+
+                <button
+                    type="button"
+                    class="read-post-btn"
+                    onclick="document.getElementById('post-modal-{{ post.pk }}').showModal()"
+                >
+                    Read Full Article →
+                </button>
+
             </div>
 
-            <form method="dialog">
-                <button type="submit" class="close-modal-btn">
-                    Close ✕
-                </button>
-            </form>
+        </article>
 
-        </div>
+        <dialog id="post-modal-{{ post.pk }}" class="post-modal">
 
-    </dialog>
+            <div class="post-modal-content">
 
-{% empty %}
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                {% endif %}
 
-    <p>No posts yet. Be the first to share your story!</p>
+                <h2>{{ post.title }}</h2>
 
-{% endfor %}
-</div>
+                <small>
+                    Published on {{ post.published_at|date:"F d, Y - h:i A" }}
+                </small>
+
+                <div class="post-full-content">
+                    {{ post.content|linebreaks }}
+                </div>
+
+                <div class="post-actions">
+
+                    <a
+                        href="{% url 'edit_post' post.pk %}"
+                        class="edit-post-btn"
+                    >
+                        ✏️ Edit Article
+                    </a>
+
+                    <a
+                        href="{% url 'delete_post' post.pk %}"
+                        class="delete-post-btn"
+                    >
+                        🗑️ Delete Article
+                    </a>
+
+                    <form method="dialog">
+                        <button type="submit" class="close-modal-btn">
+                            Close ✕
+                        </button>
+                    </form>
+
+                </div>
+
+            </div>
+
+        </dialog>
+
+        {% empty %}
+
+            <p>No posts yet. Be the first to share your story!</p>
+
+        {% endfor %}
+
+    </div>
 
 </section>
 
-
 <script>
-    document.addEventListener('DOMContentLoaded', function () {
-    
-        const carousel = document.querySelector('.posts-carousel');
-    
-        if (!carousel) return;
-    
-        const cards = carousel.querySelectorAll('.post-card');
-    
-        function updateActiveCard() {
-    
-            const carouselCenter =
-                carousel.getBoundingClientRect().left +
-                carousel.clientWidth / 2;
-    
-            let closestCard = null;
-            let smallestDistance = Infinity;
-    
-            cards.forEach(card => {
-    
-                const cardCenter =
-                    card.getBoundingClientRect().left +
-                    card.offsetWidth / 2;
-    
-                const distance = Math.abs(carouselCenter - cardCenter);
-    
-                if (distance < smallestDistance) {
-                    smallestDistance = distance;
-                    closestCard = card;
-                }
-    
-            });
-    
-            cards.forEach(card => {
-                card.classList.toggle('is-active', card === closestCard);
-            });
-        }
-    
-        let scrollTimeout;
-    
-        carousel.addEventListener('scroll', function () {
-            clearTimeout(scrollTimeout);
-            scrollTimeout = setTimeout(updateActiveCard, 80);
+document.addEventListener('DOMContentLoaded', function () {
+
+    const carousel = document.querySelector('.posts-carousel');
+
+    if (!carousel) return;
+
+    const cards = carousel.querySelectorAll('.post-card');
+
+    function updateActiveCard() {
+
+        const carouselCenter =
+            carousel.getBoundingClientRect().left +
+            carousel.clientWidth / 2;
+
+        let closestCard = null;
+        let smallestDistance = Infinity;
+
+        cards.forEach(card => {
+
+            const cardCenter =
+                card.getBoundingClientRect().left +
+                card.offsetWidth / 2;
+
+            const distance = Math.abs(carouselCenter - cardCenter);
+
+            if (distance < smallestDistance) {
+                smallestDistance = distance;
+                closestCard = card;
+            }
+
         });
-    
-        window.addEventListener('resize', updateActiveCard);
-    
-        updateActiveCard();
-    
+
+        cards.forEach(card => {
+            card.classList.toggle('is-active', card === closestCard);
+        });
+    }
+
+    let scrollTimeout;
+
+    carousel.addEventListener('scroll', function () {
+        clearTimeout(scrollTimeout);
+        scrollTimeout = setTimeout(updateActiveCard, 80);
     });
-    </script>
-    
+
+    window.addEventListener('resize', updateActiveCard);
+
+    updateActiveCard();
+
+});
+</script>
+
 {% endblock %}
