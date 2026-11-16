@@ -1,0 +1,32 @@
+{% extends "main/base.html" %}
+{% block content %}
+<section class="hero">
+  <div class="hero-copy">
+    <h1>Games worth<br>playing.</h1>
+    <p>Read and share posts about your favorite games.</p>
+    <a class="button" href="{% url 'posts:create' %}">Write a post</a>
+  </div>
+  <div class="hero-art" aria-hidden="true">
+    <svg viewBox="0 0 280 180" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M77 44h126c22 0 38 13 45 35l15 49c6 21-13 36-31 24l-35-24H83l-35 24c-18 12-37-3-31-24l15-49c7-22 23-35 45-35Z" fill="#6676d9" stroke="#b4c0ff" stroke-width="3"/>
+      <path d="M67 68v37M49 87h36" stroke="#e8ecff" stroke-width="10" stroke-linecap="round"/>
+      <circle cx="202" cy="74" r="7" fill="#e8ecff"/><circle cx="220" cy="91" r="7" fill="#e8ecff"/><circle cx="184" cy="91" r="7" fill="#e8ecff"/><circle cx="202" cy="108" r="7" fill="#e8ecff"/>
+      <path d="M120 84h9m22 0h9" stroke="#303d8e" stroke-width="6" stroke-linecap="round"/>
+    </svg>
+  </div>
+</section>
+<section class="posts" aria-labelledby="latest-heading">
+  <div class="section-heading"><h2 id="latest-heading">Latest posts</h2><span>Games</span></div>
+  <div class="post-list">
+    {% for post in posts %}
+      <article class="post">
+        <time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:"F j, Y" }} at {{ post.published_at|date:"g:i A" }}</time>
+        <h3>{{ post.title }}</h3>
+        <div class="post-content">{{ post.content|linebreaks }}</div>
+      </article>
+    {% empty %}
+      <div class="empty"><h3>No posts yet</h3><p>Share a game you enjoy.</p><a class="text-link" href="{% url 'posts:create' %}">Write the first post</a></div>
+    {% endfor %}
+  </div>
+</section>
+{% endblock %}
