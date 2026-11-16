@@ -1,0 +1,52 @@
+{% extends 'posts/base.html' %}
+
+{% block title %}حذف التدوينة | مدونتي{% endblock %}
+
+{% block content %}
+
+<section class="form-card confirm-card">
+
+    <div class="form-head">
+        <span class="head-icon">
+            <span class="material-symbols-outlined">
+                delete
+            </span>
+        </span>
+
+        <h1>حذف التدوينة</h1>
+
+        <p>
+            هل أنت متأكد من حذف التدوينة التالية؟
+        </p>
+
+        <h3>{{ post.title }}</h3>
+
+        <p>
+            لا يمكن التراجع عن الحذف.
+        </p>
+    </div>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="actions">
+            <button type="submit" class="btn delete-btn">
+                <span class="material-symbols-outlined">
+                    delete
+                </span>
+                تأكيد الحذف
+            </button>
+
+            <a href="{% url 'posts:post_detail' post.id %}"
+               class="btn btn-outline">
+                <span class="material-symbols-outlined">
+                    close
+                </span>
+                إلغاء
+            </a>
+        </div>
+    </form>
+
+</section>
+
+{% endblock %}

@@ -7,9 +7,7 @@ class Post(models.Model):
     content = models.TextField()
     is_published = models.BooleanField(default=True)
     published_at = models.DateTimeField(auto_now_add=True)
-
-    class Meta:
-        ordering = ['-published_at']
+    poster = models.ImageField(upload_to='images/', blank=True)
 
     def __str__(self):
         return self.title
