@@ -11,21 +11,34 @@
     <div class="post-list">
       {% for post in posts %}
         <article class="post {% if not post.is_published %}post--draft{% endif %}">
-          <div class="post-date">
-            <span class="post-day">{{ post.published_at|date:"j" }}</span>
-            <span>{{ post.published_at|date:"M Y" }}</span>
-            <span>{{ post.published_at|date:"g:i a" }}</span>
-          </div>
+          <a href="{% url 'main:post_detail' post.id %}" class="post-image-link">
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-image">
+          </a>
 
           <div class="post-body">
-            <h2 class="post-title">{{ post.title }}</h2>
-            <div class="post-content">{{ post.content|linebreaks }}</div>
+            <time class="post-date" datetime="{{ post.published_at|date:'c' }}">
+              {{ post.published_at|date:"j M Y, g:i a" }}
+            </time>
+            <h2 class="post-title">
+              <a href="{% url 'main:post_detail' post.id %}">{{ post.title }}</a>
+            </h2>
+            <p class="post-content">{{ post.content|truncatewords:30 }}</p>
+            <a href="{% url 'main:post_detail' post.id %}" class="read-more">
+              Read more <i class="ti ti-arrow-right" aria-hidden="true"></i>
+            </a>
 
-            {% if post.is_published %}
-              <span class="badge badge--published">Published</span>
-            {% else %}
-              <span class="badge badge--draft">Not published</span>
-            {% endif %}
+            <div class="post-footer">
+              {% if post.is_published %}
+                <span class="badge badge--published">Published</span>
+              {% else %}
+                <span class="badge badge--draft">Not published</span>
+              {% endif %}
+
+              <a href="{% url 'main:update_post' post.id %}" class="action">
+                <i class="ti ti-edit" aria-hidden="true"></i>
+                Edit post
+              </a>
+            </div>
           </div>
         </article>
       {% endfor %}

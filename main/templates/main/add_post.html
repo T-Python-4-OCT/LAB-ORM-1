@@ -7,7 +7,7 @@
   <h1 class="page-title">Write a post</h1>
   <p class="page-subtitle">The date and time are added when you save.</p>
 
-  <form method="post" action="{% url 'main:add_post' %}" class="post-form">
+  <form method="post" action="{% url 'main:add_post' %}" class="post-form" enctype="multipart/form-data">
     {% csrf_token %}
 
     <div class="field">
@@ -22,6 +22,14 @@
                 required placeholder="Start writing your post"></textarea>
     </div>
 
+    <div class="field">
+      <label for="image">Image</label>
+      <div class="upload">
+        <input type="file" id="image" name="image" accept="image/*" class="upload-input">
+        <p class="field-hint">JPG or PNG. If you skip it, the default image is used.</p>
+      </div>
+    </div>
+
     <fieldset class="field status">
       <legend>Status</legend>
       <div class="status-options">
@@ -33,12 +41,12 @@
           </span>
         </label>
 
-       <label class="choice choice--unpublished">
-         <input type="radio" name="status" value="unpublished">
-           <span>
+        <label class="choice choice--unpublished">
+          <input type="radio" name="status" value="unpublished">
+          <span>
             <span class="choice-title">Don't publish</span>
             <span class="choice-hint">Shown as not published</span>
-            </span>
+          </span>
         </label>
       </div>
     </fieldset>
