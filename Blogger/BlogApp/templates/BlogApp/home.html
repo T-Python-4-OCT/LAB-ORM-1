@@ -28,10 +28,26 @@
             <a href="#latest-posts" class="hero-button">
                 Explore Articles →
             </a>
-
+        
             <a href="{% url 'add_post' %}" class="hero-secondary">
                 Share Your Ideas
             </a>
+        </div>
+        
+        <div class="hero-stats">
+        
+            <div class="hero-stat">
+                <span class="stat-number">{{ posts|length }}+</span>
+                <span class="stat-label">Published Articles</span>
+            </div>
+        
+            <div class="hero-stat-divider"></div>
+        
+            <div class="hero-stat">
+                <span class="stat-number">AI · Tech</span>
+                <span class="stat-label">Our Main Focus</span>
+            </div>
+        
         </div>
 
     </div>
