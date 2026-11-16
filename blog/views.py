@@ -43,7 +43,7 @@ def update_post(request, pk):
     else:
         form = PostForm(instance=post)
 
-    return render(request, 'blog/add_post.html', {'form': form, 'post': post})
+    return render(request, 'blog/edit_post.html', {'form': form, 'post': post})
 
 
 @require_POST
@@ -52,3 +52,4 @@ def delete_post(request, pk):
     post.delete()
     messages.success(request, 'Your post was deleted successfully.')
     return redirect('blog:home')
+
