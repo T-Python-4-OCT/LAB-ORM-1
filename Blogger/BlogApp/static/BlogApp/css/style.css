@@ -770,72 +770,172 @@ footer p {
     transform: translateY(-2px);
 }
 
+
 /* =========================
-   POST MODAL
+   ENHANCED ARTICLE MODAL
 ========================= */
 
 .post-modal {
-    width: min(700px, 90%);
-    max-height: 85vh;
+    position: fixed;
+    inset: 0;
+    margin: auto;
+    width: min(760px, 92%);
+    max-width: 760px;
+    max-height: 88vh;
     padding: 0;
     border: 1px solid var(--border);
-    border-radius: 18px;
+    border-radius: 20px;
     background: var(--surface);
     color: var(--text);
     overflow: auto;
+    box-shadow: 0 25px 90px rgba(0, 0, 0, 0.25);
+    animation: modalAppear 0.3s ease;
 }
 
 .post-modal::backdrop {
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(5px);
+    background: rgba(10, 10, 20, 0.75);
+    backdrop-filter: blur(7px);
+}
+
+@keyframes modalAppear {
+    from {
+        opacity: 0;
+        transform: translateY(20px) scale(0.97);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+    }
 }
 
 .post-modal-content {
-    padding: 28px;
+    padding: 35px;
 }
 
 .post-modal-content > img {
     width: 100%;
-    max-height: 320px;
+    height: 320px;
     object-fit: cover;
-    border-radius: 12px;
-    margin-bottom: 22px;
+    display: block;
+    border-radius: 14px;
+    margin-bottom: 25px;
 }
 
 .post-modal-content h2 {
     color: var(--text);
-    margin-bottom: 12px;
+    font-size: clamp(25px, 4vw, 34px);
+    font-weight: 800;
+    line-height: 1.35;
+    margin: 0 0 14px;
+    overflow-wrap: anywhere;
 }
 
-.post-modal-content small {
+.post-modal-content > small {
+    display: inline-block;
     color: var(--muted);
+    font-size: 12px;
+    margin-bottom: 20px;
 }
 
 .post-full-content {
     color: var(--text);
-    line-height: 1.9;
-    margin: 25px 0;
-    white-space: normal;
+    font-size: 16px;
+    line-height: 2;
+    margin: 15px 0 30px;
+    overflow-wrap: anywhere;
 }
 
-.post-modal form {
+.post-full-content p {
+    margin-bottom: 18px;
+}
+
+.post-full-content h2,
+.post-full-content h3 {
+    color: var(--text);
+    margin: 25px 0 12px;
+}
+
+.post-full-content ul,
+.post-full-content ol {
+    padding-left: 28px;
+    margin: 15px 0;
+}
+
+.post-full-content li {
+    margin-bottom: 9px;
+}
+
+.post-full-content img {
+    max-width: 100%;
+    height: auto;
+    border-radius: 10px;
+}
+
+.post-actions {
     display: flex;
-    justify-content: flex-end;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 30px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+}
+
+.post-actions form {
+    margin-left: auto;
+}
+
+.post-actions .close-modal-btn {
+    padding: 11px 20px;
+    border: 1px solid var(--border);
+    border-radius: 9px;
+    background: transparent;
+    color: var(--text);
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.post-actions .close-modal-btn:hover {
+    border-color: var(--primary);
+    color: var(--primary);
 }
 
 @media (max-width: 600px) {
-    .post-image {
-        height: 190px;
-    }
-
-    .post-card-content {
-        padding: 17px;
+    .post-modal {
+        width: 94%;
+        max-height: 90vh;
+        border-radius: 15px;
     }
 
     .post-modal-content {
-        padding: 18px;
+        padding: 20px;
+    }
+
+    .post-modal-content > img {
+        height: 210px;
+    }
+
+    .post-full-content {
+        font-size: 14px;
+    }
+
+    .post-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .post-actions form {
+        margin-left: 0;
+    }
+
+    .post-actions a,
+    .post-actions button {
+        width: 100%;
+        text-align: center;
     }
 }
+
 
 
 /* =========================
@@ -2004,4 +2104,156 @@ body:has(.add-post-section)::before {
 
 .post-date span {
     color: var(--primary);
+}
+
+.modal-post-meta {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    color: var(--muted);
+    font-size: 11px;
+    margin-bottom: 20px;
+}
+
+.modal-post-meta span:first-child {
+    color: var(--primary);
+    font-weight: 800;
+    letter-spacing: 1px;
+}
+
+
+/* =========================
+   FOOTER
+========================= */
+
+.site-footer {
+    margin-top: 90px;
+    padding: 55px 8% 22px;
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+}
+
+.footer-main {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 60px;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-bottom: 45px;
+}
+
+.footer-brand {
+    max-width: 390px;
+}
+
+.footer-logo {
+    display: inline-block;
+    color: var(--text);
+    font-size: 32px;
+    font-weight: 900;
+    text-decoration: none;
+    letter-spacing: -1.5px;
+    margin-bottom: 18px;
+}
+
+.footer-logo span {
+    color: var(--primary);
+}
+
+.footer-brand p {
+    color: var(--muted);
+    font-size: 14px;
+    line-height: 1.9;
+}
+
+.footer-links,
+.footer-topics {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 14px;
+}
+
+.footer-links h3,
+.footer-topics h3 {
+    color: var(--text);
+    font-size: 15px;
+    font-weight: 800;
+    margin: 8px 0 10px;
+}
+
+.footer-links a,
+.footer-topics span {
+    color: var(--muted);
+    font-size: 13px;
+    text-decoration: none;
+    transition: color 0.25s ease, transform 0.25s ease;
+}
+
+.footer-links a:hover {
+    color: var(--primary);
+    transform: translateX(4px);
+}
+
+.footer-bottom {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.footer-bottom p,
+.footer-bottom a {
+    color: var(--muted);
+    font-size: 12px;
+}
+
+.footer-bottom p {
+    margin: 0;
+}
+
+.footer-bottom a {
+    text-decoration: none;
+    transition: color 0.25s ease;
+}
+
+.footer-bottom a:hover {
+    color: var(--primary);
+}
+
+/* Responsive */
+
+@media (max-width: 700px) {
+    .site-footer {
+        margin-top: 60px;
+        padding: 40px 6% 20px;
+    }
+
+    .footer-main {
+        grid-template-columns: 1fr 1fr;
+        gap: 35px 20px;
+    }
+
+    .footer-brand {
+        grid-column: 1 / -1;
+    }
+
+    .footer-bottom {
+        flex-direction: column;
+        text-align: center;
+    }
+}
+
+@media (max-width: 400px) {
+    .footer-main {
+        grid-template-columns: 1fr;
+    }
+
+    .footer-brand {
+        grid-column: auto;
+    }
 }

@@ -113,8 +113,11 @@
                 <button
                     type="button"
                     class="read-post-btn"
-                    onclick="document.getElementById('post-modal-{{ post.pk }}').showModal()"
-                >
+                    onclick="
+                    const modal = document.getElementById('post-modal-{{ post.pk }}');
+                    modal.showModal();
+                    modal.scrollTop = 0;
+                "                >
                     Read Full Article →
                 </button>
 
@@ -132,9 +135,10 @@
 
                 <h2>{{ post.title }}</h2>
 
-                <small>
-                    Published on {{ post.published_at|date:"F d, Y - h:i A" }}
-                </small>
+                <div class="modal-post-meta">
+                    <span>✦ BLOGGER EDITORIAL</span>
+                    <span>{{ post.published_at|date:"F d, Y - h:i A" }}</span>
+                </div>
 
                 <div class="post-full-content">
                     {{ post.content|linebreaks }}
