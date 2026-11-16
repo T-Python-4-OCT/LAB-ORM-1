@@ -1,0 +1,76 @@
+{% extends 'posts/base.html' %}
+{% load static %}
+
+{% block title %}الرئيسية | مدونتي{% endblock %}
+
+{% block content %}
+<section class="intro">
+    <div class="intro-content">
+        <h1>مدونتي</h1>
+        <p>مساحة لمشاركة المقالات.</p>
+    </div>
+</section>
+
+<section class="latest" id="latest-posts">
+    <h2 class="section-title">
+        <span class="material-symbols-outlined icon-lg">description</span>
+        أحدث التدوينات
+    </h2>
+
+    {% if posts %}
+    <div class="posts">
+        {% for post in posts %}
+        <article class="post{% if not post.is_published %} is-draft{% endif %}">
+            <div class="thumb">
+                <img src="{% static 'posts/img/covers/blog-cover.webp' %}" alt="غلاف التدوينة" loading="lazy">
+            </div>
+            <div class="post-body">
+                <h3 class="post-title">{{ post.title }}</h3>
+                <p class="post-content">{{ post.content|truncatechars:130 }}</p>
+                <div class="post-date">
+                    <span class="material-symbols-outlined">calendar_month</span>
+                    <time datetime="{{ post.published_at|date:'c' }}">
+                        {{ post.published_at|date:'j F Y' }} · {{ post.published_at|time:'h:i A' }}
+                    </time>
+                    <span class="status {% if post.is_published %}status-on{% else %}status-off{% endif %}">
+                        {% if post.is_published %}منشور{% else %}غير منشور{% endif %}
+                    </span>
+                </div>
+                <a class="read-more-btn" href="#post-{{ post.id }}">قراءة المزيد</a>
+            </div>
+        </article>
+
+        <div class="post-modal" id="post-{{ post.id }}" role="dialog" aria-modal="true" aria-labelledby="post-title-{{ post.id }}">
+            <a class="modal-backdrop" href="#latest-posts" aria-label="إغلاق التدوينة"></a>
+            <div class="modal-panel">
+                <div class="modal-header">
+                    <span>مدونتي</span>
+                    <a class="modal-close" href="#latest-posts" aria-label="إغلاق"><span class="material-symbols-outlined">close</span></a>
+                </div>
+                <div class="modal-scroll">
+                    <img class="modal-cover" src="{% static 'posts/img/covers/blog-cover.webp' %}" alt="غلاف التدوينة">
+                    <div class="modal-content">
+                        <h2 id="post-title-{{ post.id }}">{{ post.title }}</h2>
+                        <div class="modal-date">
+                            <span class="material-symbols-outlined">calendar_month</span>
+                            {{ post.published_at|date:'j F Y' }} · {{ post.published_at|time:'h:i A' }}
+                        </div>
+                        <div class="modal-text">{{ post.content|linebreaks }}</div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <a class="btn" href="#latest-posts">إغلاق التدوينة</a>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    {% else %}
+    <div class="empty">
+        <h3>لا توجد تدوينات بعد</h3>
+        <p>كن أول من يكتب على المدونة.</p>
+        <a class="btn" href="{% url 'posts:add_post' %}">أضف تدوينة</a>
+    </div>
+    {% endif %}
+</section>
+{% endblock %}

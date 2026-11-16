@@ -1,0 +1,67 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}مدونتي{% endblock %}</title>
+    <link rel="icon" type="image/svg+xml" href="{% static 'posts/img/logo.svg' %}">
+    <link rel="stylesheet" href="{% static 'posts/css/fonts.css' %}">
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'posts/css/style.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container header-inner">
+            <a class="brand" href="{% url 'posts:home' %}">
+                <img class="brand-logo" src="{% static 'posts/img/logo.svg' %}" alt="شعار مدونتي">
+                <span class="brand-name">مدونتي</span>
+            </a>
+            <nav class="nav">
+                <a href="{% url 'posts:home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}">الرئيسية</a>
+                <a href="{% url 'posts:add_post' %}" class="{% if request.resolver_match.url_name == 'add_post' %}active{% endif %}">
+                    <span class="material-symbols-outlined">add_circle</span>
+                    إضافة تدوينة
+                </a>
+            </nav>
+        </div>
+    </header>
+
+    {% if messages %}
+    <div class="container">
+        {% for message in messages %}
+        <div class="alert">{{ message }}</div>
+        {% endfor %}
+    </div>
+    {% endif %}
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+        <div class="container footer-grid">
+            <div class="footer-about">
+                <a class="brand" href="{% url 'posts:home' %}">
+                    <img class="brand-logo" src="{% static 'posts/img/logo.svg' %}" alt="شعار مدونتي">
+                    <span class="brand-name">مدونتي</span>
+                </a>
+                <p>مساحة بسيطة لنشر الأفكار والتجارب، تعرض أحدث التدوينات وتتيح لك إضافة تدوينة جديدة بسهولة.</p>
+            </div>
+
+            <nav class="footer-col" aria-label="روابط سريعة">
+                <h4>روابط سريعة</h4>
+                <a href="{% url 'posts:home' %}">الرئيسية</a>
+                <a href="{% url 'posts:add_post' %}">إضافة تدوينة</a>
+            </nav>
+        </div>
+
+        <div class="footer-bottom">
+            <div class="container footer-bottom-inner">
+                <span>جميع الحقوق محفوظة لمدونتي {% now "Y" %}©</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

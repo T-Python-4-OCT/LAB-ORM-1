@@ -1,0 +1,51 @@
+{% extends 'posts/base.html' %}
+
+{% block title %}إضافة تدوينة | مدونتي{% endblock %}
+
+{% block content %}
+<section class="form-card">
+    <div class="form-head">
+        <span class="head-icon"><span class="material-symbols-outlined">edit</span></span>
+        <h1>إضافة تدوينة جديدة</h1>
+    </div>
+
+    <form method="post" novalidate>
+        {% csrf_token %}
+
+        <div class="field{% if form.title.errors %} has-error{% endif %}">
+            <label for="{{ form.title.id_for_label }}">{{ form.title.label }} <b>*</b></label>
+            <div class="input-wrap">
+                <span class="material-symbols-outlined">edit</span>
+                {{ form.title }}
+            </div>
+            {% for error in form.title.errors %}<p class="error">{{ error }}</p>{% endfor %}
+        </div>
+
+        <div class="field{% if form.content.errors %} has-error{% endif %}">
+            <label for="{{ form.content.id_for_label }}">{{ form.content.label }} <b>*</b></label>
+            <div class="input-wrap">
+                <span class="material-symbols-outlined">description</span>
+                {{ form.content }}
+            </div>
+            {% for error in form.content.errors %}<p class="error">{{ error }}</p>{% endfor %}
+        </div>
+
+        <label class="check" for="{{ form.is_published.id_for_label }}">
+            {{ form.is_published }}
+            <span class="check-box"><span class="material-symbols-outlined">check</span></span>
+            <span>{{ form.is_published.label }}</span>
+        </label>
+
+        <div class="actions">
+            <button class="btn" type="submit">
+                <span class="material-symbols-outlined">save</span>
+                حفظ التدوينة
+            </button>
+            <a class="btn btn-outline" href="{% url 'posts:home' %}">
+                <span class="material-symbols-outlined">close</span>
+                إلغاء
+            </a>
+        </div>
+    </form>
+</section>
+{% endblock %}
