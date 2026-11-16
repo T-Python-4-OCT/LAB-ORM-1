@@ -1,0 +1,38 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<h1>Latest Posts</h1>
+
+{% for post in posts %}
+
+<div class="post-card">
+
+    <h2>{{ post.title }}</h2>
+
+    <p>{{ post.content }}</p>
+
+    <small>
+        Published on:
+        {{ post.published_at|date:"d M Y" }}
+        at
+        {{ post.published_at|time:"h:i A" }}
+    </small>
+
+    <div class="post-status">
+        {% if post.is_published %}
+            <span class="published">Published</span>
+        {% else %}
+            <span class="unpublished">Unpublished</span>
+        {% endif %}
+    </div>
+
+</div>
+
+{% empty %}
+
+<p>No posts available yet.</p>
+
+{% endfor %}
+
+{% endblock %}
