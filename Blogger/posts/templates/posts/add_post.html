@@ -1,0 +1,69 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Blogger | The Writing Desk{% endblock %}
+
+{% block content %}
+
+<section class="desk-head reveal">
+  <div class="label issue-kicker">The Writing Desk</div>
+  <h1 class="display-title">
+    <span class="line"><span>Set your story</span></span>
+    <span class="line"><span style="--ld: .12s"><em>in ink.</em></span></span>
+  </h1>
+</section>
+
+<div class="desk">
+
+  <form class="editor reveal" style="--d: .1s" action="{% url 'posts:add_post_view' %}" method="post">
+    {% csrf_token %}
+
+    <div class="field">
+      <label for="title" class="field-label label">
+        <span>Headline</span>
+        <span class="field-count" data-count-for="title"></span>
+      </label>
+      <input type="text" id="title" name="title" class="input-title" placeholder="A headline worth reading" maxlength="2048" dir="auto" autocomplete="off" required />
+    </div>
+
+    <div class="field">
+      <label for="content" class="field-label label">
+        <span>Story</span>
+        <span class="field-count" data-count-for="content" data-mode="words"></span>
+      </label>
+      <textarea id="content" name="content" class="input-content" placeholder="Begin your story here…" dir="auto" required></textarea>
+    </div>
+
+    <div class="editor-foot">
+      <label class="toggle" for="is_published">
+        <input type="checkbox" id="is_published" name="is_published" checked />
+        <span class="toggle-track"></span>
+        <span><strong>Publish now</strong> &middot; off = draft</span>
+      </label>
+
+      <div class="actions">
+        <a href="{% url 'main:home_view' %}" class="btn-line">Cancel</a>
+        <button type="submit" class="btn-ink">
+          <span class="material-symbols-outlined">send</span> Publish
+        </button>
+      </div>
+    </div>
+  </form>
+
+  <!-- live preview: shows how the post will look on the homepage -->
+  <aside class="preview reveal" style="--d: .2s" aria-label="Live preview">
+    <div class="preview-label label">
+      <span class="preview-dot"></span> Printer's proof
+    </div>
+    <article class="post-card preview-card">
+      <div class="post-index" id="previewStatus">Publishing &middot; {% now "M d, Y" %}</div>
+      <h3 class="post-title" id="previewTitle" dir="auto" data-empty="Your headline appears here">Your headline appears here</h3>
+      <p class="post-content" id="previewContent" dir="auto" data-empty="Start writing and watch your story take shape on the page.">Start writing and watch your story take shape on the page.</p>
+      <div class="post-foot">
+        <span class="label"><span id="previewRead">1 min read</span></span>
+      </div>
+    </article>
+  </aside>
+
+</div>
+
+{% endblock %}
