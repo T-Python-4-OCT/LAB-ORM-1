@@ -1,0 +1,100 @@
+
+{% extends 'blog/base.html' %}
+{% load static %}
+
+{% block title %}Home | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <div class="hero-content">
+        <span class="hero-label">WELCOME TO BLOGGER</span>
+
+        <h1>
+            Stories worth<br>
+            <span>sharing.</span>
+        </h1>
+
+        <p>
+            A space for ideas, stories, and thoughts
+            that inspire the world.
+        </p>
+
+        <a href="{% url 'add_post' %}" class="hero-button">
+            Start Writing →
+        </a>
+    </div>
+</section>
+
+<section class="posts-section">
+
+    <div class="section-heading">
+        <span>LATEST STORIES</span>
+        <h2>Explore the latest posts</h2>
+    </div>
+
+    <div class="search-box">
+        <input
+            type="search"
+            id="postSearch"
+            placeholder="Search for a story..."
+            aria-label="Search posts"
+        >
+        <span class="search-icon">⌕</span>
+    </div>
+
+    <div class="posts-grid" id="postsGrid">
+
+        {% for post in posts %}
+            <article class="post-card">
+
+                <span class="post-date">
+                    {{ post.published_at|date:"M d, Y - h:i A" }}
+                </span>
+
+                <h3>{{ post.title }}</h3>
+
+                <p>{{ post.content|truncatewords:25 }}</p>
+
+                <a href="{% url 'post_detail' post.id %}" class="read-more">
+                    Read More <span>→</span>
+                </a>
+
+            </article>
+        {% empty %}
+            <p>No posts yet. Be the first to share a story!</p>
+        {% endfor %}
+
+    </div>
+
+    <p id="noResults" class="no-results" hidden>
+        No matching stories found.
+    </p>
+
+</section>
+
+<script>
+    const searchInput = document.getElementById('postSearch');
+    const postCards = document.querySelectorAll('.post-card');
+    const noResults = document.getElementById('noResults');
+
+    searchInput.addEventListener('input', function () {
+        const searchValue = this.value.toLowerCase().trim();
+        let visiblePosts = 0;
+
+        postCards.forEach(function (card) {
+            const postText = card.textContent.toLowerCase();
+            const isMatch = postText.includes(searchValue);
+
+            card.style.display = isMatch ? '' : 'none';
+
+            if (isMatch) {
+                visiblePosts++;
+            }
+        });
+
+        noResults.hidden = visiblePosts !== 0;
+    });
+</script>
+
+{% endblock %}
