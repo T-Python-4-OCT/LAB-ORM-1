@@ -1,6 +1,7 @@
 
 from django import forms
 from .models import Post
+import bleach
 
 
 class PostForm(forms.ModelForm):
@@ -26,3 +27,25 @@ class PostForm(forms.ModelForm):
                 'class': 'post-image-input'
             })
         }
+
+    def clean_content(self):
+        content = self.cleaned_data['content']
+
+        allowed_tags = [
+            'p', 'br', 'b', 'strong', 'i', 'em', 'u',
+            'h2', 'h3', 'h4', 'ul', 'ol', 'li',
+            'blockquote', 'span', 'div'
+        ]
+
+        allowed_attributes = {
+            'span': ['style'],
+            'p': ['style'],
+            'div': ['style']
+        }
+
+        return bleach.clean(
+            content,
+            tags=allowed_tags,
+            attributes=allowed_attributes,
+            strip=True
+        )

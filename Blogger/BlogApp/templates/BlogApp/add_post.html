@@ -10,7 +10,7 @@
     <h1>Create a New Post</h1>
     <p>Share your thoughts and stories with the world.</p>
 
-    <form method="POST" enctype="multipart/form-data" id="post-form">
+    <form method="POST" enctype="multipart/form-data" id="post-form" novalidate>
         {% csrf_token %}
 
         <div class="form-field">
@@ -161,12 +161,28 @@
     
     });
     
-    document.getElementById('post-form').addEventListener('submit', function () {
-    
-        document.getElementById('id_content').value =
-            document.getElementById('rich-editor').innerHTML;
-    
-    });
+    const postForm = document.getElementById('post-form');
+
+postForm.addEventListener('submit', function (event) {
+
+    const editor = document.getElementById('rich-editor');
+    const contentField = document.getElementById('id_content');
+
+    if (!editor || !contentField) {
+        event.preventDefault();
+        alert('Editor error. Please refresh the page.');
+        return;
+    }
+
+    contentField.value = editor.innerHTML.trim();
+
+    if (!contentField.value) {
+        event.preventDefault();
+        alert('Please write your article content first.');
+        editor.focus();
+    }
+
+});
     
     </script>
 

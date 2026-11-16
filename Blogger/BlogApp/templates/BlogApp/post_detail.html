@@ -1,6 +1,8 @@
 
 {% extends 'BlogApp/base.html' %}
 
+{% load blog_extras %}
+
 {% block title %}{{ post.title }} | Blogger{% endblock %}
 
 {% block content %}
@@ -47,7 +49,7 @@
         <article class="article-body">
 
             <div class="article-content">
-                {{ post.content|linebreaks }}
+                {{ post.content|safe_html }}
             </div>
 
         </article>
