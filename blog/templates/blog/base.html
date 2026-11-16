@@ -1,0 +1,92 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Blogger{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
+</head>
+
+<body>
+
+    <header class="navbar">
+
+        <a href="{% url 'home' %}" class="logo">
+            Blogger
+        </a>
+
+        <nav>
+            <a href="{% url 'home' %}">Home</a>
+
+            <a href="{% url 'add_post' %}" class="nav-button">
+                Write a Post
+            </a>
+
+            <button
+                type="button"
+                id="themeToggle"
+                class="theme-button"
+                aria-label="Switch color theme">
+                🌙
+            </button>
+        </nav>
+
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>© 2026 Blogger. All rights reserved.</p>
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('themeToggle');
+
+        function getThemeCookie() {
+            const cookie = document.cookie
+                .split('; ')
+                .find(row => row.startsWith('blogger-theme='));
+
+            return cookie ? cookie.split('=')[1] : null;
+        }
+
+        function saveThemeCookie(theme) {
+            document.cookie =
+                `blogger-theme=${theme}; max-age=${60 * 60 * 24 * 365}; path=/; SameSite=Lax`;
+        }
+
+        function applyTheme(theme) {
+            document.body.classList.toggle(
+                'dark-mode',
+                theme === 'dark'
+            );
+
+            themeToggle.textContent =
+                theme === 'dark' ? '☀️' : '🌙';
+        }
+
+        const savedTheme = getThemeCookie() || 'light';
+
+        applyTheme(savedTheme);
+
+        themeToggle.addEventListener('click', function () {
+
+            const newTheme = document.body.classList.contains('dark-mode')
+                ? 'light'
+                : 'dark';
+
+            saveThemeCookie(newTheme);
+
+            applyTheme(newTheme);
+        });
+    </script>
+
+</body>
+</html>

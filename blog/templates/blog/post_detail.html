@@ -1,0 +1,32 @@
+
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ post.title }} | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="detail-section">
+
+    <a href="{% url 'home' %}" class="back-link">
+        ← Back to Home
+    </a>
+
+    <article class="detail-card">
+
+        <span class="post-date">
+            {{ post.published_at|date:"M d, Y - h:i A" }}
+        </span>
+
+        <h1>{{ post.title }}</h1>
+
+        <div class="detail-divider"></div>
+
+        <div class="detail-content">
+            {{ post.content|linebreaks }}
+        </div>
+
+    </article>
+
+</section>
+
+{% endblock %}
