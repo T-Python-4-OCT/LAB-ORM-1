@@ -1,0 +1,97 @@
+
+{% extends "blog/base.html" %}
+{% load blog_extras %}
+
+{% block title %}Home | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="blog-container">
+
+    <div class="page-heading">
+        <div>
+            <h1>
+                <span data-i18n="latest">Latest Stories</span><span>.</span>
+            </h1>
+
+            <p data-i18n="description">
+                Discover the latest posts and ideas.
+            </p>
+        </div>
+
+        <a href="{% url 'add_post' %}" class="blog-btn">
+            <span>+</span>
+            <span data-i18n="write">Write a post</span>
+        </a>
+    </div>
+
+    <div class="blog-grid">
+
+        {% for post in posts %}
+
+        <article class="blog-card">
+
+            <a href="{% url 'post_detail' post.pk %}">
+                {% if post.image %}
+                    <img
+                        src="{{ post.image.url }}"
+                        alt="{{ post.title }}"
+                        class="blog-image"
+                        loading="lazy">
+                {% else %}
+                    <img
+                        src="/media/default/default-cover.jpg"
+                        alt="Default cover"
+                        class="blog-image"
+                        loading="lazy">
+                {% endif %}
+            </a>
+
+            <div class="blog-card-content">
+
+                <span class="blog-date">
+                    {{ post.published_at|date:"F d, Y" }}
+                    ·
+                    {{ post.published_at|time:"h:i A" }}
+                </span>
+
+                <h2 dir="auto">
+                    {{ post.title }}
+                </h2>
+
+                <p dir="auto">
+                    {{ post.content|post_excerpt:180 }}
+                </p>
+
+                <a href="{% url 'post_detail' post.pk %}"
+                   class="blog-link">
+                    <span data-i18n="readMore">Read More</span>
+                    <span aria-hidden="true">→</span>
+                </a>
+
+            </div>
+
+        </article>
+
+        {% empty %}
+
+        <div class="blog-empty">
+            <h2 data-i18n="noPosts">No posts yet!</h2>
+
+            <p data-i18n="noPostsDescription">
+                Start by adding your first post.
+            </p>
+
+            <a href="{% url 'add_post' %}" class="blog-btn">
+                <span>+</span>
+                <span data-i18n="write">Write a post</span>
+            </a>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}

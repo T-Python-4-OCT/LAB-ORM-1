@@ -1,0 +1,296 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+
+<head>
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1">
+
+    <title>{% block title %}Blogger{% endblock %}</title>
+
+    <meta name="theme-color" content="#10121c">
+
+    <!-- Fonts -->
+    <link rel="preconnect"
+          href="https://fonts.googleapis.com">
+
+    <link rel="preconnect"
+          href="https://fonts.gstatic.com" crossorigin>
+
+    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&family=IBM+Plex+Sans+Arabic:wght@400;500;600;700&display=swap"
+          rel="stylesheet">
+
+    <!-- Restore Theme & Language -->
+    <script>
+        (function () {
+            const savedTheme = localStorage.getItem("blogger-theme");
+
+            document.documentElement.dataset.theme =
+                savedTheme ||
+                (window.matchMedia("(prefers-color-scheme: dark)").matches
+                    ? "dark"
+                    : "light");
+
+            const lang = localStorage.getItem("blogger-language") || "en";
+
+            document.documentElement.lang = lang === "ar" ? "ar" : "en";
+            document.documentElement.dir = lang === "ar" ? "rtl" : "ltr";
+        })();
+    </script>
+
+    <!-- Quill CSS -->
+    <link rel="stylesheet"
+          href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css">
+
+    <!-- Main CSS -->
+    <link rel="stylesheet"
+          href="{% static 'blog/css/style.css' %}">
+
+    <!-- Language JS -->
+    <script src="{% static 'blog/js/language.js' %}" defer></script>
+</head>
+
+<body>
+
+    <!-- HEADER -->
+    <header class="site-header">
+
+        <div class="container header-inner">
+
+            <a href="{% url 'home' %}" class="brand">
+                <span class="brand-icon">B</span>
+                <span>
+                    Blogger<span class="brand-dot">.</span>
+                </span>
+            </a>
+
+            <nav class="header-actions">
+
+                <a href="{% url 'home' %}" class="nav-link">
+                    <span data-i18n="explore">Explore</span>
+                </a>
+
+                <!-- Language Toggle -->
+                <button
+                    type="button"
+                    class="theme-toggle"
+                    id="languageToggle"
+                    aria-label="Change language">
+                    AR
+                </button>
+
+                <!-- Theme Toggle -->
+                <button
+                    type="button"
+                    class="theme-toggle"
+                    id="themeToggle"
+                    aria-label="Toggle dark mode">
+
+                    <span id="themeIcon">☾</span>
+                </button>
+
+                <!-- Add Post -->
+                <a href="{% url 'add_post' %}"
+                   class="btn btn-primary nav-create">
+
+                    <span aria-hidden="true">＋</span>
+                    <span data-i18n="write">Write a post</span>
+                </a>
+
+            </nav>
+
+        </div>
+
+    </header>
+
+    <!-- MAIN CONTENT -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="site-footer">
+
+        <div class="container footer-inner">
+
+            <span class="footer-brand">
+                Blogger<span>.</span>
+            </span>
+
+            <p data-i18n="footerDescription">
+                A little space for big ideas.
+            </p>
+
+            <span>© 2026 Blogger</span>
+
+        </div>
+
+    </footer>
+
+
+    <!-- THEME SCRIPT -->
+    <script>
+        const themeToggle = document.getElementById("themeToggle");
+        const themeIcon = document.getElementById("themeIcon");
+
+        function updateThemeIcon() {
+            themeIcon.textContent =
+                document.documentElement.dataset.theme === "dark"
+                    ? "☀"
+                    : "☾";
+        }
+
+        updateThemeIcon();
+
+        if (themeToggle) {
+            themeToggle.addEventListener("click", function () {
+
+                const current =
+                    document.documentElement.dataset.theme;
+
+                const next = current === "dark" ? "light" : "dark";
+
+                document.documentElement.dataset.theme = next;
+
+                localStorage.setItem("blogger-theme", next);
+
+                updateThemeIcon();
+            });
+        }
+    </script>
+
+
+    <!-- QUILL LIBRARY -->
+    <script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+
+    <!-- QUILL INITIALIZATION -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+
+            const textarea = document.getElementById("post-content");
+            const editorElement = document.getElementById("quill-editor");
+
+            if (!textarea || !editorElement || typeof Quill === "undefined") {
+                return;
+            }
+
+            const quill = new Quill("#quill-editor", {
+
+                theme: "snow",
+
+                placeholder: "Write your story here...",
+
+                modules: {
+                    toolbar: [
+                        [{ header: [1, 2, 3, false] }],
+
+                        ["bold", "italic", "underline", "strike"],
+
+                        [{ list: "ordered" }, { list: "bullet" }],
+
+                        ["blockquote", "link"],
+
+                        [{ align: [] }],
+
+                        [{ direction: "rtl" }],
+
+                        ["clean"]
+                    ]
+                }
+            });
+
+            // Load existing content when editing a post
+            const existingContent = textarea.value.trim();
+
+            if (existingContent) {
+
+                if (/^<(p|div|h[1-6]|ul|ol|blockquote|pre|span|strong|em|br)\b/i.test(existingContent)) {
+
+                    quill.clipboard.dangerouslyPasteHTML(existingContent);
+
+                } else {
+
+                    quill.setText(textarea.value);
+                }
+            }
+
+            // Hide Django's original textarea
+            textarea.style.display = "none";
+
+            // Prevent hidden required field validation issues
+            textarea.removeAttribute("required");
+
+            // Synchronize Quill with Django
+            function syncContent() {
+                textarea.value = quill.getSemanticHTML();
+            }
+
+            quill.on("text-change", function () {
+                syncContent();
+            });
+
+            // Synchronize initial content
+            syncContent();
+
+            const form = textarea.closest("form");
+
+            if (form) {
+                form.addEventListener("submit", function (event) {
+
+                    syncContent();
+
+                    // Prevent empty posts
+                    if (quill.getText().trim().length === 0) {
+
+                        event.preventDefault();
+
+                        const currentLang =
+                            document.documentElement.lang;
+
+                        alert(
+                            currentLang === "ar"
+                                ? "يرجى كتابة محتوى المنشور قبل النشر."
+                                : "Please write some content before publishing."
+                        );
+
+                        quill.focus();
+                        return;
+                    }
+
+                    // Allow normal Django form submission
+                });
+            }
+
+            // Update placeholder when language changes
+            window.addEventListener("blogger:language-changed", function (event) {
+
+                const lang = event.detail.language;
+
+                quill.root.dataset.placeholder =
+                    lang === "ar"
+                        ? "اكتب محتوى منشورك هنا..."
+                        : "Write your story here...";
+
+                if (quill.getLength() <= 1) {
+                    quill.root.dir = lang === "ar" ? "rtl" : "ltr";
+                }
+            });
+
+            // Set initial editor placeholder
+            const currentLang = document.documentElement.lang;
+
+            quill.root.dataset.placeholder =
+                currentLang === "ar"
+                    ? "اكتب محتوى منشورك هنا..."
+                    : "Write your story here...";
+        });
+    </script>
+
+    {% block scripts %}{% endblock %}
+<script src="{% static 'blog/js/image-upload.js' %}" defer></script>
+</body>
+</html>

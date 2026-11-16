@@ -1,0 +1,77 @@
+{% extends "blog/base.html" %}
+
+{% block title %}Edit Post | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="blog-container blog-form-container">
+
+    <div class="page-heading">
+        <div>
+            <h1>Edit Post<span>.</span></h1>
+            <p>Update your story and save changes.</p>
+        </div>
+    </div>
+
+    <form method="POST"
+          enctype="multipart/form-data"
+          class="blog-form">
+
+        {% csrf_token %}
+
+        {{ form.non_field_errors }}
+
+        <div class="blog-field">
+            <label for="{{ form.title.id_for_label }}">
+                Title
+            </label>
+
+            {{ form.title }}
+            {{ form.title.errors }}
+        </div>
+
+        <div class="blog-field">
+            <label for="quill-editor">
+                Content
+            </label>
+            <div class="rich-editor-wrapper">
+                <div id="quill-editor"></div>
+            </div>
+
+            {{ form.content }}
+            {{ form.content.errors }}
+        </div>
+
+        <div class="blog-field">
+            <label for="{{ form.image.id_for_label }}">
+                Cover Image
+            </label>
+
+            {% if post.image %}
+                <img src="{{ post.image.url }}"
+                     alt="Current image"
+                     class="blog-edit-preview">
+            {% endif %}
+
+            {{ form.image }}
+            {{ form.image.errors }}
+        </div>
+
+        <div class="blog-actions">
+
+            <button type="submit" class="blog-btn">
+                Save Changes
+            </button>
+
+            <a href="{% url 'post_detail' post.pk %}"
+               class="blog-btn blog-btn-secondary">
+                Cancel
+            </a>
+
+        </div>
+
+    </form>
+
+</section>
+
+{% endblock %}

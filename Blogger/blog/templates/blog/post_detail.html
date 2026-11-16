@@ -1,0 +1,105 @@
+
+{% extends "blog/base.html" %}
+{% load blog_extras %}
+
+{% block title %}{{ post.title }} | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="blog-container">
+
+    <article class="blog-detail">
+
+        <!-- Back to Home -->
+        <a href="{% url 'home' %}"
+           class="blog-link">
+
+            <span aria-hidden="true">←</span>
+            <span data-i18n="back">Back to Posts</span>
+
+        </a>
+
+        <!-- Post Header -->
+        <div class="blog-detail-header">
+
+            <h1 dir="auto">
+                {{ post.title }}
+            </h1>
+
+            <p class="blog-date">
+
+                <span data-i18n="publishedOn">
+                    Published on
+                </span>
+
+                <time datetime="{{ post.published_at|date:'c' }}">
+                    {{ post.published_at|date:"F d, Y" }}
+                </time>
+
+                <span data-i18n="at">at</span>
+
+                <time datetime="{{ post.published_at|date:'c' }}">
+                    {{ post.published_at|time:"h:i A" }}
+                </time>
+
+            </p>
+
+        </div>
+
+        <!-- Post Cover Image -->
+        {% if post.image %}
+            <img
+                src="{{ post.image.url }}"
+                alt="{{ post.title }}"
+                class="blog-detail-image">
+        {% else %}
+            <img
+                src="/media/default/default-cover.jpg"
+                alt="Default cover"
+                class="blog-detail-image">
+        {% endif %}
+
+        <!-- Post Content (Quill HTML) -->
+        <div class="blog-detail-content rich-content"
+             dir="auto">
+
+            {{ post.content|rich_content }}
+
+        </div>
+
+        <!-- Post Actions -->
+        <div class="blog-actions">
+
+            <!-- Edit Post -->
+            <a href="{% url 'edit_post' post.pk %}"
+               class="blog-btn">
+
+                <span data-i18n="edit">Edit Post</span>
+
+            </a>
+
+            <!-- Delete Post -->
+            <form method="POST"
+                  action="{% url 'delete_post' post.pk %}"
+                  data-confirm-delete>
+
+                {% csrf_token %}
+
+                <button type="submit"
+                        class="blog-btn blog-btn-danger">
+
+                    <span data-i18n="delete">
+                        Delete Post
+                    </span>
+
+                </button>
+
+            </form>
+
+        </div>
+
+    </article>
+
+</section>
+
+{% endblock %}
