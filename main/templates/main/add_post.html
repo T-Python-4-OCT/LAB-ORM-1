@@ -1,0 +1,34 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Blogger | New Post{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Add a New Post</h1>
+    <p>Share your thoughts with the world.</p>
+</section>
+
+<form method="post" action="{% url 'main:add_post_view' %}" class="post-form">
+    {% csrf_token %}
+
+    {% if error %}
+        <div class="alert">{{ error }}</div>
+    {% endif %}
+
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" maxlength="2048" value="{{ title|default:'' }}" placeholder="Give your post a title" required>
+
+    <label for="content">Content</label>
+    <textarea id="content" name="content" rows="10" placeholder="Write your post here..." required>{{ content|default:'' }}</textarea>
+
+    <label class="checkbox">
+        <input type="checkbox" name="is_published" checked>
+        Publish now
+    </label>
+
+    <div class="form-actions">
+        <a href="{% url 'main:home_view' %}" class="btn btn-outline">Cancel</a>
+        <button type="submit" class="btn">Publish Post</button>
+    </div>
+</form>
+{% endblock %}

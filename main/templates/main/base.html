@@ -1,0 +1,35 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Blogger{% endblock %}</title>
+    <link rel="icon" href="{% static 'main/images/logo.svg' %}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+</head>
+<body>
+    <header class="navbar">
+        <div class="container nav-inner">
+            <a href="{% url 'main:home_view' %}" class="brand">
+                <img src="{% static 'main/images/logo.svg' %}" alt="Blogger logo">
+                <span>Blogger</span>
+            </a>
+            <nav>
+                <a href="{% url 'main:home_view' %}" class="{% if request.resolver_match.url_name == 'home_view' %}active{% endif %}">Home</a>
+                <a href="{% url 'main:add_post_view' %}" class="btn {% if request.resolver_match.url_name == 'add_post_view' %}active{% endif %}">+ New Post</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">&copy; {% now "Y" %} Blogger &mdash; Write. Share. Inspire.</div>
+    </footer>
+</body>
+</html>
