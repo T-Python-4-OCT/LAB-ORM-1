@@ -1,0 +1,24 @@
+<article class="post {% if not post.is_published %}unpublished{% endif %}">
+    <p class="dateline">
+        {% if post.is_published %}Published{% else %}Unpublished &middot; Saved{% endif %}
+        <time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:"F j, Y · g:i A" }}</time>
+    </p>
+    <h3 class="post-title" dir="auto">
+        <a href="{% url 'main:post_detail_view' post.id %}">{{ post.title }}</a>
+    </h3>
+    {% if post.image %}
+        <a href="{% url 'main:post_detail_view' post.id %}">
+            <img src="{{ post.image.url }}" alt="{{ post.title }}" class="post-thumb">
+        </a>
+    {% endif %}
+    <div class="post-content" dir="auto">{{ post.content|linebreaks }}</div>
+
+    <div class="card-actions">
+        <a href="{% url 'main:update_post_view' post.id %}" class="btn btn-small">Edit</a>
+
+        <form action="{% url 'main:delete_post_view' post.id %}" method="post" onsubmit="return confirm('Delete this post?');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-small btn-danger">Delete</button>
+        </form>
+    </div>
+</article>

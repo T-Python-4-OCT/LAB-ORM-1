@@ -1,0 +1,37 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Blogger | Edit Post{% endblock %}
+
+{% block content %}
+
+<h1 class="page-title">Edit Post</h1>
+<p class="page-subtitle">Fix a typo or rewrite the whole story.</p>
+
+<form action="{% url 'main:update_post_view' post.id %}" method="post" enctype="multipart/form-data" class="post-form">
+    {% csrf_token %}
+
+    <label for="title" class="field-label">Title</label>
+    <input type="text" id="title" name="title" maxlength="2048" value="{{ post.title }}" dir="auto" required>
+
+    <label for="content" class="field-label">Content</label>
+    <textarea id="content" name="content" dir="auto" required>{{ post.content }}</textarea>
+
+    <label for="image" class="field-label">Image <span class="optional">(choose a file to replace it)</span></label>
+    {% if post.image %}
+        <img src="{{ post.image.url }}" alt="{{ post.title }}" class="current-image">
+    {% endif %}
+    <input type="file" id="image" name="image" accept="image/*">
+
+    <label class="checkbox">
+        <input type="checkbox" name="is_published" {% if post.is_published %}checked{% endif %}>
+        Publish now
+    </label>
+    <p class="hint">Uncheck it to keep the post unpublished. It will be marked as Unpublished.</p>
+
+    <div class="form-actions">
+        <button type="submit" class="btn">Save Changes</button>
+        <a href="{% url 'main:home_view' %}" class="cancel-link">Cancel</a>
+    </div>
+</form>
+
+{% endblock %}

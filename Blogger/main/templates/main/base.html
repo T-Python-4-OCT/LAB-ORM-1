@@ -7,7 +7,7 @@
     <title>{% block title %}Blogger{% endblock %}</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,800;1,6..72,400&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,600;0,6..72,800;1,6..72,400&family=Amiri:wght@400;700&family=UnifrakturMaguntia&display=swap" rel="stylesheet">
     <link href="{% static 'css/style.css' %}" rel="stylesheet">
 </head>
 <body>
@@ -19,7 +19,10 @@
                 <span>{% now "l, F j, Y" %}</span>
             </div>
 
-            <a href="{% url 'main:home_view' %}" class="logo">Blogger</a>
+            <a href="{% url 'main:home_view' %}" class="logo">
+                Blogger
+                <img src="{% static 'images/Blogger.png' %}" alt="" class="logo-icon">
+            </a>
             <p class="tagline">Thoughts, stories &amp; ideas, fresh off the press.</p>
 
            

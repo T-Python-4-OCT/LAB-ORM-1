@@ -7,20 +7,23 @@
 <h1 class="page-title">Write a Post</h1>
 <p class="page-subtitle">Your words go straight to the front page.</p>
 
-<form action="{% url 'main:add_post_view' %}" method="post" class="post-form">
+<form action="{% url 'main:add_post_view' %}" method="post" enctype="multipart/form-data" class="post-form">
     {% csrf_token %}
 
     <label for="title" class="field-label">Title</label>
-    <input type="text" id="title" name="title" maxlength="2048" placeholder="Your post title" required>
+    <input type="text" id="title" name="title" maxlength="2048" placeholder="Your post title" dir="auto" required>
 
     <label for="content" class="field-label">Content</label>
-    <textarea id="content" name="content" placeholder="Start writing..." required></textarea>
+    <textarea id="content" name="content" placeholder="Start writing..." dir="auto" required></textarea>
+
+    <label for="image" class="field-label">Image <span class="optional">(optional)</span></label>
+    <input type="file" id="image" name="image" accept="image/*">
 
     <label class="checkbox">
         <input type="checkbox" name="is_published" checked>
         Publish now
     </label>
-    <p class="hint">Uncheck it to keep the post as a draft. Drafts don't appear on the front page.</p>
+    <p class="hint">Uncheck it to keep the post unpublished. It will be marked as Unpublished.</p>
 
     <div class="form-actions">
         <button type="submit" class="btn">Save Post</button>

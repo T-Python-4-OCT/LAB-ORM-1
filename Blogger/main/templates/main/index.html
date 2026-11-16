@@ -6,20 +6,15 @@
 
 <h2 class="section-label">Latest Posts</h2>
 
+<div class="posts-grid">
 {% for post in posts %}
-    <article class="post">
-        <p class="dateline">
-            Published
-            <time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:"F j, Y · g:i A" }}</time>
-        </p>
-        <h3 class="post-title">{{ post.title }}</h3>
-        <div class="post-content">{{ post.content|linebreaks }}</div>
-    </article>
+    {% include 'main/post_card.html' %}
 {% empty %}
     <div class="empty">
         <p>No posts yet. The press is quiet today.</p>
         <a href="{% url 'main:add_post_view' %}">Write the first post &rarr;</a>
     </div>
 {% endfor %}
+</div>
 
 {% endblock %}
