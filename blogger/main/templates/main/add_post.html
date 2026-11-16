@@ -1,0 +1,51 @@
+{% extends "main/base.html" %}
+{% block title %}تدوينة جديدة{% endblock %}
+
+{% block content %}
+<section class="container page">
+  <a class="back" href="{% url 'main:home' %}"><i class="bi bi-arrow-right"></i> الرئيسية</a>
+  <h1 class="page-title">تدوينة جديدة</h1>
+  <p class="page-lead">اكتب العنوان والمحتوى، ووقت النشر ينحفظ تلقائياً.</p>
+
+  <div class="editor-layout">
+    <form class="editor" method="post" action="{% url 'main:add_post' %}" novalidate>
+      {% csrf_token %}
+
+      <div class="field">
+        <label for="title">العنوان</label>
+        <input id="title" name="title" type="text" maxlength="{{ title_max }}" value="{{ values.title }}"
+               placeholder="مثال: خمس عادات صغيرة غيّرت يومي" {% if errors.title %}aria-invalid="true" aria-describedby="title-error"{% endif %} autofocus>
+        {% if errors.title %}<p class="field-error" id="title-error"><i class="bi bi-exclamation-circle"></i> {{ errors.title }}</p>{% endif %}
+      </div>
+
+      <div class="field">
+        <label for="content">المحتوى</label>
+        <textarea id="content" name="content" rows="10" placeholder="ابدأ الكتابة هنا…"
+                  {% if errors.content %}aria-invalid="true" aria-describedby="content-error"{% endif %}>{{ values.content }}</textarea>
+        {% if errors.content %}<p class="field-error" id="content-error"><i class="bi bi-exclamation-circle"></i> {{ errors.content }}</p>{% endif %}
+      </div>
+
+      {# A switch made from a checkbox: ticked = published, not ticked = not published #}
+      <label class="switch">
+        <input type="checkbox" name="is_published" {% if values.is_published %}checked{% endif %}>
+        <span class="switch-track" aria-hidden="true"></span>
+        <span class="switch-text"><strong>انشرها الحين</strong><small>إذا طفيتها تنحفظ وتظهر في الرئيسية بشارة «غير منشور».</small></span>
+      </label>
+
+      <div class="editor-actions">
+        <button class="btn btn-primary" type="submit"><i class="bi bi-send"></i> احفظ التدوينة</button>
+        <a class="btn btn-ghost" href="{% url 'main:home' %}">إلغاء</a>
+      </div>
+    </form>
+
+    <aside class="tips">
+      <h2><i class="bi bi-lightbulb"></i> نصايح للكتابة</h2>
+      <ul>
+        <li>عنوان قصير وواضح يقول وش الفكرة.</li>
+        <li>ابدأ بالجملة الأهم، والباقي تفاصيل.</li>
+        <li>افصل الأفكار بسطر فاضي، وكل فقرة تطلع لحالها.</li>
+      </ul>
+    </aside>
+  </div>
+</section>
+{% endblock %}
