@@ -1,4 +1,4 @@
-{% extends 'base.html' %}
+{% extends 'blog/base.html' %}
 
 {% block title %}Home | Blogger{% endblock %}
 
@@ -25,3 +25,4 @@
     <p class="empty">No posts yet. <a href="{% url 'blog:add_post' %}">Add the first one</a></p>
 {% endfor %}
 {% endblock %}
+
