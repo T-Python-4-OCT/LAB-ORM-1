@@ -1,0 +1,33 @@
+{% extends 'BlogApp/base.html' %}
+
+{% block title %}{{ post.title }} | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="post-detail-section">
+    {% if post.image %}
+    <img
+        src="{{ post.image.url }}"
+        alt="{{ post.title }}"
+        class="detail-post-image"
+    >
+{% endif %}
+
+    <h1>{{ post.title }}</h1>
+
+
+    <small>
+        Published on {{ post.published_at|date:"F d, Y - h:i A" }}
+    </small>
+
+    <div class="post-content">
+        {{ post.content }}
+    </div>
+
+    <a href="{% url 'home' %}" class="back-link">
+        ← Back to Home
+    </a>
+
+</section>
+
+{% endblock %}

@@ -1,0 +1,926 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+    --primary: #7257F5;
+    --primary-dark: #5B42D6;
+    --background: #F8F8FC;
+    --surface: #FFFFFF;
+    --text: #171717;
+    --muted: #77778A;
+    --border: #EAEAF0;
+}
+
+/* =========================
+   DARK MODE COLORS
+========================= */
+
+[data-theme="dark"] {
+    --primary: #927EFF;
+    --primary-dark: #7257F5;
+    --background: #111116;
+    --surface: #1B1B23;
+    --text: #F5F5F7;
+    --muted: #A1A1B0;
+    --border: #30303B;
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    background: var(--background);
+    color: var(--text);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+main {
+    flex: 1;
+}
+
+
+/* =========================
+   NAVBAR
+========================= */
+
+header {
+    background: var(--surface);
+    border-bottom: 1px solid var(--border);
+    padding: 0 8%;
+}
+
+nav {
+    height: 80px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: -1.5px;
+}
+
+.logo::after {
+    content: ".";
+    color: var(--primary);
+}
+
+.nav-links {
+    display: flex;
+    align-items: center;
+    gap: 35px;
+}
+
+.nav-links a {
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--muted);
+    transition: 0.3s ease;
+}
+
+.nav-links a:hover {
+    color: var(--primary);
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer {
+    background: var(--surface);
+    border-top: 1px solid var(--border);
+    padding: 25px 8%;
+    text-align: center;
+}
+
+footer p {
+    color: var(--muted);
+    font-size: 13px;
+}
+
+
+
+/* =========================
+   HERO SECTION
+========================= */
+
+.hero {
+    padding: 110px 8% 90px;
+    text-align: center;
+    background: var(--surface);
+}
+
+.hero h1 {
+    font-size: clamp(42px, 6vw, 76px);
+    font-weight: 800;
+    letter-spacing: -3px;
+    line-height: 1.1;
+    margin-bottom: 22px;
+}
+
+.hero h1 span {
+    color: var(--primary);
+}
+
+.hero p {
+    max-width: 580px;
+    margin: 0 auto;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.8;
+}
+
+
+/* =========================
+   POSTS SECTION
+========================= */
+
+.posts-section {
+    padding: 70px 8%;
+    max-width: 1200px;
+    margin: 0 auto;
+    width: 100%;
+}
+
+.posts-section h2 {
+    font-size: 30px;
+    font-weight: 800;
+    letter-spacing: -1px;
+    margin-bottom: 35px;
+}
+
+.post-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    padding: 30px;
+    margin-bottom: 22px;
+    transition: 0.3s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 35px rgba(0, 0, 0, 0.06);
+    border-color: var(--primary);
+}
+
+.post-card h3 {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 15px;
+}
+
+.post-card p {
+    color: var(--muted);
+    font-size: 15px;
+    line-height: 1.9;
+    margin-bottom: 22px;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.post-card small {
+    display: inline-block;
+    color: var(--primary);
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* =========================
+   THEME TOGGLE BUTTON
+========================= */
+
+.theme-toggle {
+    width: 40px;
+    height: 40px;
+    border: 1px solid var(--border);
+    border-radius: 50%;
+    background: var(--background);
+    color: var(--text);
+    font-size: 18px;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background: var(--primary);
+    border-color: var(--primary);
+    transform: rotate(15deg);
+}
+
+/* =========================
+   ADD POST PAGE
+========================= */
+
+.add-post-section {
+    max-width: 750px;
+    margin: 70px auto;
+    padding: 45px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+    box-shadow: 0 10px 35px rgba(0, 0, 0, 0.04);
+}
+
+.add-post-section h1 {
+    font-size: 32px;
+    margin-bottom: 12px;
+}
+
+.add-post-section > p {
+    color: var(--muted);
+    margin-bottom: 35px;
+    line-height: 1.7;
+}
+
+.add-post-section form p {
+    margin-bottom: 22px;
+}
+
+.add-post-section label {
+    display: block;
+    margin-bottom: 10px;
+    font-weight: 600;
+    color: var(--text);
+}
+
+.add-post-section input,
+.add-post-section textarea {
+    width: 100%;
+    padding: 14px 16px;
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    background: var(--background);
+    color: var(--text);
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+    transition: 0.3s ease;
+}
+
+.add-post-section textarea {
+    min-height: 200px;
+    resize: vertical;
+}
+
+.add-post-section input:focus,
+.add-post-section textarea:focus {
+    border-color: var(--primary);
+    box-shadow: 0 0 0 3px rgba(114, 87, 245, 0.12);
+}
+
+.add-post-section button {
+    padding: 14px 28px;
+    background: var(--primary);
+    color: white;
+    border: none;
+    border-radius: 10px;
+    font-size: 14px;
+    font-weight: 700;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.add-post-section button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+/* =========================
+   RESPONSIVE POST CARDS
+========================= */
+
+.post-card {
+    overflow: hidden;
+    overflow-wrap: anywhere;
+}
+
+.post-card h3 {
+    color: var(--text);
+}
+
+.post-card p {
+    color: var(--muted);
+}
+
+.post-card small {
+    color: var(--primary);
+}
+
+@media (max-width: 768px) {
+    .add-post-section {
+        margin: 35px 5%;
+        padding: 25px 20px;
+    }
+
+    .add-post-section h1 {
+        font-size: 26px;
+    }
+
+    .hero {
+        padding: 80px 6% 65px;
+    }
+
+    .posts-section {
+        padding: 45px 6%;
+    }
+
+    .nav-links {
+        gap: 15px;
+    }
+
+    .nav-links a {
+        font-size: 12px;
+    }
+
+    nav {
+        height: 70px;
+    }
+}
+
+@media (max-width: 400px) {
+    .logo {
+        font-size: 22px;
+    }
+
+    .nav-links {
+        gap: 10px;
+    }
+
+    .theme-toggle {
+        width: 35px;
+        height: 35px;
+    }
+}
+
+/* =========================
+   POST DETAIL PAGE
+========================= */
+
+.post-detail-section {
+    max-width: 850px;
+    margin: 70px auto;
+    padding: 45px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 20px;
+}
+
+.post-detail-section h1 {
+    font-size: clamp(28px, 4vw, 42px);
+    color: var(--text);
+    line-height: 1.3;
+    margin-bottom: 18px;
+    overflow-wrap: anywhere;
+}
+
+.post-detail-section small {
+    display: block;
+    color: var(--primary);
+    font-size: 13px;
+    margin-bottom: 35px;
+}
+
+.post-content {
+    color: var(--text);
+    font-size: 16px;
+    line-height: 2;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    margin-bottom: 40px;
+}
+
+.back-link {
+    display: inline-block;
+    color: var(--primary);
+    font-weight: 700;
+    transition: 0.3s ease;
+}
+
+.back-link:hover {
+    color: var(--primary-dark);
+    transform: translateX(-4px);
+}
+
+@media (max-width: 768px) {
+    .post-detail-section {
+        margin: 35px 5%;
+        padding: 25px 20px;
+    }
+}
+
+/* =========================
+   TECHNOLOGY HERO
+========================= */
+
+.hero {
+    min-height: 620px;
+    padding: 100px 8%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    text-align: left;
+    position: relative;
+    overflow: hidden;
+    background:
+        radial-gradient(circle at 80% 40%, rgba(114, 87, 245, 0.18), transparent 35%),
+        var(--surface);
+}
+
+.hero-content {
+    max-width: 750px;
+    position: relative;
+    z-index: 2;
+}
+
+.hero-badge {
+    display: inline-block;
+    padding: 10px 16px;
+    border: 1px solid var(--border);
+    border-radius: 30px;
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1.5px;
+    margin-bottom: 28px;
+}
+
+.hero h1 {
+    font-size: clamp(45px, 6vw, 76px);
+    letter-spacing: -3px;
+    line-height: 1.12;
+    margin-bottom: 25px;
+}
+
+.hero h1 span {
+    display: block;
+    color: var(--primary);
+}
+
+.hero p {
+    max-width: 570px;
+    margin: 0;
+    color: var(--muted);
+    font-size: 16px;
+    line-height: 1.9;
+}
+
+.hero-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 35px;
+}
+
+.hero-button,
+.hero-secondary {
+    display: inline-block;
+    padding: 15px 23px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    transition: 0.3s ease;
+}
+
+.hero-button {
+    background: var(--primary);
+    color: white;
+}
+
+.hero-button:hover {
+    background: var(--primary-dark);
+    transform: translateY(-3px);
+}
+
+.hero-secondary {
+    border: 1px solid var(--border);
+    color: var(--text);
+}
+
+.hero-secondary:hover {
+    border-color: var(--primary);
+    color: var(--primary);
+}
+
+.hero-decoration {
+    width: 300px;
+    height: 300px;
+    flex-shrink: 0;
+    border: 1px solid rgba(114, 87, 245, 0.3);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-right: 5%;
+    color: var(--primary);
+    font-size: 65px;
+    font-weight: 800;
+    box-shadow: 0 0 80px rgba(114, 87, 245, 0.12);
+    animation: hero-float 5s ease-in-out infinite;
+}
+
+.hero-decoration span:nth-child(2) {
+    position: absolute;
+    top: 15px;
+    right: 5px;
+    font-size: 35px;
+}
+
+.hero-decoration span:nth-child(3) {
+    position: absolute;
+    bottom: 20px;
+    left: 5px;
+    font-size: 25px;
+}
+
+@keyframes hero-float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-15px); }
+}
+
+@media (max-width: 768px) {
+    .hero {
+        min-height: auto;
+        padding: 85px 6%;
+    }
+
+    .hero-decoration {
+        display: none;
+    }
+
+    .hero h1 {
+        font-size: clamp(42px, 10vw, 60px);
+    }
+}
+
+/* =========================
+   CATEGORIES SECTION
+========================= */
+
+.categories-section {
+    padding: 85px 8%;
+    max-width: 1500px;
+    margin: 0 auto;
+}
+
+.section-heading {
+    margin-bottom: 40px;
+}
+
+.section-heading > span {
+    color: var(--primary);
+    font-size: 11px;
+    font-weight: 800;
+    letter-spacing: 2px;
+}
+
+.section-heading h2 {
+    color: var(--text);
+    font-size: clamp(28px, 4vw, 40px);
+    margin: 12px 0;
+    letter-spacing: -1.5px;
+}
+
+.section-heading h2 span {
+    color: var(--primary);
+}
+
+.section-heading p {
+    color: var(--muted);
+    font-size: 14px;
+}
+
+.categories-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+}
+
+.category-card {
+    padding: 30px 25px;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 16px;
+    transition: 0.3s ease;
+}
+
+.category-card:hover {
+    transform: translateY(-7px);
+    border-color: var(--primary);
+    box-shadow: 0 15px 35px rgba(114, 87, 245, 0.10);
+}
+
+.category-icon {
+    width: 55px;
+    height: 55px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: rgba(114, 87, 245, 0.12);
+    border-radius: 14px;
+    font-size: 26px;
+    margin-bottom: 25px;
+}
+
+.category-card h3 {
+    color: var(--text);
+    font-size: 16px;
+    margin-bottom: 12px;
+}
+
+.category-card p {
+    color: var(--muted);
+    font-size: 13px;
+    line-height: 1.8;
+}
+
+@media (max-width: 900px) {
+    .categories-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 500px) {
+    .categories-section {
+        padding: 60px 6%;
+    }
+
+    .categories-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+/* =========================
+   POST IMAGES
+========================= */
+
+.post-image {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    display: block;
+    border-radius: 12px;
+    margin-bottom: 25px;
+    transition: transform 0.4s ease;
+}
+
+.post-card {
+    overflow: hidden;
+}
+
+.post-card:hover .post-image {
+    transform: scale(1.02);
+}
+
+@media (max-width: 600px) {
+    .post-image {
+        height: 200px;
+    }
+}
+
+/* =========================
+   POST DETAIL IMAGE
+========================= */
+
+.detail-post-image {
+    width: 100%;
+    height: 380px;
+    object-fit: cover;
+    border-radius: 15px;
+    margin-bottom: 30px;
+    display: block;
+}
+
+@media (max-width: 768px) {
+    .detail-post-image {
+        height: 230px;
+    }
+}
+
+
+/* =========================
+   POST CARDS
+========================= */
+
+.post-card {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.post-card:hover {
+    transform: translateY(-6px);
+    box-shadow: 0 15px 35px rgba(0, 0, 0, 0.10);
+}
+
+.post-image {
+    width: 100%;
+    height: 220px;
+    object-fit: cover;
+    display: block;
+}
+
+.post-card-content {
+    padding: 22px;
+}
+
+.post-card-content h3 {
+    color: var(--text);
+    font-size: 21px;
+    margin-bottom: 12px;
+}
+
+.post-card-content p {
+    color: var(--muted);
+    line-height: 1.7;
+    margin-bottom: 20px;
+}
+
+.read-post-btn,
+.close-modal-btn {
+    border: none;
+    border-radius: 9px;
+    padding: 12px 20px;
+    background: var(--primary);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.3s ease;
+}
+
+.read-post-btn:hover,
+.close-modal-btn:hover {
+    background: var(--primary-dark);
+    transform: translateY(-2px);
+}
+
+/* =========================
+   POST MODAL
+========================= */
+
+.post-modal {
+    width: min(700px, 90%);
+    max-height: 85vh;
+    padding: 0;
+    border: 1px solid var(--border);
+    border-radius: 18px;
+    background: var(--surface);
+    color: var(--text);
+    overflow: auto;
+}
+
+.post-modal::backdrop {
+    background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(5px);
+}
+
+.post-modal-content {
+    padding: 28px;
+}
+
+.post-modal-content > img {
+    width: 100%;
+    max-height: 320px;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 22px;
+}
+
+.post-modal-content h2 {
+    color: var(--text);
+    margin-bottom: 12px;
+}
+
+.post-modal-content small {
+    color: var(--muted);
+}
+
+.post-full-content {
+    color: var(--text);
+    line-height: 1.9;
+    margin: 25px 0;
+    white-space: normal;
+}
+
+.post-modal form {
+    display: flex;
+    justify-content: flex-end;
+}
+
+@media (max-width: 600px) {
+    .post-image {
+        height: 190px;
+    }
+
+    .post-card-content {
+        padding: 17px;
+    }
+
+    .post-modal-content {
+        padding: 18px;
+    }
+}
+
+
+/* =========================
+   POSTS CAROUSEL
+========================= */
+
+.posts-carousel {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    padding: 35px calc((100% - 520px) / 2);
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none;
+}
+
+.posts-carousel::-webkit-scrollbar {
+    display: none;
+}
+
+.posts-carousel .post-card {
+    flex: 0 0 520px;
+    width: 520px;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+    scroll-snap-align: center;
+    opacity: 0.35;
+    filter: blur(1px);
+    transform: scale(0.88);
+    transition: opacity 0.4s ease, transform 0.4s ease, filter 0.4s ease;
+}
+
+.posts-carousel .post-card:hover {
+    transform: scale(0.91);
+}
+
+.posts-carousel .post-card.is-active {
+    opacity: 1;
+    filter: blur(0);
+    transform: scale(1);
+    border-color: var(--primary);
+}
+
+.posts-carousel .post-card.is-active:hover {
+    transform: scale(1.02);
+}
+
+.posts-carousel .post-image {
+    width: 100%;
+    height: 260px;
+    object-fit: cover;
+    display: block;
+}
+
+.posts-carousel .post-card-content {
+    padding: 25px;
+}
+
+.posts-carousel .post-card-content h3 {
+    color: var(--text);
+    font-size: 23px;
+    line-height: 1.4;
+}
+
+.posts-carousel .post-card-content p {
+    color: var(--muted);
+}
+
+/* MOBILE */
+
+@media (max-width: 650px) {
+    .posts-carousel {
+        gap: 15px;
+        padding: 25px 8%;
+    }
+
+    .posts-carousel .post-card {
+        flex-basis: 84%;
+        width: 84%;
+    }
+
+    .posts-carousel .post-image {
+        height: 190px;
+    }
+}
