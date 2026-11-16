@@ -1,0 +1,41 @@
+
+{% extends 'BlogApp/base.html' %}
+
+{% block title %}Edit Post | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="add-post-section">
+
+    <h1>Edit Article</h1>
+    <p>Update your article and make it even better.</p>
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        {% if post.image %}
+            <div class="current-image">
+                <p>Current Image</p>
+                <img
+                    src="{{ post.image.url }}"
+                    alt="{{ post.title }}"
+                    style="width: 200px; border-radius: 12px; margin-bottom: 20px;"
+                >
+            </div>
+        {% endif %}
+
+        {{ form.as_p }}
+
+        {% if form.errors %}
+            <div style="color: red;">
+                {{ form.errors }}
+            </div>
+        {% endif %}
+
+        <button type="submit">Save Changes</button>
+
+    </form>
+
+</section>
+
+{% endblock %}
