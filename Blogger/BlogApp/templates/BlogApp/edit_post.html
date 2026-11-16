@@ -10,12 +10,80 @@
     <h1>Edit Article</h1>
     <p>Update your article and make it even better.</p>
 
-    <form method="POST" enctype="multipart/form-data">
+    <form method="POST" enctype="multipart/form-data" id="post-form">
+
         {% csrf_token %}
+
+        <div class="form-field">
+            <label>Article Title</label>
+            {{ form.title }}
+        </div>
+
+        <div class="form-field">
+
+            <label>Article Content</label>
+
+            <div class="editor-toolbar">
+
+                <select onchange="formatText('fontName', this.value)">
+                    <option value="Arial">Arial</option>
+                    <option value="Georgia">Georgia</option>
+                    <option value="Times New Roman">Times New Roman</option>
+                    <option value="Verdana">Verdana</option>
+                    <option value="Courier New">Courier New</option>
+                </select>
+
+                <select onchange="formatText('fontSize', this.value)">
+                    <option value="2">Small</option>
+                    <option value="3" selected>Normal</option>
+                    <option value="4">Large</option>
+                    <option value="5">Extra Large</option>
+                    <option value="6">Huge</option>
+                </select>
+
+                <button type="button" onclick="formatText('bold')">
+                    <b>B</b>
+                </button>
+
+                <button type="button" onclick="formatText('italic')">
+                    <i>I</i>
+                </button>
+
+                <label class="color-picker-label" title="Text Color">
+                    🎨
+                    <input
+                        type="color"
+                        onchange="formatText('foreColor', this.value)"
+                    >
+                </label>
+
+                <button type="button" onclick="formatText('insertOrderedList')">
+                    1. List
+                </button>
+
+                <button type="button" onclick="formatText('insertUnorderedList')">
+                    • List
+                </button>
+
+            </div>
+
+            <div
+                id="rich-editor"
+                class="rich-editor"
+                contenteditable="true"
+                data-placeholder="Write your article here..."
+            >{{ form.content.value|default_if_none:''|safe }}</div>
+
+            <div style="display:none;">
+                {{ form.content }}
+            </div>
+
+        </div>
 
         {% if post.image %}
             <div class="current-image">
                 <p>Current Image</p>
+
                 <img
                     src="{{ post.image.url }}"
                     alt="{{ post.title }}"
@@ -24,7 +92,10 @@
             </div>
         {% endif %}
 
-        {{ form.as_p }}
+        <div class="form-field">
+            <label>Change Article Image</label>
+            {{ form.image }}
+        </div>
 
         {% if form.errors %}
             <div style="color: red;">
@@ -37,5 +108,17 @@
     </form>
 
 </section>
+
+<script>
+function formatText(command, value = null) {
+    document.getElementById('rich-editor').focus();
+    document.execCommand(command, false, value);
+}
+
+document.getElementById('post-form').addEventListener('submit', function () {
+    document.getElementById('id_content').value =
+        document.getElementById('rich-editor').innerHTML;
+});
+</script>
 
 {% endblock %}
