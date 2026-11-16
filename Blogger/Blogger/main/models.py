@@ -11,5 +11,7 @@ class Post(models.Model):
 
     published_at = models.DateTimeField(auto_now_add=True)
 
+    poster = models.ImageField(upload_to="images/", default ="images/default.jpg")
+
     def __str__(self):
         return self.title

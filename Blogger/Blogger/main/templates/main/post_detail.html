@@ -1,0 +1,48 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<div class="post-detail">
+
+    <h1>Post Details</h1>
+
+    <p><strong>Post ID:</strong> {{ post.id }}</p>
+
+    {% if post.poster %}
+        <img src="{{ post.poster.url }}" alt="{{ post.title }}">
+    {% endif %}
+
+    <h2>{{ post.title }}</h2>
+
+    <p>{{ post.content }}</p>
+
+    <small>
+        Published on:
+        {{ post.published_at|date:"d M Y" }}
+        at
+        {{ post.published_at|time:"h:i A" }}
+    </small>
+
+    <div class="post-status">
+
+        {% if post.is_published %}
+            <span class="published">Published</span>
+        {% else %}
+            <span class="unpublished">Unpublished</span>
+        {% endif %}
+
+    </div>
+
+    <a href="{% url 'update_post' post.id %}">
+        Update Post
+    </a>
+
+    <br><br>
+
+    <a href="{% url 'home' %}">
+        Back to Home
+    </a>
+
+</div>
+
+{% endblock %}

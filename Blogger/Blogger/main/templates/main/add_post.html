@@ -1,10 +1,11 @@
+?variant="standard" title="add_post.html" id="62841"}
 {% extends 'main/base.html' %}
 
 {% block content %}
 
 <h1>Add New Post</h1>
 
-<form action="{% url 'add_post' %}" method="POST">
+<form action="{% url 'add_post' %}" method="POST" enctype="multipart/form-data" class="post-form">
 
     {% csrf_token %}
 
@@ -35,6 +36,16 @@
         <option value="True">Published</option>
         <option value="False">Unpublished</option>
     </select>
+
+    <br><br>
+
+    <label>Post Image</label>
+
+    <input
+        type="file"
+        name="poster"
+        accept="image/*"
+    >
 
     <br><br>
 
