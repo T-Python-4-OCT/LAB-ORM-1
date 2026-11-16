@@ -1,0 +1,23 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Blogger | Games{% endblock %}</title>
+  <link rel="stylesheet" href="{% static 'main/style.css' %}">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="container nav" aria-label="Main navigation">
+      <a class="brand" href="{% url 'home' %}"><span class="brand-mark" aria-hidden="true">B</span> Blogger</a>
+      <div class="nav-actions">
+        <a class="home-link" href="{% url 'home' %}">Home</a>
+        <a class="button button-small" href="{% url 'posts:create' %}">Write a post</a>
+      </div>
+    </nav>
+  </header>
+  <main class="container">{% block content %}{% endblock %}</main>
+  <footer class="footer"><div class="container">Blogger</div></footer>
+</body>
+</html>
