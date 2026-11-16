@@ -1,0 +1,29 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Blogger{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+<body>
+
+    <nav class="navbar">
+        <a href="{% url 'main:home' %}" class="logo"><span class="logo-sym">&lt;/&gt;</span> Blogger</a>
+        <ul class="nav-links">
+            <li><a href="{% url 'main:home' %}">Home</a></li>
+            <li><a href="{% url 'main:add_post' %}" class="nav-btn">Add Post</a></li>
+        </ul>
+    </nav>
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>&copy; 2026 Blogger. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>
