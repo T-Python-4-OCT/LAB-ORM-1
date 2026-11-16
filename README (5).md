@@ -23,22 +23,17 @@ A modern blog website built with **Django** that allows users to create, publish
 
 ## 📸 Screenshots
 
-> Add your screenshots to a folder named `screenshots` in the project root, using the filenames below.
+### 🏠 Homepage — Light Mode
+![Blogger Light](Blogger/BlogApp/static/BlogApp/images/screenshot/BloggerLight.png)
 
-### 🏠 Homepage
-![Homepage](screenshots/homepage.png)
+### 🌙 Homepage — Dark Mode
+![Blogger Dark](Blogger/BlogApp/static/BlogApp/images/screenshot/BloggerDark.png)
 
-### ✍️ Create a Post
-![Create Post](screenshots/add-post.png)
+### ✍️ Create New Article
+![Create Article](Blogger/BlogApp/static/BlogApp/images/screenshot/BloggerCreate.png)
 
-### 🎠 Posts Carousel
-![Posts Carousel](screenshots/posts-carousel.png)
-
-### 📖 Full Article
-![Full Article Modal](screenshots/article-modal.png)
-
-### 🌙 Dark Mode
-![Dark Mode](screenshots/dark-mode.png)
+### 📖 Article Details
+![Article Details](Blogger/BlogApp/static/BlogApp/images/screenshot/BloggerArticle.png)
 
 ## 🚀 Getting Started
 
