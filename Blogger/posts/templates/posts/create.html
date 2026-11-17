@@ -1,20 +1,35 @@
 {% extends "main/base.html" %}
-{% block title %}Write a post | Blogger{% endblock %}
+{% block title %}{% if editing %}Edit post{% else %}Write a post{% endif %} | Blogger{% endblock %}
 {% block content %}
-<section class="compose">
-  <a class="back" href="{% url 'home' %}">← Back to posts</a>
-  <h1>Write a post</h1>
-  <p>Share a game you enjoy.</p>
-  <form method="post" novalidate>
+<section class="page page-narrow">
+  <a class="back" href="{% url 'posts:list' %}"><span aria-hidden="true">←</span> Manage posts</a>
+  <div class="page-heading">
+    <h1>{% if editing %}Edit post{% else %}Write a post{% endif %}</h1>
+    <p>{% if editing %}Update this entry or change whether it appears on the homepage.{% else %}Share a recommendation, a review, or a moment you still think about.{% endif %}</p>
+  </div>
+  <form class="panel" method="post" enctype="multipart/form-data" novalidate>
     {% csrf_token %}
+    {% if form.errors %}
+      <div class="form-errors" role="alert" tabindex="-1" autofocus>
+        <h2>Check the fields below</h2>
+        {{ form.non_field_errors }}
+        <ul>
+          {% for field in form %}{% if field.errors %}<li><a href="#{{ field.id_for_label }}">{{ field.label }}</a></li>{% endif %}{% endfor %}
+        </ul>
+      </div>
+    {% endif %}
     {% for field in form %}
       <div class="field">
-        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        <label for="{{ field.id_for_label }}">{{ field.label }}{% if not field.field.required %} <span class="optional">Optional</span>{% endif %}</label>
         {{ field }}
-        {% for error in field.errors %}<p class="error" role="alert">{{ error }}</p>{% endfor %}
+        {% if field.help_text %}<p class="field-hint" id="{{ field.auto_id }}_helptext">{{ field.help_text }}</p>{% endif %}
+        {{ field.errors }}
       </div>
     {% endfor %}
-    <button class="button" type="submit">Save post</button>
+    <div class="actions form-actions">
+      <button class="button" type="submit">{% if editing %}Save changes{% else %}Save post{% endif %}</button>
+      <a class="button button-secondary" href="{% url 'posts:list' %}">Cancel</a>
+    </div>
   </form>
 </section>
 {% endblock %}

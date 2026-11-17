@@ -1,0 +1,7 @@
+{% load static %}
+{% get_media_prefix as media_url %}
+{% with fallback=media_url|add:"images/default.png" %}
+  <div class="post-cover">
+    <img src="{% if post.image %}{{ post.image.url }}{% else %}{{ fallback }}{% endif %}"{% if post.image %} data-fallback="{{ fallback }}"{% endif %} alt=""{% if lazy %} loading="lazy"{% endif %}>
+  </div>
+{% endwith %}

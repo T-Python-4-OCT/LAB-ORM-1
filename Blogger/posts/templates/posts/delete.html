@@ -1,0 +1,18 @@
+{% extends "main/base.html" %}
+{% block title %}Delete post | Blogger{% endblock %}
+{% block content %}
+<section class="page page-narrow">
+  <a class="back" href="{% url 'posts:list' %}"><span aria-hidden="true">←</span> Manage posts</a>
+  <form class="panel delete-panel" method="post" aria-labelledby="delete-title">
+    {% csrf_token %}
+    <div class="page-heading">
+      <h1 id="delete-title">Delete post?</h1>
+      <p>“{{ post.title }}” will be permanently deleted.</p>
+    </div>
+    <div class="actions">
+      <a class="button button-secondary" href="{% url 'posts:list' %}">Cancel</a>
+      <button class="button button-danger" type="submit">Delete post</button>
+    </div>
+  </form>
+</section>
+{% endblock %}

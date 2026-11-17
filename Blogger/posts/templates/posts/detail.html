@@ -1,0 +1,13 @@
+{% extends "main/base.html" %}
+{% block title %}{{ post.title }} | Blogger{% endblock %}
+{% block content %}
+<article class="page post-detail">
+  <a class="back" href="{% url 'home' %}#latest-heading"><span aria-hidden="true">←</span> Back to latest posts</a>
+  <header class="page-heading">
+    <time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:"F j, Y" }} at {{ post.published_at|date:"g:i A" }}</time>
+    <h1>{{ post.title }}</h1>
+  </header>
+  {% include "posts/cover.html" %}
+  <div class="article-copy">{{ post.content|linebreaks }}</div>
+</article>
+{% endblock %}

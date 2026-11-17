@@ -1,0 +1,35 @@
+{% extends "main/base.html" %}
+{% block title %}Manage posts | Blogger{% endblock %}
+{% block content %}
+<section class="page">
+  <div class="page-heading">
+    <h1>Manage posts</h1>
+    <p>Edit your journal entries and see which ones are published.</p>
+  </div>
+  {% if posts %}
+    <ul class="manage-list" role="list" aria-label="Posts">
+      {% for post in posts %}
+        <li class="manage-row">
+          <div>
+            <h2>{% if post.is_published %}<a href="{% url 'posts:detail' post.pk %}">{{ post.title }}</a>{% else %}{{ post.title }}{% endif %}</h2>
+            <div class="post-meta">
+              <span class="status{% if post.is_published %} status-published{% endif %}">{% if post.is_published %}Published{% else %}Draft{% endif %}</span>
+              <time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:"F j, Y" }}</time>
+            </div>
+          </div>
+          <div class="actions">
+            <a class="button button-secondary" href="{% url 'posts:edit' post.pk %}" aria-label="Edit {{ post.title }}">Edit</a>
+            <a class="button button-quiet text-danger" href="{% url 'posts:delete' post.pk %}" aria-label="Delete {{ post.title }}">Delete</a>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  {% else %}
+    <div class="empty">
+      <h2>No posts yet</h2>
+      <p>Write your first entry to start building your journal.</p>
+      <a class="button" href="{% url 'posts:create' %}">Write the first post</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}
