@@ -25,11 +25,10 @@
             </a>
             <p class="tagline">Thoughts, stories &amp; ideas, fresh off the press.</p>
 
-           
             <nav class="nav">
-    <a href="{% url 'main:home_view' %}" class="{% if request.resolver_match.url_name == 'home_view' %}active{% endif %}">Latest</a>
-    <a href="{% url 'main:add_post_view' %}" class="{% if request.resolver_match.url_name == 'add_post_view' %}active{% endif %}">Write a Post</a>
-</nav>
+                <a href="{% url 'main:home_view' %}" class="{% if request.resolver_match.url_name == 'home_view' %}active{% endif %}">Latest</a>
+                <a href="{% url 'main:add_post_view' %}" class="{% if request.resolver_match.url_name == 'add_post_view' %}active{% endif %}">Write a Post</a>
+            </nav>
         </div>
     </header>
 
@@ -46,4 +45,4 @@
     </footer>
 
 </body>
-</html>
+</html>

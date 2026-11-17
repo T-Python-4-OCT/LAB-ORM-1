@@ -1,5 +1,6 @@
 <article class="post {% if not post.is_published %}unpublished{% endif %}">
     <p class="dateline">
+        <a href="{% url 'main:home_view' %}?category={{ post.category }}">{{ post.get_category_display }}</a> &middot;
         {% if post.is_published %}Published{% else %}Unpublished &middot; Saved{% endif %}
         <time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:"F j, Y · g:i A" }}</time>
     </p>
