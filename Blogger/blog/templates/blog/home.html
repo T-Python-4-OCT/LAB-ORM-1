@@ -1,0 +1,78 @@
+
+{% extends 'blog/base.html' %}
+
+{% block title %}Home | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <span class="hero-tag">YOUR PERSONAL BLOG</span>
+
+    <h1>Ideas worth <span>sharing.</span></h1>
+
+    <p>
+        A place to share your thoughts, stories, and ideas with the world.
+    </p>
+
+    <a href="{% url 'add_post' %}" class="primary-button">
+        Write a Post +
+    </a>
+</section>
+
+<section class="posts-section">
+
+    <div class="section-heading">
+        <div>
+            <span class="section-label">THE BLOG</span>
+            <h2>Latest Posts</h2>
+        </div>
+
+        <span class="post-count">{{ posts.count }} Posts</span>
+    </div>
+
+    <div class="posts-grid">
+
+        {% for post in posts %}
+
+        <a href="{% url 'post_detail' post.pk %}" class="post-card">
+
+            <div class="post-date">
+                <span>●</span>
+                {{ post.published_at|date:"F d, Y - h:i A" }}
+            </div>
+
+            {% if post.poste %}
+                <img src="{{ post.poste.url }}" alt="{{ post.title }}">
+            {% endif %}
+
+            <h3>{{ post.title }}</h3>
+
+            <p>
+                {{ post.content|truncatewords:25 }}
+            </p>
+
+            <div class="post-footer">
+                <span>By Blogger</span>
+                <span>Read Article →</span>
+            </div>
+
+        </a>
+
+        {% empty %}
+
+        <div class="empty-state">
+            <h3>No posts yet!</h3>
+            <p>Be the first to share your thoughts.</p>
+
+            <a href="{% url 'add_post' %}" class="primary-button">
+                Create Your First Post
+            </a>
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+</section>
+
+{% endblock %}
