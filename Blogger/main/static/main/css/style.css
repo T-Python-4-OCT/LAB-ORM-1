@@ -61,6 +61,8 @@ p { margin: 0 0 1em; }
 .btn--ghost:hover { background: rgba(255, 255, 255, .16); }
 .btn--outline { background: transparent; color: var(--pitch); border-color: var(--pitch); }
 .btn--outline:hover { background: var(--pitch); color: #fff; }
+.btn--danger { background: var(--danger); color: #fff; box-shadow: 0 10px 24px -14px rgba(194, 65, 12, .9); }
+.btn--danger:hover { background: #a3360a; }
 
 /* ---------- navbar ---------- */
 .navbar {
@@ -236,3 +238,37 @@ p { margin: 0 0 1em; }
 @keyframes roll { to { transform: rotate(-360deg); } }
 
 @media (prefers-reduced-motion: reduce) { *, *::before, *::after { animation: none !important; transition: none !important; scroll-behavior: auto !important; } }
+
+/* ---------- post card links ---------- */
+.post__media { display: block; }
+.post__title a { color: inherit; text-decoration: none; background: linear-gradient(var(--accent), var(--accent)) 0 100% / 0 3px no-repeat; transition: background-size .25s; }
+.post__title a:hover, .post__title a:focus-visible { background-size: 100% 3px; }
+.post__more { text-decoration: none; }
+.post__tag--draft { background: #fff1ec; color: var(--danger); }
+
+/* ---------- post detail page ---------- */
+.article-head { max-width: 900px; }
+.article-head__title { font-size: clamp(1.8rem, 4.4vw, 2.8rem); line-height: 1.35; }
+.article-head__meta { display: flex; flex-wrap: wrap; align-items: center; gap: 14px; margin-top: 14px; color: #c9d6cf; font-size: .92rem; }
+.article-head__meta time { display: inline-flex; flex-wrap: wrap; gap: 14px; }
+.article-head__meta time span { display: inline-flex; align-items: center; gap: 6px; }
+.article { max-width: 900px; }
+.article__media { margin: 0 0 24px; border-radius: var(--radius); overflow: hidden; box-shadow: var(--shadow); background: #e7f0ea; aspect-ratio: 16 / 9; }
+.article__media img { display: block; width: 100%; height: 100%; object-fit: cover; }
+.article__body { padding: clamp(22px, 4vw, 40px); font-size: 1.12rem; line-height: 2; color: #26342c; }
+.article__body p:last-child { margin-bottom: 0; }
+.article__actions { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 24px; }
+.article__back { margin-inline-start: auto; }
+@media (max-width: 560px) { .article__actions .btn { flex: 1 1 100%; } .article__back { margin-inline-start: 0; } }
+
+/* ---------- delete confirmation ---------- */
+.confirm { max-width: 620px; margin-inline: auto; padding: clamp(24px, 5vw, 40px); text-align: center; border-top: 5px solid var(--danger); }
+.confirm__icon { display: grid; place-items: center; width: 72px; height: 72px; margin: 0 auto 16px; border-radius: 50%; background: #fff1ec; color: var(--danger); }
+.confirm__icon .icon { width: 34px; height: 34px; }
+.confirm__title { font-size: clamp(1.3rem, 3vw, 1.6rem); }
+.confirm__post { display: flex; align-items: center; gap: 14px; margin: 20px 0 14px; padding: 12px; border: 1px solid var(--line); border-radius: 12px; background: #f8faf7; text-align: start; }
+.confirm__post img { width: 96px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 8px; flex: none; }
+.confirm__post strong { display: block; color: var(--ink); line-height: 1.5; }
+.confirm__post span { color: var(--muted); font-size: .88rem; }
+.confirm__warn { color: var(--danger); font-weight: 700; }
+.confirm__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 8px; }

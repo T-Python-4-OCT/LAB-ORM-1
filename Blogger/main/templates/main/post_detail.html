@@ -1,0 +1,47 @@
+{% extends "main/base.html" %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container article-head">
+    <nav class="crumbs" aria-label="مسار التصفح">
+      <a href="{% url 'main:home' %}">الرئيسية</a><span aria-hidden="true">‹</span><a href="{% url 'main:home' %}#latest">المقالات</a><span aria-hidden="true">‹</span><span>المقال</span>
+    </nav>
+    <h1 class="page-head__title article-head__title">{{ post.title }}</h1>
+    <div class="article-head__meta">
+      <span class="post__tag {% if not post.is_published %}post__tag--draft{% endif %}">{% if post.is_published %}منشور{% else %}مسودة — لا يظهر في الرئيسية{% endif %}</span>
+      <time datetime="{{ post.published_at|date:'c' }}">
+        <span><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>{{ post.published_at|date:"j F Y" }}</span>
+        <span><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>{{ post.published_at|time:"H:i" }}</span>
+      </time>
+    </div>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <article class="container article">
+    {% if post.image %}
+    <figure class="article__media">
+      <img src="{{ post.image.url }}" alt="{{ post.title }}">
+    </figure>
+    {% endif %}
+
+    <div class="card article__body">
+      {{ post.content|linebreaks }}
+    </div>
+
+    <div class="article__actions">
+      <a class="btn btn--accent" href="{% url 'main:update_post' post.id %}">
+        <svg class="icon" aria-hidden="true"><use href="#i-pen"/></svg>تعديل المقال
+      </a>
+      <a class="btn btn--danger" href="{% url 'main:delete_post' post.id %}">
+        <svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg>حذف المقال
+      </a>
+      <a class="btn btn--outline article__back" href="{% url 'main:home' %}#latest">
+        العودة إلى المقالات<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
+      </a>
+    </div>
+  </article>
+</section>
+{% endblock %}

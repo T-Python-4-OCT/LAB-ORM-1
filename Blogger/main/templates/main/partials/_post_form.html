@@ -1,0 +1,55 @@
+{# نموذج المقال المشترك بين صفحتي «الإضافة» و«التعديل» #}
+{# المتغيرات: form_action · submit_label · cancel_url · form_hint · post (في التعديل فقط) #}
+<form class="card form" method="post" action="{{ form_action }}" enctype="multipart/form-data" novalidate>
+  {% csrf_token %}
+
+  {% if form.non_field_errors %}
+  <div class="alert alert--error">{{ form.non_field_errors }}</div>
+  {% endif %}
+
+  <div class="field {% if form.title.errors %}has-error{% endif %}">
+    <label class="field__label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+    {{ form.title }}
+    <div class="field__foot">
+      {% for error in form.title.errors %}<span class="field__error">{{ error }}</span>{% endfor %}
+      <span class="field__count" data-count-for="{{ form.title.id_for_label }}">0 / 2048</span>
+    </div>
+  </div>
+
+  <div class="field {% if form.content.errors %}has-error{% endif %}">
+    <label class="field__label" for="{{ form.content.id_for_label }}">{{ form.content.label }}</label>
+    {{ form.content }}
+    {% for error in form.content.errors %}<span class="field__error">{{ error }}</span>{% endfor %}
+  </div>
+
+  <div class="field {% if form.image.errors %}has-error{% endif %}">
+    <label class="field__label" for="id_image">صورة المقال <span class="field__optional">(اختيارية)</span></label>
+    <div class="upload{% if post.image %} has-file{% endif %}" data-upload>
+      <input class="upload__input" type="file" name="image" id="id_image" accept="image/*">
+      <img class="upload__preview" alt="معاينة صورة المقال" data-upload-preview
+           {% if post.image %}src="{{ post.image.url }}" data-initial-src="{{ post.image.url }}"{% else %}hidden{% endif %}>
+      <div class="upload__empty" data-upload-empty {% if post.image %}hidden{% endif %}>
+        <svg class="icon" aria-hidden="true"><use href="#i-image"/></svg>
+        <strong>اضغط لاختيار صورة أو اسحبها هنا</strong>
+        <span>JPG أو PNG أو WEBP</span>
+      </div>
+    </div>
+    <div class="field__foot">
+      {% for error in form.image.errors %}<span class="field__error">{{ error }}</span>{% endfor %}
+      <span class="upload__name" data-upload-name data-initial-name="{% if post.image %}الصورة الحالية — اضغط عليها لتغييرها{% else %}لم تُختر صورة{% endif %}">{% if post.image %}الصورة الحالية — اضغط عليها لتغييرها{% else %}لم تُختر صورة{% endif %}</span>
+      <button class="upload__clear" type="button" data-upload-clear hidden>إلغاء اختيار الصورة</button>
+    </div>
+  </div>
+
+  <label class="switch" for="{{ form.is_published.id_for_label }}">
+    {{ form.is_published }}
+    <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
+    <span class="switch__text">{{ form.is_published.label }}</span>
+  </label>
+  <p class="form__hint">{{ form_hint }}</p>
+
+  <div class="form__actions">
+    <button class="btn btn--accent" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>{{ submit_label }}</button>
+    <a class="btn btn--outline" href="{{ cancel_url }}">إلغاء</a>
+  </div>
+</form>

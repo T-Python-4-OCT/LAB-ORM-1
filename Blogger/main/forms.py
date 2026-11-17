@@ -8,11 +8,12 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ["title", "content", "is_published"]
+        fields = ["title", "content", "is_published", "image"]
         labels = {
             "title": "عنوان المقال",
             "content": "نص المقال",
             "is_published": "انشر المقال مباشرة في الصفحة الرئيسية",
+            "image": "صورة المقال",
         }
         widgets = {
             "title": forms.TextInput(attrs={
@@ -31,4 +32,5 @@ class PostForm(forms.ModelForm):
         error_messages = {
             "title": {"required": "اكتب عنواناً للمقال."},
             "content": {"required": "المقال يحتاج إلى نص."},
+            "image": {"invalid_image": "الملف ليس صورة صالحة. اختر صورة JPG أو PNG أو WEBP."},
         }

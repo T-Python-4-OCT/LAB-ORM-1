@@ -15,40 +15,9 @@
 
 <section class="section section--tight">
   <div class="container editor">
-    <form class="card form" method="post" action="{% url 'main:add_post' %}" novalidate>
-      {% csrf_token %}
-
-      {% if form.non_field_errors %}
-      <div class="alert alert--error">{{ form.non_field_errors }}</div>
-      {% endif %}
-
-      <div class="field {% if form.title.errors %}has-error{% endif %}">
-        <label class="field__label" for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
-        {{ form.title }}
-        <div class="field__foot">
-          {% for error in form.title.errors %}<span class="field__error">{{ error }}</span>{% endfor %}
-          <span class="field__count" data-count-for="{{ form.title.id_for_label }}">0 / 2048</span>
-        </div>
-      </div>
-
-      <div class="field {% if form.content.errors %}has-error{% endif %}">
-        <label class="field__label" for="{{ form.content.id_for_label }}">{{ form.content.label }}</label>
-        {{ form.content }}
-        {% for error in form.content.errors %}<span class="field__error">{{ error }}</span>{% endfor %}
-      </div>
-
-      <label class="switch" for="{{ form.is_published.id_for_label }}">
-        {{ form.is_published }}
-        <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>
-        <span class="switch__text">{{ form.is_published.label }}</span>
-      </label>
-      <p class="form__hint">سيُسجَّل تاريخ ووقت النشر تلقائياً لحظة الحفظ.</p>
-
-      <div class="form__actions">
-        <button class="btn btn--accent" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-check"/></svg>انشر المقال</button>
-        <a class="btn btn--outline" href="{% url 'main:home' %}">إلغاء</a>
-      </div>
-    </form>
+    {% url 'main:add_post' as form_action %}
+    {% url 'main:home' as cancel_url %}
+    {% include "main/partials/_post_form.html" with submit_label="انشر المقال" form_hint="سيُسجَّل تاريخ ووقت النشر تلقائياً لحظة الحفظ." %}
 
     <aside class="card tips">
       <h2 class="tips__title"><svg class="icon" aria-hidden="true"><use href="#i-bulb"/></svg>نصائح لمقال كروي ناجح</h2>

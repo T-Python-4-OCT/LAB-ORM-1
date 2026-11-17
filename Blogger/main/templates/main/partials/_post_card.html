@@ -1,5 +1,10 @@
-{# بطاقة مقال واحدة: العنوان، والنص، وتاريخ ووقت النشر #}
-<article class="post {% if featured %}post--featured{% endif %}">
+{# بطاقة مقال واحدة: الصورة، والعنوان، والنص، وتاريخ ووقت النشر — والضغط عليها يفتح صفحة التفاصيل #}
+<article class="post {% if featured %}post--featured{% endif %}{% if post.image %} post--has-image{% endif %}">
+  {% if post.image %}
+  <a class="post__media" href="{% url 'main:post_detail' post.id %}" tabindex="-1" aria-hidden="true">
+    <img src="{{ post.image.url }}" alt="" loading="lazy">
+  </a>
+  {% endif %}
   <div class="post__meta">
     <span class="post__tag">{% if featured %}أحدث مقال{% else %}مقال{% endif %}</span>
     <time datetime="{{ post.published_at|date:'c' }}">
@@ -7,9 +12,9 @@
       <span><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>{{ post.published_at|time:"H:i" }}</span>
     </time>
   </div>
-  <h3 class="post__title">{{ post.title }}</h3>
+  <h3 class="post__title"><a href="{% url 'main:post_detail' post.id %}">{{ post.title }}</a></h3>
   <div class="post__content" data-collapsible>{{ post.content|linebreaks }}</div>
-  <button class="post__more" type="button" data-expand hidden>
+  <a class="post__more" href="{% url 'main:post_detail' post.id %}">
     اقرأ المقال كاملاً <svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
-  </button>
+  </a>
 </article>

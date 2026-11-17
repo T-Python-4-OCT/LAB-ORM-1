@@ -218,3 +218,9 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+# Uploaded post images (keep only the default image in the repo)
+media/*
+!media/posts/
+media/posts/*
+!media/posts/default.jpg
