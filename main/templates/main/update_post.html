@@ -4,21 +4,48 @@
 
 {% block content %}
 <section class="container page form-page">
+  <a href="{% url 'main:post_detail' post.id %}" class="back-link">
+    <i class="ti ti-arrow-left" aria-hidden="true"></i> Back to post
+  </a>
+
   <h1 class="page-title">Edit post</h1>
   <p class="page-subtitle">Change what you need, then save.</p>
+
+  {% if errors %}
+    <div class="form-alert" role="alert">
+      <i class="ti ti-alert-circle" aria-hidden="true"></i>
+      Fix the highlighted fields, then save again. Nothing was changed yet.
+    </div>
+  {% endif %}
 
   <form method="post" action="{% url 'main:update_post' post.id %}" class="post-form" enctype="multipart/form-data">
     {% csrf_token %}
 
-    <div class="field">
+    <div class="field {% if errors.title %}has-error{% endif %}">
       <label for="title">Title</label>
       <input type="text" id="title" name="title" class="input"
              maxlength="2048" required value="{{ post.title }}">
+      {% if errors.title %}
+        <p class="field-error">{{ errors.title }}</p>
+      {% else %}
+        <p class="field-hint">At least 5 characters.</p>
+      {% endif %}
     </div>
 
-    <div class="field">
+    <div class="field {% if errors.category %}has-error{% endif %}">
+      <label for="category">Category</label>
+      <select id="category" name="category" class="input select">
+        {% for value, label in categories %}
+          <option value="{{ value }}" {% if post.category == value %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+      {% if errors.category %}<p class="field-error">{{ errors.category }}</p>{% endif %}
+    </div>
+
+    <div class="field {% if errors.content %}has-error{% endif %}">
       <label for="content">Content</label>
       <textarea id="content" name="content" class="input" rows="8" required>{{ post.content }}</textarea>
+      {% if errors.content %}<p class="field-error">{{ errors.content }}</p>{% endif %}
     </div>
 
     <div class="field">
@@ -52,7 +79,7 @@
     </fieldset>
 
     <div class="form-actions">
-      <a href="{% url 'main:home' %}" class="link-cancel">Cancel</a>
+      <a href="{% url 'main:post_detail' post.id %}" class="link-cancel">Cancel</a>
       <button type="submit" class="btn">Save changes</button>
     </div>
   </form>

@@ -4,8 +4,53 @@
 
 {% block content %}
 <section class="container page">
-  <h1 class="page-title">Latest posts</h1>
-  <p class="page-subtitle">Stories and notes, newest first.</p>
+  <div class="page-head">
+    <div>
+      <h1 class="page-title">Latest posts</h1>
+      <p class="page-subtitle">
+        {% if q %}
+          Results for "{{ q }}"
+        {% elif sort == "oldest" %}
+          Stories and notes, oldest first.
+        {% else %}
+          Stories and notes, newest first.
+        {% endif %}
+      </p>
+    </div>
+
+    <nav class="sort" aria-label="Sort posts">
+      <a href="?sort=newest&category={{ category }}&q={{ q }}" class="sort-link {% if sort != 'oldest' %}is-active{% endif %}">
+        <i class="ti ti-sort-descending" aria-hidden="true"></i> Newest
+      </a>
+      <a href="?sort=oldest&category={{ category }}&q={{ q }}" class="sort-link {% if sort == 'oldest' %}is-active{% endif %}">
+        <i class="ti ti-sort-ascending" aria-hidden="true"></i> Oldest
+      </a>
+    </nav>
+  </div>
+
+  <form method="get" action="{% url 'main:home' %}" class="search">
+    <i class="ti ti-search search-icon" aria-hidden="true"></i>
+    <input type="search" name="q" value="{{ q }}" class="search-input"
+           placeholder="Search by title" aria-label="Search posts">
+    <input type="hidden" name="sort" value="{{ sort }}">
+    <input type="hidden" name="category" value="{{ category }}">
+    <button type="submit" class="btn">Search</button>
+    {% if q %}
+      <a href="?sort={{ sort }}&category={{ category }}" class="search-clear">Clear</a>
+    {% endif %}
+  </form>
+
+  <nav class="tabs" aria-label="Filter by category">
+    <a href="?sort={{ sort }}&q={{ q }}" class="tab {% if not category %}is-active{% endif %}">
+      All <span class="tab-count">{{ total }}</span>
+    </a>
+    {% for value, label, count in category_tabs %}
+      <a href="?category={{ value }}&sort={{ sort }}&q={{ q }}"
+         class="tab {% if category == value %}is-active{% endif %}">
+        {{ label }} <span class="tab-count">{{ count }}</span>
+      </a>
+    {% endfor %}
+  </nav>
 
   {% if posts %}
     <div class="post-list">
@@ -16,9 +61,12 @@
           </a>
 
           <div class="post-body">
-            <time class="post-date" datetime="{{ post.published_at|date:'c' }}">
-              {{ post.published_at|date:"j M Y, g:i a" }}
-            </time>
+            <div class="post-meta">
+              <a href="?category={{ post.category }}&sort={{ sort }}" class="category">{{ post.get_category_display }}</a>
+              <time class="post-date" datetime="{{ post.published_at|date:'c' }}">
+                {{ post.published_at|date:"j M Y, g:i a" }}
+              </time>
+            </div>
             <h2 class="post-title">
               <a href="{% url 'main:post_detail' post.id %}">{{ post.title }}</a>
             </h2>
@@ -42,6 +90,18 @@
           </div>
         </article>
       {% endfor %}
+    </div>
+  {% elif q %}
+    <div class="empty">
+      <p class="empty-title">No posts match "{{ q }}"</p>
+      <p>Try a different word.</p>
+      <a href="?sort={{ sort }}&category={{ category }}" class="btn">Clear search</a>
+    </div>
+  {% elif category %}
+    <div class="empty">
+      <p class="empty-title">No posts in this category yet</p>
+      <p>Write the first one, or browse all posts.</p>
+      <a href="?sort={{ sort }}" class="btn">Show all posts</a>
     </div>
   {% else %}
     <div class="empty">
