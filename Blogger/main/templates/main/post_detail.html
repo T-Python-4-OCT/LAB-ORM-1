@@ -1,0 +1,35 @@
+
+{% extends 'main/base.html' %}
+
+{% block title %}Post Details | Blogger{% endblock %}
+
+{% block content %}
+
+    <article class="card">
+
+        <h1>{{ post.title }}</h1>
+
+        <img src="{{ post.poster.url }}"
+             alt="{{ post.title }}"
+             class="post-image">
+
+        <p class="date">
+            Published on {{ post.published_at|date:"F d, Y - h:i A" }}
+        </p>
+
+        <div class="content">{{ post.content }}</div>
+
+        <hr>
+
+        <a href="{% url 'edit_post' post.id %}" class="btn">
+            Edit Post
+        </a>
+
+        <a href="{% url 'delete_post' post.id %}" class="btn btn-danger">
+            Delete Post
+        </a>
+
+
+    </article>
+
+{% endblock %}

@@ -1,0 +1,51 @@
+
+{% extends 'main/base.html' %}
+
+{% block title %}Edit Post | Blogger{% endblock %}
+
+{% block content %}
+
+    <h1>Edit Post</h1>
+
+    <div class="card">
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+
+            <label for="title">Post Title</label>
+            <input type="text"
+                   id="title"
+                   name="title"
+                   value="{{ post.title }}"
+                   maxlength="2048"
+                   required>
+
+            <label for="content">Content</label>
+            <textarea id="content"
+                      name="content"
+                      rows="8"
+                      required>{{ post.content }}</textarea>
+
+            <label>Post Image</label>
+
+            <div class="image-upload-row">
+                <div class="old-image">
+                    <img src="{{ post.poster.url }}"
+                         alt="{{ post.title }}">
+                </div>
+
+                <div class="new-image">
+                    <label for="poster">Change Image</label>
+                    <input type="file"
+                           id="poster"
+                           name="poster"
+                           accept="image/*">
+                </div>
+            </div>
+
+            <button type="submit" class="btn">
+                Save Changes
+            </button>
+        </form>
+    </div>
+
+{% endblock %}
