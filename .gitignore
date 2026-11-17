@@ -206,6 +206,7 @@ cython_debug/
 tempCodeRunnerFile.py
 tmp/
 staticfiles/
+media/
 
 # Ruff stuff:
 .ruff_cache/

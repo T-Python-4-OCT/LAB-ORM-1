@@ -13,6 +13,11 @@ py -m venv .venv
 
 Open http://127.0.0.1:8000/ to view published posts, or
 http://127.0.0.1:8000/posts/new/ to add a post. Dates use Asia/Riyadh time.
+Posts support an optional image. Use Edit post on a post card to update its
+title, content, image, or publication status. Upload a new image to replace
+the current image, or select Clear to remove it. Delete opens a confirmation
+page; a post is deleted only after confirming. Uploaded images are stored in
+`media/` and served by Django during local development.
 Uncheck the publish option to save an unpublished post. To manage these posts,
 run `manage.py createsuperuser` using the virtual environment's Python and visit
 http://127.0.0.1:8000/admin/.

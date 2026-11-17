@@ -6,14 +6,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}Blogger{% endblock %}</title>
     <link rel="stylesheet" href="{% static 'css/style.css' %}">
-    <meta name="theme-color" content="#121c19">
-    <link rel="stylesheet" href="{% static 'css/luxury.css' %}?v=2">
+    <meta name="theme-color" content="#f5f6fa">
+    <link rel="stylesheet" href="{% static 'css/luxury.css' %}?v=4">
 </head>
 <body>
     <a class="skip-link" href="#main">Skip to content</a>
     <header class="site-header">
         <a class="brand" href="{% url 'posts:home' %}"><span class="brand-icon" aria-hidden="true">b.</span>Blogger</a>
         <nav aria-label="Main navigation">
+            <a href="{% url 'posts:manage' %}">Manage posts</a>
             <a {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %} href="{% url 'posts:home' %}">All posts</a>
             <a class="button button-small" href="{% url 'posts:create' %}">+ Write a post</a>
         </nav>

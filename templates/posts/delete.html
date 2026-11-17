@@ -1,0 +1,14 @@
+{% extends 'base.html' %}
+{% block title %}Delete post | Blogger{% endblock %}
+{% block content %}
+<section class="editor">
+    <p class="eyebrow">MANAGE YOUR JOURNAL</p>
+    <h1>Delete this<br><em>chapter?</em></h1>
+    <form method="post" class="post-form">
+        {% csrf_token %}
+        <h2 dir="auto">{{ post.title }}</h2>
+        <p class="intro">This will permanently delete this post. This action cannot be undone.</p>
+        <div class="form-actions"><a class="back-link" href="{% url 'posts:home' %}">Cancel</a><button class="button danger-button" type="submit">Delete post</button></div>
+    </form>
+</section>
+{% endblock %}
