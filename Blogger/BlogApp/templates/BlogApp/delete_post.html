@@ -1,0 +1,75 @@
+
+{% extends 'BlogApp/base.html' %}
+
+{% block title %}Delete Article | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="delete-page">
+
+    <div class="delete-card">
+
+        <div class="delete-icon">
+            <svg viewBox="0 0 24 24" fill="none">
+                <path d="M4 7H20" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M10 11V17M14 11V17" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M5.5 7L6.5 20H17.5L18.5 7" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+                <path d="M9 7V4H15V7" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+        </div>
+
+        <span class="delete-label">DELETE ARTICLE</span>
+
+        <h1>Are you sure?</h1>
+
+        <p class="delete-description">
+            You're about to permanently delete this article.
+            This action cannot be undone.
+        </p>
+
+        <div class="delete-post-preview">
+
+            {% if post.image %}
+                <img
+                    src="{{ post.image.url }}"
+                    alt="{{ post.title }}"
+                >
+            {% else %}
+                <div class="delete-image-placeholder">
+                    <span>✦</span>
+                </div>
+            {% endif %}
+
+            <div class="delete-post-info">
+                <span>ARTICLE TO DELETE</span>
+                <h3>{{ post.title }}</h3>
+                <small>
+                    Published {{ post.published_at|date:"F d, Y" }}
+                </small>
+            </div>
+
+        </div>
+
+        <form method="POST" class="delete-actions">
+            {% csrf_token %}
+
+            <button type="submit" class="delete-button">
+                <span>Delete Article</span>
+                <span>→</span>
+            </button>
+
+            <a href="{% url 'home' %}" class="cancel-button">
+                Cancel, Keep Article
+            </a>
+        </form>
+
+        <div class="delete-warning">
+            <span>!</span>
+            <p>Once deleted, this article cannot be recovered.</p>
+        </div>
+
+    </div>
+
+</section>
+
+{% endblock %}

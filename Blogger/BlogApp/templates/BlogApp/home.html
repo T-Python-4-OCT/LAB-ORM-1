@@ -1,0 +1,295 @@
+
+{% extends 'BlogApp/base.html' %}
+{% load blog_extras %}
+
+{% block title %}Home | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+
+    <div class="hero-content">
+
+        <span class="hero-badge">
+            ✦ TECHNOLOGY · AI · DEVELOPMENT
+        </span>
+
+        <h1>
+            Explore the
+            <span>Future of Technology.</span>
+        </h1>
+
+        <p>
+            Discover the latest in Artificial Intelligence,
+            programming, and technology. Learn, explore,
+            and stay ahead of the digital world.
+        </p>
+
+        <div class="hero-actions">
+            <a href="#latest-posts" class="hero-button">
+                Explore Articles →
+            </a>
+
+            <a href="{% url 'add_post' %}" class="hero-secondary">
+                Share Your Ideas
+            </a>
+        </div>
+
+        <div class="hero-stats">
+
+            <div class="hero-stat">
+                <span class="stat-number">{{ posts|length }}+</span>
+                <span class="stat-label">Published Articles</span>
+            </div>
+
+            <div class="hero-stat-divider"></div>
+
+            <div class="hero-stat">
+                <span class="stat-number">AI · Tech</span>
+                <span class="stat-label">Our Main Focus</span>
+            </div>
+
+        </div>
+
+    </div>
+
+    <div class="hero-decoration">
+        <span>AI</span>
+        <span>{ }</span>
+    </div>
+
+</section>
+
+
+<section class="posts-section" id="latest-posts">
+
+    <div class="section-heading">
+
+        <div class="section-heading-content">
+
+            <span class="section-eyebrow">
+                ✦ DISCOVER & EXPLORE
+            </span>
+
+            <h2>
+                Latest <span>Articles.</span>
+            </h2>
+
+            <p>
+                Fresh ideas, new perspectives, and insights
+                from the world of technology.
+            </p>
+
+        </div>
+
+        <div class="articles-count">
+            <span>{{ posts|length }}</span>
+            <small>ARTICLES</small>
+        </div>
+
+    </div>
+
+
+
+    <div class="editorial-grid">
+
+        {% for post in posts %}
+    
+        <article class="editorial-card {% if forloop.first %}featured-card{% endif %}">
+    
+            <div class="editorial-image">
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                {% endif %}
+    
+                <span class="editorial-category">TECHNOLOGY</span>
+            </div>
+    
+            <div class="editorial-content">
+    
+                <div class="editorial-meta">
+                    <span>✦ BLOGGER EDITORIAL</span>
+                    <span>{{ post.published_at|date:"M d, Y" }}</span>
+                </div>
+    
+                <h3>{{ post.title }}</h3>
+    
+                <p>
+                    {{ post.content|striptags|truncatewords:25 }}
+                </p>
+    
+                <button
+                    type="button"
+                    class="read-post-btn"
+                    onclick="openPostModal('post-modal-{{ post.pk }}')">
+                    Read Full Article →
+                </button>
+    
+            </div>
+    
+        </article>
+    
+        <dialog id="post-modal-{{ post.pk }}" class="post-modal">
+    
+            <div class="post-modal-content">
+    
+                {% if post.image %}
+                    <img src="{{ post.image.url }}" alt="{{ post.title }}">
+                {% endif %}
+    
+                <h2>{{ post.title }}</h2>
+    
+                <div class="modal-post-meta">
+                    <span>✦ BLOGGER EDITORIAL</span>
+                    <span>{{ post.published_at|date:"F d, Y - h:i A" }}</span>
+                </div>
+    
+                <div class="post-full-content">
+                    {{ post.content|safe_html }}
+                </div>
+    
+                <div class="post-actions">
+    
+                    <a href="{% url 'edit_post' post.pk %}" class="edit-post-btn">
+                        ✏️ Edit Article
+                    </a>
+    
+                    <a href="{% url 'delete_post' post.pk %}" class="delete-post-btn">
+                        🗑️ Delete Article
+                    </a>
+    
+                    <form method="dialog">
+                        <button type="submit" class="close-modal-btn">
+                            Close ✕
+                        </button>
+                    </form>
+    
+                </div>
+    
+            </div>
+    
+        </dialog>
+    
+        {% empty %}
+    
+        <div class="no-posts">
+            <h3>No Articles Yet</h3>
+            <p>Be the first to share something interesting.</p>
+        </div>
+    
+        {% endfor %}
+    
+    </div>
+    
+</section>
+
+
+<script>
+
+/* =========================
+   ARTICLE MODAL
+========================= */
+
+function openPostModal(modalId) {
+
+    const modal = document.getElementById(modalId);
+
+    if (!modal) return;
+
+    modal.showModal();
+
+    modal.scrollTop = 0;
+
+    const modalContent = modal.querySelector('.post-modal-content');
+
+    if (modalContent) {
+        modalContent.scrollTop = 0;
+    }
+
+}
+
+
+/* =========================
+   CAROUSEL
+========================= */
+
+document.addEventListener('DOMContentLoaded', function () {
+
+    const carousel = document.querySelector('.posts-carousel');
+
+    if (!carousel) return;
+
+    const cards = carousel.querySelectorAll('.post-card');
+
+    function updateActiveCard() {
+
+        const carouselCenter =
+            carousel.getBoundingClientRect().left +
+            carousel.clientWidth / 2;
+
+        let closestCard = null;
+        let smallestDistance = Infinity;
+
+        cards.forEach(card => {
+
+            const cardCenter =
+                card.getBoundingClientRect().left +
+                card.offsetWidth / 2;
+
+            const distance = Math.abs(
+                carouselCenter - cardCenter
+            );
+
+            if (distance < smallestDistance) {
+                smallestDistance = distance;
+                closestCard = card;
+            }
+
+        });
+
+        cards.forEach(card => {
+
+            card.classList.toggle(
+                'is-active',
+                card === closestCard
+            );
+
+        });
+
+    }
+
+    let scrollTimeout;
+
+    carousel.addEventListener('scroll', function () {
+
+        clearTimeout(scrollTimeout);
+
+        scrollTimeout = setTimeout(
+            updateActiveCard,
+            80
+        );
+
+    });
+
+    window.addEventListener('resize', updateActiveCard);
+
+    updateActiveCard();
+
+});
+
+
+/* =========================
+   RESET MODAL SCROLL
+========================= */
+
+document.querySelectorAll('.post-modal').forEach(modal => {
+
+    modal.addEventListener('close', function () {
+        modal.scrollTop = 0;
+    });
+
+});
+
+</script>
+
+{% endblock %}

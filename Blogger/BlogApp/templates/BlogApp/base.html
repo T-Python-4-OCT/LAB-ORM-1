@@ -1,0 +1,97 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Blogger{% endblock %}</title>
+
+    <link rel="stylesheet" href="{% static 'BlogApp/css/style.css' %}">
+</head>
+<body>
+
+    <header>
+        <nav>
+            <a href="{% url 'home' %}" class="logo">Blogger.</a>
+
+            <div class="nav-links">
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'add_post' %}">Add Post</a>
+            
+                <button id="theme-toggle" class="theme-toggle" type="button">
+                    🌙
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="site-footer">
+
+        <div class="footer-main">
+    
+            <div class="footer-brand">
+                <a href="{% url 'home' %}" class="footer-logo">
+                    Blogger<span>.</span>
+                </a>
+    
+                <p>
+                    Exploring ideas, sharing knowledge, and discovering
+                    the future of technology, artificial intelligence,
+                    and development.
+                </p>
+            </div>
+    
+            <div class="footer-links">
+                <h3>Quick Links</h3>
+    
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'add_post' %}">Create Article</a>
+            </div>
+    
+            <div class="footer-topics">
+                <h3>Explore Topics</h3>
+    
+                <span>Artificial Intelligence</span>
+                <span>Technology</span>
+                <span>Development</span>
+            </div>
+    
+        </div>
+    
+        <div class="footer-bottom">
+            <p>© 2026 Blogger. All rights reserved.</p>
+    
+            <a href="{% url 'home' %}">Back to Home ↑</a>
+        </div>
+    
+    </footer>
+
+    <script>
+        const themeToggle = document.getElementById('theme-toggle');
+    
+        // Load saved theme
+        const savedTheme = localStorage.getItem('theme') || 'light';
+        document.documentElement.setAttribute('data-theme', savedTheme);
+    
+        themeToggle.textContent = savedTheme === 'dark' ? '☀️' : '🌙';
+    
+        // Toggle theme
+        themeToggle.addEventListener('click', () => {
+            const currentTheme = document.documentElement.getAttribute('data-theme');
+            const newTheme = currentTheme === 'dark' ? 'light' : 'dark';
+    
+            document.documentElement.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+    
+            themeToggle.textContent = newTheme === 'dark' ? '☀️' : '🌙';
+        });
+    </script>
+</body>
+</html>
