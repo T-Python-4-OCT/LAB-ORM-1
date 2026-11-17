@@ -218,3 +218,13 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+/media/
+/backups/
+*.sqlite3.bak
+
+.local_secret
+*.log
+.pytest_cache/
+.env
+.venv/

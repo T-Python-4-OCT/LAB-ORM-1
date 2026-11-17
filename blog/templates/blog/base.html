@@ -1,0 +1,16 @@
+{% load static %}<!DOCTYPE html>
+<html lang="ar" dir="rtl" data-theme="{{ theme|default:'light' }}">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>{% block title %}سِياق{% endblock %}</title><link rel="stylesheet" href="{% static 'blog/css/style.css' %}?v=9"></head>
+<body><header class="site-header"><div class="site-container nav-container">
+<a class="brand-link" href="{% url 'blog:home' %}">سِياق</a>
+<nav class="nav-menu" aria-label="التنقل الرئيسي">
+<a class="nav-item {% if request.resolver_match.url_name == 'home' %}active{% endif %}" href="{% url 'blog:home' %}">الرئيسية</a>
+<a class="nav-item {% if request.resolver_match.url_name == 'articles' %}active{% endif %}" href="{% url 'blog:articles' %}">المقالات</a>
+<a class="nav-item {% if request.resolver_match.url_name == 'about' %}active{% endif %}" href="{% url 'blog:about' %}">من نحن</a>
+<a class="nav-item {% if request.resolver_match.url_name == 'add_post' %}active{% endif %}" href="{% url 'blog:add_post' %}">إضافة مقال</a></nav>
+<div class="header-controls">
+<form method="post" action="{% if theme == 'dark' %}{% url 'blog:set_theme' 'light' %}{% else %}{% url 'blog:set_theme' 'dark' %}{% endif %}">{% csrf_token %}<input type="hidden" name="next" value="{{ request.get_full_path }}"><button class="theme-toggle" aria-label="تبديل الوضع النهاري والليلي" title="تبديل المظهر">{% if theme == 'dark' %}<svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M2 12h2m16 0h2M5 5l1.5 1.5m11 11L19 19M5 19l1.5-1.5m11-11L19 5"/></svg>{% else %}<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M20.5 14a9 9 0 0 1-10.5-10.5A9 9 0 1 0 20.5 14Z"/></svg>{% endif %}</button></form>
+</div></div></header>
+<main class="site-main"><div class="site-container">{% for message in messages %}<p class="notice" role="status">{{ message }}</p>{% endfor %}{% block content %}{% endblock %}</div></main>
+<footer class="site-footer-minimal"><div class="site-container footer-top-row"><a class="brand-link" href="{% url 'blog:home' %}">سِياق</a><nav class="footer-nav" aria-label="روابط التذييل"><a href="{% url 'blog:home' %}">الرئيسية</a><a href="{% url 'blog:about' %}">من نحن</a><a href="https://discord.com/users/686267127807606819" target="_blank" rel="noopener noreferrer">تواصل معنا</a></nav></div></footer>
+<script src="{% static 'blog/js/main.js' %}?v=8" defer></script></body></html>
