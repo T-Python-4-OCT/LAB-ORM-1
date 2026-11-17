@@ -34,23 +34,29 @@
 
         {% for post in posts %}
 
-        <article class="post-card">
+        <a href="{% url 'post_detail' post.pk %}" class="post-card">
 
             <div class="post-date">
                 <span>●</span>
                 {{ post.published_at|date:"F d, Y - h:i A" }}
             </div>
 
+            {% if post.poste %}
+                <img src="{{ post.poste.url }}" alt="{{ post.title }}">
+            {% endif %}
+
             <h3>{{ post.title }}</h3>
 
-            <p>{{ post.content|truncatewords:35 }}</p>
+            <p>
+                {{ post.content|truncatewords:25 }}
+            </p>
 
             <div class="post-footer">
                 <span>By Blogger</span>
-                <span>Published ✓</span>
+                <span>Read Article →</span>
             </div>
 
-        </article>
+        </a>
 
         {% empty %}
 
