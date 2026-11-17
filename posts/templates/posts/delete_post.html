@@ -1,0 +1,70 @@
+
+{% extends "posts/base.html" %}
+
+{% block title %}Delete Post | Blogger{% endblock %}
+
+{% block content %}
+<section class="delete-section">
+    <a
+        href="{% url 'posts:post_detail' post.id %}"
+        class="back-link"
+    >
+        <span
+            class="material-symbols-rounded"
+            aria-hidden="true"
+        >
+            arrow_back
+        </span>
+        <span>Back to Post</span>
+    </a>
+
+    <div class="delete-card">
+        <div class="delete-icon">
+            <span
+                class="material-symbols-rounded"
+                aria-hidden="true"
+            >
+                delete_forever
+            </span>
+        </div>
+
+        <span class="section-eyebrow">ONE LAST THOUGHT</span>
+
+        <h1>Delete this story?</h1>
+
+        <p class="delete-description">
+            Are you sure you want to delete this post?
+            This action cannot be undone.
+        </p>
+
+        <div class="delete-preview">
+            <span>YOU ARE ABOUT TO DELETE</span>
+
+            <h3>{{ post.title }}</h3>
+
+            <p>Written by {{ post.author }}</p>
+        </div>
+
+        <form method="POST" class="delete-form">
+            {% csrf_token %}
+
+            <button type="submit" class="action-button delete-button">
+                <span
+                    class="material-symbols-rounded"
+                    aria-hidden="true"
+                >
+                    delete_outline
+                </span>
+                <span>Yes, Delete Post</span>
+            </button>
+
+            <a
+                href="{% url 'posts:post_detail' post.id %}"
+                class="cancel-link"
+            >
+                Keep My Story
+            </a>
+        </form>
+    </div>
+</section>
+{% endblock %}

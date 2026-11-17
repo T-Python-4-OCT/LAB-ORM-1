@@ -1,0 +1,145 @@
+
+{% extends "posts/base.html" %}
+{% load static %}
+
+{% block title %}Edit Post | Blogger{% endblock %}
+
+{% block content %}
+<section class="form-section edit-section">
+    <a
+        href="{% url 'posts:post_detail' post.id %}"
+        class="back-link"
+    >
+        <span
+            class="material-symbols-rounded"
+            aria-hidden="true"
+        >
+            arrow_back
+        </span>
+        <span>Back to Post</span>
+    </a>
+
+    <div class="form-heading">
+        <span class="section-eyebrow">REFINE YOUR STORY</span>
+
+        <h1>Edit Your Post</h1>
+
+        <p>
+            A little refinement can make a good story even better.
+        </p>
+    </div>
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+        class="post-form"
+    >
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="form-errors">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="form-field">
+            <label for="{{ form.author.id_for_label }}">
+                Author Name
+            </label>
+
+            {{ form.author }}
+            {{ form.author.errors }}
+        </div>
+
+        <div class="form-field">
+            <label for="{{ form.title.id_for_label }}">
+                Post Title
+            </label>
+
+            {{ form.title }}
+            {{ form.title.errors }}
+        </div>
+
+        <div class="form-field">
+            <label for="{{ form.content.id_for_label }}">
+                Your Story
+            </label>
+
+            {{ form.content }}
+            {{ form.content.errors }}
+        </div>
+
+        <div class="form-field">
+            <span class="field-label">Cover Image</span>
+
+            {% if post.image %}
+                <div class="current-image">
+                    <img
+                        src="{{ post.image.url }}"
+                        alt="{{ post.title }}"
+                    />
+
+                    <p>Current cover image</p>
+                </div>
+            {% endif %}
+
+            <label
+                for="{{ form.image.id_for_label }}"
+                class="upload-card"
+            >
+                {{ form.image }}
+
+                <span class="upload-icon">
+                    <span
+                        class="material-symbols-rounded"
+                        aria-hidden="true"
+                    >
+                        photo_camera
+                    </span>
+                </span>
+
+                <span class="upload-title">
+                    {% if post.image %}
+                        Change Cover Image
+                    {% else %}
+                        Add a Cover Image
+                    {% endif %}
+                </span>
+
+                <span class="upload-hover-text">
+                    Click to choose an image
+                </span>
+
+                <span class="upload-hint">
+                    {% if post.image %}
+                        Leave empty to keep the current image
+                    {% else %}
+                        Optional · JPG, PNG or WebP
+                    {% endif %}
+                </span>
+            </label>
+
+            {{ form.image.errors }}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="primary-button">
+                <span
+                    class="material-symbols-rounded"
+                    aria-hidden="true"
+                >
+                    save
+                </span>
+                <span>Save Changes</span>
+            </button>
+
+            <a
+                href="{% url 'posts:post_detail' post.id %}"
+                class="cancel-link"
+            >
+                Cancel
+            </a>
+        </div>
+    </form>
+</section>
+{% endblock %}

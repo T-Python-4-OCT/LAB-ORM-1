@@ -1,0 +1,126 @@
+
+{% extends "posts/base.html" %}
+{% load static %}
+
+{% block title %}Home | Blogger{% endblock %}
+
+{% block content %}
+<section class="hero-section home-hero">
+    <video
+        class="hero-video"
+        autoplay
+        muted
+        loop
+        playsinline
+        preload="metadata"
+        aria-hidden="true"
+        tabindex="-1"
+    >
+        <source
+            src="{% static 'posts/videos/blog-hero.mp4' %}"
+            type="video/mp4"
+        />
+    </video>
+
+    <div class="hero-overlay"></div>
+
+    <div class="hero-content">
+        <span class="hero-eyebrow">
+            A SPACE FOR YOUR STORIES
+        </span>
+
+        <h1>Stories worth sharing.</h1>
+
+        <p>
+            Discover fresh perspectives, meaningful ideas,
+            and beautiful stories from everyday life.
+        </p>
+
+        <a
+            href="{% url 'posts:add_post' %}"
+            class="primary-button hero-button"
+        >
+            <span
+                class="material-symbols-rounded"
+                aria-hidden="true"
+            >
+                edit_square
+            </span>
+
+            <span>Write a Post</span>
+        </a>
+    </div>
+</section>
+
+<section class="posts-section" id="latest-posts">
+    <div class="section-heading">
+        <div>
+            <span class="section-eyebrow">
+                EXPLORE THE JOURNAL
+            </span>
+
+            <h2>Latest Stories</h2>
+
+            <p>
+                Thoughts, moments, and stories worth discovering.
+            </p>
+        </div>
+    </div>
+
+    <div class="posts-grid">
+        {% for post in posts %}
+            {% include "posts/post_card.html" with post=post %}
+        {% empty %}
+            <div class="empty-state">
+                <span
+                    class="material-symbols-rounded"
+                    aria-hidden="true"
+                >
+                    auto_stories
+                </span>
+
+                <h3>No stories yet</h3>
+
+                <p>
+                    Every great collection begins with its first story.
+                    Be the first to share yours.
+                </p>
+
+                <a
+                    href="{% url 'posts:add_post' %}"
+                    class="primary-button"
+                >
+                    Write the First Post
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+
+    {% if posts %}
+        <div class="explore-stories">
+            <p>There is always another story waiting to be discovered.</p>
+
+            <a
+                href="{% url 'posts:all_posts' %}"
+                class="explore-button"
+            >
+                <span
+                    class="material-symbols-rounded"
+                    aria-hidden="true"
+                >
+                    auto_stories
+                </span>
+
+                <span>Explore All Stories</span>
+
+                <span
+                    class="material-symbols-rounded explore-arrow"
+                    aria-hidden="true"
+                >
+                    arrow_forward
+                </span>
+            </a>
+        </div>
+    {% endif %}
+</section>
+{% endblock %}

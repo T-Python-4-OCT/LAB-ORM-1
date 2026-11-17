@@ -1,0 +1,186 @@
+
+{% extends "posts/base.html" %}
+{% load static %}
+
+{% block title %}The Journal | Blogger{% endblock %}
+
+{% block content %}
+<section class="journal-hero">
+    <div class="journal-hero-content">
+        <span class="section-eyebrow">
+            A COLLECTION OF PERSPECTIVES
+        </span>
+
+        <h1>The Journal.</h1>
+
+        <p>
+            Discover thoughtful ideas, little moments,
+            extraordinary adventures, and stories worth sharing.
+        </p>
+    </div>
+
+    <img
+        src="{% static 'posts/images/default-post.webp' %}"
+        alt="An open book overlooking the peaceful sea"
+        class="journal-hero-image"
+    />
+</section>
+
+<section class="journal-section">
+    <div class="section-heading">
+        <div>
+            <span class="section-eyebrow">
+                FIND YOUR NEXT STORY
+            </span>
+
+            <h2>Explore All Stories</h2>
+
+            <p>
+                Search, discover, and explore at your own pace.
+            </p>
+        </div>
+    </div>
+
+    <form
+        method="GET"
+        action="{% url 'posts:all_posts' %}"
+        class="journal-filters"
+    >
+        <div class="filter-field search-field">
+            <label for="search">Search Stories</label>
+
+            <div class="search-input-wrapper">
+                <span
+                    class="material-symbols-rounded"
+                    aria-hidden="true"
+                >
+                    search
+                </span>
+
+                <input
+                    type="search"
+                    id="search"
+                    name="search"
+                    value="{{ search }}"
+                    placeholder="Title, author or content..."
+                />
+            </div>
+        </div>
+
+        <div class="filter-field">
+            <label for="ordering">Sort By</label>
+
+            <select id="ordering" name="ordering">
+                <option value="newest" {% if ordering == "newest" %}selected{% endif %}>
+                    Newest First
+                </option>
+
+                <option value="oldest" {% if ordering == "oldest" %}selected{% endif %}>
+                    Oldest First
+                </option>
+
+                <option value="title_asc" {% if ordering == "title_asc" %}selected{% endif %}>
+                    Title A–Z
+                </option>
+
+                <option value="title_desc" {% if ordering == "title_desc" %}selected{% endif %}>
+                    Title Z–A
+                </option>
+            </select>
+        </div>
+
+        <div class="filter-field">
+            <label for="limit">Show Stories</label>
+
+            <select id="limit" name="limit">
+                <option value="all" {% if limit == "all" %}selected{% endif %}>
+                    All Stories
+                </option>
+
+                <option value="2" {% if limit == "2" %}selected{% endif %}>
+                    2 Stories
+                </option>
+
+                <option value="4" {% if limit == "4" %}selected{% endif %}>
+                    4 Stories
+                </option>
+
+                <option value="6" {% if limit == "6" %}selected{% endif %}>
+                    6 Stories
+                </option>
+
+                <option value="12" {% if limit == "12" %}selected{% endif %}>
+                    12 Stories
+                </option>
+            </select>
+        </div>
+
+        <div class="filter-actions">
+            <button type="submit" class="primary-button">
+                <span
+                    class="material-symbols-rounded"
+                    aria-hidden="true"
+                >
+                    tune
+                </span>
+
+                <span>Apply</span>
+            </button>
+
+            <a
+                href="{% url 'posts:all_posts' %}"
+                class="reset-button"
+                aria-label="Reset filters"
+                title="Reset filters"
+            >
+                <span
+                    class="material-symbols-rounded"
+                    aria-hidden="true"
+                >
+                    restart_alt
+                </span>
+            </a>
+        </div>
+    </form>
+
+    <div class="journal-results">
+        <p>
+            Showing <strong>{{ displayed_posts }}</strong>
+            of <strong>{{ total_posts }}</strong> stories
+
+            {% if search %}
+                for <strong>"{{ search }}"</strong>
+            {% endif %}
+        </p>
+    </div>
+
+    <div class="posts-grid">
+        {% for post in posts %}
+            {% include "posts/post_card.html" with post=post %}
+        {% empty %}
+            <div class="empty-state">
+                <span
+                    class="material-symbols-rounded"
+                    aria-hidden="true"
+                >
+                    search_off
+                </span>
+
+                <h3>No stories found</h3>
+
+                <p>
+                    Try another keyword or discover
+                    a different collection of stories.
+                </p>
+
+                <a
+                    href="{% url 'posts:all_posts' %}"
+                    class="primary-button"
+                >
+                    View All Stories
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+{% endblock %}

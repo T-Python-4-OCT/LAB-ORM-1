@@ -1,0 +1,107 @@
+
+{% extends "posts/base.html" %}
+{% load static %}
+
+{% block title %}{{ post.title }} | Blogger{% endblock %}
+
+{% block content %}
+<section class="detail-section">
+    <a href="{% url 'posts:home' %}" class="back-link">
+        <span
+            class="material-symbols-rounded"
+            aria-hidden="true"
+        >
+            arrow_back
+        </span>
+        <span>Back to Stories</span>
+    </a>
+
+    <article class="detail-article">
+        <div class="detail-header">
+            <span class="section-eyebrow">
+                A STORY WORTH SHARING
+            </span>
+
+            <h1>{{ post.title }}</h1>
+
+            <div class="detail-meta">
+                <span>
+                    <span
+                        class="material-symbols-rounded"
+                        aria-hidden="true"
+                    >
+                        person
+                    </span>
+                    {{ post.author }}
+                </span>
+
+                <span>
+                    <span
+                        class="material-symbols-rounded"
+                        aria-hidden="true"
+                    >
+                        calendar_month
+                    </span>
+                    {{ post.published_at|date:"F j, Y" }}
+                </span>
+
+                <span>
+                    <span
+                        class="material-symbols-rounded"
+                        aria-hidden="true"
+                    >
+                        schedule
+                    </span>
+                    {{ post.published_at|date:"g:i A" }}
+                </span>
+            </div>
+        </div>
+
+        {% if post.image %}
+            <img
+                src="{{ post.image.url }}"
+                alt="{{ post.title }}"
+                class="post-detail-image"
+            />
+        {% else %}
+            <img
+                src="{% static 'posts/images/default-post.webp' %}"
+                alt="Peaceful sea and open book"
+                class="post-detail-image"
+            />
+        {% endif %}
+
+        <div class="detail-content">
+            {{ post.content|linebreaks }}
+        </div>
+
+        <div class="post-actions">
+            <a
+                href="{% url 'posts:update_post' post.id %}"
+                class="action-button edit-button"
+            >
+                <span
+                    class="material-symbols-rounded"
+                    aria-hidden="true"
+                >
+                    edit
+                </span>
+                <span>Edit Post</span>
+            </a>
+
+            <a
+                href="{% url 'posts:delete_post' post.id %}"
+                class="action-button delete-link"
+            >
+                <span
+                    class="material-symbols-rounded"
+                    aria-hidden="true"
+                >
+                    delete_outline
+                </span>
+                <span>Delete Post</span>
+            </a>
+        </div>
+    </article>
+</section>
+{% endblock %}

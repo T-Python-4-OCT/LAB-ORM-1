@@ -1,0 +1,155 @@
+
+{% load static %}
+<!doctype html>
+<html lang="en" data-theme="{% if request.COOKIES.theme == 'dark' %}dark{% else %}light{% endif %}">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+    <title>{% block title %}Blogger{% endblock %}</title>
+
+    <link
+      rel="icon"
+      type="image/png"
+      href="{% static 'posts/images/logo.png' %}"
+    />
+
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+
+    <link
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded"
+      rel="stylesheet"
+    />
+
+    <link
+      rel="stylesheet"
+      href="{% static 'posts/css/style.css' %}"
+    />
+
+    <script
+      src="{% static 'posts/js/validation.js' %}"
+      defer
+    ></script>
+  </head>
+
+  <body>
+    <header class="site-header">
+      <nav class="site-nav" aria-label="Main navigation">
+        <a
+          href="{% url 'posts:home' %}"
+          class="nav-logo"
+          aria-label="Blogger Home"
+        >
+          <img
+            src="{% static 'posts/images/logo.png' %}"
+            alt="Blogger"
+            class="site-logo"
+          />
+        </a>
+
+        <div class="nav-center">
+          <a
+            href="{% url 'posts:home' %}"
+            class="nav-link {% if request.resolver_match.url_name == 'home' %}nav-active{% endif %}"
+          >
+            <span class="material-symbols-rounded" aria-hidden="true">
+              home
+            </span>
+            <span>Home</span>
+          </a>
+
+          <a
+            href="{% url 'posts:all_posts' %}"
+            class="nav-link {% if request.resolver_match.url_name == 'all_posts' %}nav-active{% endif %}"
+          >
+            <span class="material-symbols-rounded" aria-hidden="true">
+              auto_stories
+            </span>
+            <span>The Journal</span>
+          </a>
+        </div>
+
+        <div class="nav-actions">
+          <a
+            href="{% url 'posts:add_post' %}"
+            class="nav-link {% if request.resolver_match.url_name == 'add_post' %}nav-active{% endif %}"
+          >
+            <span class="material-symbols-rounded" aria-hidden="true">
+              edit_square
+            </span>
+            <span>New Post</span>
+          </a>
+
+          <form
+            method="POST"
+            action="{% url 'posts:toggle_theme' %}"
+            class="theme-form"
+          >
+            {% csrf_token %}
+
+            <input
+              type="hidden"
+              name="next"
+              value="{{ request.get_full_path }}"
+            />
+
+            <button
+              type="submit"
+              class="theme-toggle nav-link"
+              aria-label="Toggle color theme"
+            >
+              {% if request.COOKIES.theme == 'dark' %}
+                <span class="material-symbols-rounded" aria-hidden="true">
+                  light_mode
+                </span>
+                <span>Light Mode</span>
+              {% else %}
+                <span class="material-symbols-rounded" aria-hidden="true">
+                  dark_mode
+                </span>
+                <span>Dark Mode</span>
+              {% endif %}
+            </button>
+          </form>
+        </div>
+      </nav>
+    </header>
+
+    <main class="site-main">
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <div class="footer-brand">
+        <img
+          src="{% static 'posts/images/logo.png' %}"
+          alt="Blogger"
+          class="footer-logo"
+        />
+
+        <p>Stories worth sharing.</p>
+      </div>
+
+      <div class="footer-bottom">
+        <span>© 2026 Blogger. All rights reserved.</span>
+
+        <a href="{% url 'posts:home' %}" class="footer-link">
+          <span>Back to Home</span>
+          <span class="material-symbols-rounded" aria-hidden="true">
+            arrow_forward
+          </span>
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>

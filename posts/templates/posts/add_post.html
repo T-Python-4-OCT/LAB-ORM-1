@@ -1,0 +1,123 @@
+
+{% extends "posts/base.html" %}
+{% load static %}
+
+{% block title %}New Post | Blogger{% endblock %}
+
+{% block content %}
+<section class="form-hero">
+    <div class="form-hero-content">
+        <span class="section-eyebrow">YOUR CREATIVE SPACE</span>
+
+        <h1>Every story begins somewhere.</h1>
+
+        <p>
+            Share your thoughts, capture a moment,
+            and let your words find their place in the world.
+        </p>
+    </div>
+
+    <img
+        src="{% static 'posts/images/blog-hero.jpg' %}"
+        alt="A peaceful place for reading and writing"
+        class="form-hero-image"
+    />
+</section>
+
+<section class="form-section">
+    <div class="form-heading">
+        <span class="section-eyebrow">CREATE SOMETHING MEANINGFUL</span>
+        <h2>Write a New Post</h2>
+        <p>Give your thoughts a place to grow.</p>
+    </div>
+
+    <form
+        method="POST"
+        enctype="multipart/form-data"
+        class="post-form"
+    >
+        {% csrf_token %}
+
+        {% if form.non_field_errors %}
+            <div class="form-errors">
+                {{ form.non_field_errors }}
+            </div>
+        {% endif %}
+
+        <div class="form-field">
+            <label for="{{ form.author.id_for_label }}">
+                Author Name
+            </label>
+
+            {{ form.author }}
+            {{ form.author.errors }}
+        </div>
+
+        <div class="form-field">
+            <label for="{{ form.title.id_for_label }}">
+                Post Title
+            </label>
+
+            {{ form.title }}
+            {{ form.title.errors }}
+        </div>
+
+        <div class="form-field">
+            <label for="{{ form.content.id_for_label }}">
+                Your Story
+            </label>
+
+            {{ form.content }}
+            {{ form.content.errors }}
+        </div>
+
+        <div class="form-field">
+            <span class="field-label">Cover Image</span>
+
+            <label
+                for="{{ form.image.id_for_label }}"
+                class="upload-card"
+            >
+                {{ form.image }}
+
+                <span class="upload-icon">
+                    <span
+                        class="material-symbols-rounded"
+                        aria-hidden="true"
+                    >
+                        photo_camera
+                    </span>
+                </span>
+
+                <span class="upload-title">Add a Cover Image</span>
+
+                <span class="upload-hover-text">
+                    Click to choose an image
+                </span>
+
+                <span class="upload-hint">
+                    Optional · JPG, PNG or WebP
+                </span>
+            </label>
+
+            {{ form.image.errors }}
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="primary-button">
+                <span
+                    class="material-symbols-rounded"
+                    aria-hidden="true"
+                >
+                    publish
+                </span>
+                <span>Publish Post</span>
+            </button>
+
+            <a href="{% url 'posts:home' %}" class="cancel-link">
+                Cancel
+            </a>
+        </div>
+    </form>
+</section>
+{% endblock %}
