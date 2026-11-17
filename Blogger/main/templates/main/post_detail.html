@@ -1,0 +1,28 @@
+{% extends 'main/base.html' %}
+
+{% block title %}{{ post.title }} | Blogger{% endblock %}
+
+{% block content %}
+<a href="{% url 'main:home' %}" class="back-link">&larr; Back to Home</a>
+
+<article class="post-card post-detail">
+    {% if post.poster %}
+        <img src="{{ post.poster.url }}" alt="{{ post.title }}" class="post-image detail-image">
+    {% endif %}
+
+    <h1>{{ post.title }}</h1>
+    <p class="post-date">🕒 {{ post.published_at|date:"M d, Y - H:i" }}</p>
+
+    <div class="post-body">{{ post.content|linebreaks }}</div>
+
+    <div class="post-actions">
+        <a href="{% url 'main:update_post' post.id %}" class="btn btn-edit">Update</a>
+
+        <form method="post" action="{% url 'main:delete_post' post.id %}"
+              onsubmit="return confirm('Are you sure you want to delete this post?');">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-delete">Delete</button>
+        </form>
+    </div>
+</article>
+{% endblock %}

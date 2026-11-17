@@ -1,0 +1,57 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Home | Blogger{% endblock %}
+
+{% block content %}
+
+<!-- Hero -->
+<section class="hero">
+    <div class="hero-text">
+        <span class="hero-tag">// developer blog</span>
+        <h1>Write code. <br>Share what you learn.</h1>
+        <p>A simple place to document your programming journey, one post at a time.</p>
+    </div>
+
+    <div class="code-window">
+        <div class="code-bar">
+            <span class="dot red"></span>
+            <span class="dot yellow"></span>
+            <span class="dot green"></span>
+            <span class="code-file">blog.py</span>
+        </div>
+<pre><code><span class="c-com"># my coding journey</span>
+<span class="c-key">def</span> <span class="c-fn">learn</span>(topic):
+    <span class="c-key">return</span> <span class="c-str">f"Today I learned {topic}"</span>
+
+<span class="c-fn">print</span>(<span class="c-fn">learn</span>(<span class="c-str">"Django"</span>))</code></pre>
+    </div>
+</section>
+
+<!-- Intro article -->
+<section class="intro-article">
+    <h2>Why Every Developer Should Write a Blog</h2>
+    <p>
+        Writing about what you learn is one of the best ways to understand it deeply.
+        Explaining a concept in your own words exposes the gaps in your knowledge,
+        builds your portfolio, and helps other beginners who are stuck on the same problem.
+        Start small: one short post after every lesson is enough.
+    </p>
+</section>
+
+<!-- Posts -->
+<h2 class="section-title">Latest Posts</h2>
+
+{% for post in posts %}
+    <a href="{% url 'main:post_detail' post.id %}" class="post-link">
+        <article class="post-card">
+            {% if post.poster %}
+                <img src="{{ post.poster.url }}" alt="{{ post.title }}" class="post-image">
+            {% endif %}
+            <h2>{{ post.title }}</h2>
+            <p class="post-date">🕒 {{ post.published_at|date:"M d, Y - H:i" }}</p>
+        </article>
+    </a>
+{% empty %}
+    <p class="empty">No posts yet.</p>
+{% endfor %}
+{% endblock %}
