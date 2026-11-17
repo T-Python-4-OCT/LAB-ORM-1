@@ -10,7 +10,7 @@ class PostForm(forms.ModelForm):
             'title': 'Title',
             'content': 'Content',
             'image': 'Image (optional)',
-            'is_published': 'Publish immediately',
+            'is_published': 'Publication status',
         }
         widgets = {
             'title': forms.TextInput(attrs={'placeholder': 'Enter the post title'}),

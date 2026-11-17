@@ -3,10 +3,14 @@ from django.db import models
 
 
 class Post(models.Model):
+    PUBLICATION_CHOICES = [
+        (True, 'Published'),
+        (False, 'Draft'),
+    ]
     title = models.CharField(max_length=2048)
     content = models.TextField()
     image = models.ImageField(upload_to='posts/', blank=True, null=True)
-    is_published = models.BooleanField(default=True)
+    is_published = models.BooleanField(choices=PUBLICATION_CHOICES, default=True)
     published_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:

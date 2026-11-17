@@ -5,24 +5,51 @@
 {% block content %}
 <h1>Latest Posts</h1>
 
+<form method="get" class="filter-form">
+    <div class="filter-field">
+        <label for="search-title">Search by title</label>
+        <input id="search-title" type="text" name="q" value="{{ query }}" placeholder="Enter a title">
+    </div>
+
+    <div class="filter-field">
+        <label for="published-filter">Status</label>
+        <select id="published-filter" name="published">
+            <option value="" {% if not published_filter %}selected{% endif %}>All posts</option>
+            <option value="true" {% if published_filter == 'true' %}selected{% endif %}>Published</option>
+            <option value="false" {% if published_filter == 'false' %}selected{% endif %}>Drafts</option>
+        </select>
+    </div>
+
+    <div class="filter-field">
+        <label for="sort-order">Order</label>
+        <select id="sort-order" name="sort">
+            <option value="newest" {% if ordering == 'newest' %}selected{% endif %}>Newest first</option>
+            <option value="oldest" {% if ordering == 'oldest' %}selected{% endif %}>Oldest first</option>
+        </select>
+    </div>
+
+    <div class="filter-actions">
+        <button type="submit" class="btn">Apply</button>
+        <a href="{% url 'blog:home' %}" class="link">Clear</a>
+    </div>
+</form>
+
+<p class="result-count">Showing {{ posts|length }} of {{ result_count }} matching posts (maximum 5).</p>
+
 {% for post in posts %}
     <article class="card">
         <a class="card-link" href="{% url 'blog:post_detail' post.pk %}">
             <img src="{{ post.image_url }}" alt="{{ post.title }}" class="card-img">
             <div class="card-head">
                 <h2>{{ post.title }}</h2>
-                {% if post.is_published %}
-                    <span class="badge published">Published</span>
-                {% else %}
-                    <span class="badge draft">Unpublished</span>
-                {% endif %}
+                <span class="badge {% if post.is_published %}published{% else %}draft{% endif %}">{{ post.get_is_published_display }}</span>
             </div>
             <time class="meta">🕒 {{ post.published_at|date:"M d, Y - h:i A" }}</time>
             <p>{{ post.content|linebreaksbr }}</p>
         </a>
     </article>
 {% empty %}
-    <p class="empty">No posts yet. <a href="{% url 'blog:add_post' %}">Add the first one</a></p>
+    <p class="empty">No matching posts. <a href="{% url 'blog:add_post' %}">Add a post</a></p>
 {% endfor %}
 {% endblock %}
 

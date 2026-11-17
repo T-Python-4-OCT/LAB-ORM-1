@@ -7,9 +7,37 @@ from .models import Post
 
 
 def home(request):
-    posts = Post.objects.all()
-    return render(request, 'blog/home.html', {'posts': posts})
+    query = request.GET.get('q', '').strip()
+    published_filter = request.GET.get('published', '')
+    ordering = request.GET.get('sort', 'newest')
 
+    posts = Post.objects.all()
+    if query:
+        posts = posts.filter(title__contains=query)
+
+    if published_filter == 'true':
+        posts = posts.filter(is_published=True)
+    elif published_filter == 'false':
+        posts = posts.filter(is_published=False)
+
+    ordering_options = {
+        'newest': '-published_at',
+        'oldest': 'published_at',
+    }
+    if ordering not in ordering_options:
+        ordering = 'newest'
+
+    posts = posts.order_by(ordering_options[ordering])
+    result_count = posts.count()
+    posts = posts[:5]
+
+    return render(request, 'blog/home.html', {
+        'posts': posts,
+        'query': query,
+        'published_filter': published_filter,
+        'ordering': ordering,
+        'result_count': result_count,
+    })
 
 def add_post(request):
     if request.method == 'POST':
@@ -52,4 +80,5 @@ def delete_post(request, pk):
     post.delete()
     messages.success(request, 'Your post was deleted successfully.')
     return redirect('blog:home')
+
 

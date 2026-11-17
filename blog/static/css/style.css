@@ -400,3 +400,29 @@ h1 {
 .dialog-footer form { margin: 0; }
 .dialog-secondary { background: var(--muted); box-shadow: none; }
 .dialog-secondary:hover { background: #505b60; }
+
+/* ========== Blog Filtering ========== */
+.filter-form {
+    display: flex;
+    align-items: end;
+    flex-wrap: wrap;
+    gap: 1rem;
+    background: var(--surface);
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
+}
+.filter-field { display: flex; flex: 1 1 150px; flex-direction: column; gap: .35rem; }
+.filter-field label { font-weight: 600; }
+.filter-field input,
+.filter-field select {
+    min-height: 42px;
+    padding: .5rem .7rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font: inherit;
+    background: #fff;
+}
+.filter-actions { display: flex; align-items: center; gap: .6rem; }
+.result-count { color: var(--muted); margin: 0 0 1rem; }
