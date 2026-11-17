@@ -11,18 +11,17 @@ def home(request):
         'posts': posts
     })
 
-
 def add_post(request):
     if request.method == 'POST':
         title = request.POST.get('title')
         content = request.POST.get('content')
-        image = request.FILES.get('image')
+        poste = request.FILES.get('image')
 
         if title and content:
             Post.objects.create(
                 title=title,
                 content=content,
-                image=image
+                poste=poste
             )
 
             return redirect('home')
