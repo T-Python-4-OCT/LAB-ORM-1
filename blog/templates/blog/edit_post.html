@@ -1,0 +1,63 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Edit Post | Blogger{% endblock %}
+
+{% block content %}
+<h1>Edit Post</h1>
+
+<form method="post" enctype="multipart/form-data" class="form">
+    {% csrf_token %}
+
+    {% for field in form %}
+        {% if field.name == 'image' %}
+            <div class="field">
+                {{ field.label_tag }}
+                {% if post and post.image %}
+                    <img src="{{ post.image.url }}" class="image-preview visible" alt="Current image">
+                    <p class="meta">Choose a new image to replace the current one, or use the clear option to remove it.</p>
+                {% endif %}
+                <div class="upload">
+                    <label for="{{ field.id_for_label }}" class="upload-btn">Choose image</label>
+                    <span id="file-name" class="file-name">No file chosen</span>
+                </div>
+                {{ field }}
+                <img id="image-preview" class="image-preview" alt="Image preview">
+                {% for error in field.errors %}
+                    <small class="error">{{ error }}</small>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="field {% if field.field.widget.input_type == 'checkbox' %}checkbox{% endif %}">
+                {{ field.label_tag }}
+                {{ field }}
+                {% for error in field.errors %}
+                    <small class="error">{{ error }}</small>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endfor %}
+
+    <button type="submit" class="btn">Save Changes</button>
+    <a href="{% if post %}{% url 'blog:post_detail' post.pk %}{% else %}{% url 'blog:home' %}{% endif %}" class="link">Cancel</a>
+</form>
+
+<script>
+    const input = document.querySelector('input[type=file]');
+    const fileName = document.getElementById('file-name');
+    const preview = document.getElementById('image-preview');
+
+    input.addEventListener('change', () => {
+        const file = input.files[0];
+        if (file) {
+            fileName.textContent = file.name;
+            preview.src = URL.createObjectURL(file);
+            preview.classList.add('visible');
+        } else {
+            fileName.textContent = 'No file chosen';
+            preview.classList.remove('visible');
+        }
+    });
+</script>
+{% endblock %}
+
+

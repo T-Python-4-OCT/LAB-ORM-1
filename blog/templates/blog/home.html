@@ -1,0 +1,28 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Home | Blogger{% endblock %}
+
+{% block content %}
+<h1>Latest Posts</h1>
+
+{% for post in posts %}
+    <article class="card">
+        <a class="card-link" href="{% url 'blog:post_detail' post.pk %}">
+            <img src="{{ post.image_url }}" alt="{{ post.title }}" class="card-img">
+            <div class="card-head">
+                <h2>{{ post.title }}</h2>
+                {% if post.is_published %}
+                    <span class="badge published">Published</span>
+                {% else %}
+                    <span class="badge draft">Unpublished</span>
+                {% endif %}
+            </div>
+            <time class="meta">🕒 {{ post.published_at|date:"M d, Y - h:i A" }}</time>
+            <p>{{ post.content|linebreaksbr }}</p>
+        </a>
+    </article>
+{% empty %}
+    <p class="empty">No posts yet. <a href="{% url 'blog:add_post' %}">Add the first one</a></p>
+{% endfor %}
+{% endblock %}
+
