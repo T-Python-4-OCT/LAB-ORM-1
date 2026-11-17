@@ -27,7 +27,6 @@
             <option value="oldest" {% if ordering == 'oldest' %}selected{% endif %}>Oldest first</option>
         </select>
     </div>
-
     <div class="filter-actions">
         <button type="submit" class="btn">Apply</button>
         <a href="{% url 'blog:home' %}" class="link">Clear</a>
@@ -45,11 +44,13 @@
                 <span class="badge {% if post.is_published %}published{% else %}draft{% endif %}">{{ post.get_is_published_display }}</span>
             </div>
             <time class="meta">🕒 {{ post.published_at|date:"M d, Y - h:i A" }}</time>
-            <p>{{ post.content|linebreaksbr }}</p>
         </a>
     </article>
 {% empty %}
     <p class="empty">No matching posts. <a href="{% url 'blog:add_post' %}">Add a post</a></p>
 {% endfor %}
 {% endblock %}
+
+
+
 
