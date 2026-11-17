@@ -1,0 +1,103 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Blogger | Stories & Ideas</title>
+
+    <!-- Bootstrap 6 CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+</head>
+
+<body>
+
+    <header class="site-header">
+
+        <nav class="nav-inner">
+
+            <a href="{% url 'home' %}" class="brand">
+
+                <span class="brand-mark">B</span>
+
+                <span class="brand-name">
+                    Blogger
+                    <small>STORIES & IDEAS</small>
+                </span>
+
+            </a>
+
+            <div class="nav-links">
+
+                <a href="{% url 'home' %}" class="nav-link">
+                    Home
+                </a>
+
+                <a href="{% url 'all_posts' %}" class="nav-link">
+                    All Posts
+                </a>
+
+                <!-- Search Bar -->
+                <form method="GET"
+                      action="{% url 'search_post' %}"
+                      class="nav-search">
+
+                    <input type="search"
+                           name="search"
+                           placeholder="Search posts..."
+                           aria-label="Search posts"
+                           value="{{ search|default:'' }}"
+                           required>
+
+                    <button type="submit">
+                        Search
+                    </button>
+
+                </form>
+
+                <a href="{% url 'add_post' %}" class="nav-cta">
+                    + Create Post
+                </a>
+
+            </div>
+
+        </nav>
+
+    </header>
+
+
+    <main class="container">
+
+        {% block content %}
+        {% endblock %}
+
+    </main>
+
+
+    <footer class="site-footer">
+
+        <div class="footer-inner">
+
+            <div>
+                <strong>Blogger.</strong>
+                <p>Stories worth sharing.</p>
+            </div>
+
+            <span>© 2026 Blogger. All rights reserved.</span>
+
+        </div>
+
+    </footer>
+
+
+    <!-- Bootstrap 6 JavaScript -->
+    <script type="module" src="https://cdn.jsdelivr.net/npm/bootstrap@6.0.0-alpha.1/dist/js/bootstrap.bundle.min.js"></script>
+
+</body>
+</html>

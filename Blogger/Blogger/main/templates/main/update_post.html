@@ -1,0 +1,112 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<h1>Update Post</h1>
+
+<form method="POST" enctype="multipart/form-data">
+
+    {% csrf_token %}
+
+    <label>Post Title</label>
+
+    <input
+        type="text"
+        name="title"
+        value="{{ post.title }}"
+        maxlength="2048"
+        required
+    >
+
+    <br><br>
+
+    <label>Post Content</label>
+
+    <textarea
+        name="content"
+        rows="6"
+        required
+    >{{ post.content }}</textarea>
+
+    <br><br>
+
+    <label>Publication Status</label>
+
+    <select name="is_published">
+
+        <option value="True" {% if post.is_published %}selected{% endif %}>
+            Published
+        </option>
+
+        <option value="False" {% if not post.is_published %}selected{% endif %}>
+            Unpublished
+        </option>
+
+    </select>
+
+    <br><br>
+
+    <label>Post Image</label>
+
+<div class="image-update-row">
+
+    <!-- Current Image -->
+    <div class="current-image-section">
+
+        {% if post.poster %}
+            <img
+                src="{{ post.poster.url }}"
+                alt="{{ post.title }}"
+                class="current-image-preview"
+            >
+        {% else %}
+            <p>No image available.</p>
+        {% endif %}
+
+    </div>
+
+    <!-- Choose New Image -->
+    <div class="image-upload-section">
+
+        <label for="poster">Choose New Image</label>
+
+        <input
+            type="file"
+            id="poster"
+            name="poster"
+            accept="image/*"
+        >
+    </div>
+
+</div>
+<div class="rating-section">
+
+    <h3>Post Rating</h3>
+
+    <div class="star-input">
+
+        {% for star in "54321" %}
+
+            <input type="radio"
+                   name="rating"
+                   id="star{{ star }}"
+                   value="{{ star }}"
+                   {% if forloop.revcounter == post.rating %}
+                       checked
+                   {% endif %}>
+
+            <label for="star{{ star }}">★</label>
+
+        {% endfor %}
+
+    </div>
+
+</div>
+
+    <button type="submit">
+        Update Post
+    </button>
+
+</form>
+
+{% endblock %}
