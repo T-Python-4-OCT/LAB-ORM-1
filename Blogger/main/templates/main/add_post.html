@@ -5,7 +5,7 @@
 {% block content %}
 <h1 class="page-title">Add a New Post</h1>
 
-<form method="post" class="post-form">
+<form method="post" enctype="multipart/form-data" class="post-form">
     {% csrf_token %}
 
     <p>
@@ -16,6 +16,11 @@
     <p>
         <label for="content">Content</label>
         <textarea id="content" name="content" class="form-input" rows="8" required></textarea>
+    </p>
+
+    <p>
+        <label for="poster">Image</label>
+        <input type="file" id="poster" name="poster" class="form-input" accept="image/*">
     </p>
 
     <p>

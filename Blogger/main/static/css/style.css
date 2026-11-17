@@ -131,6 +131,14 @@ body {
 .post-card h2 { color: var(--blue); margin-bottom: .4rem; }
 .post-date { color: var(--muted); font-size: .85rem; margin-bottom: .8rem; font-family: Consolas, monospace; }
 
+.post-image {
+    width: 100%;
+    max-height: 350px;
+    object-fit: cover;
+    border-radius: 8px;
+    margin-bottom: 1rem;
+}
+
 /* Form */
 .post-form p { margin-bottom: 1rem; }
 .post-form label { display: block; margin-bottom: .3rem; font-weight: bold; color: #fff; }
@@ -167,6 +175,46 @@ body {
 }
 .empty { text-align: center; color: var(--muted); }
 
+/* Home card as link */
+.post-link { text-decoration: none; color: inherit; display: block; }
+
+/* Detail page */
+.back-link {
+    display: inline-block;
+    color: var(--muted);
+    text-decoration: none;
+    margin-bottom: 1rem;
+}
+.back-link:hover { color: var(--green); }
+
+.post-detail:hover { transform: none; border-color: var(--border); }
+.post-detail h1 { color: #fff; margin-bottom: .4rem; }
+.detail-image { max-height: 450px; }
+.post-body { margin: 1rem 0 1.5rem; }
+.post-body p { margin-bottom: 1rem; }
+
+/* Action buttons */
+.post-actions {
+    display: flex;
+    gap: .8rem;
+    align-items: center;
+    border-top: 1px solid var(--border);
+    padding-top: 1.2rem;
+}
+.post-actions form { margin: 0; }
+.btn { text-decoration: none; display: inline-block; }
+.btn-edit { background: var(--blue); color: #0d1117; }
+.btn-edit:hover { background: #388bfd; }
+.btn-delete { background: #da3633; color: #fff; }
+.btn-delete:hover { background: #b62324; }
+
+/* Current image in update form */
+.current-image {
+    display: block;
+    width: 200px;
+    border-radius: 8px;
+    margin-bottom: .6rem;
+}
 /* Mobile */
 @media (max-width: 768px) {
     .hero { grid-template-columns: 1fr; padding: 2rem 1.2rem; }
