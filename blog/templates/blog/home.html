@@ -16,7 +16,19 @@
     {% for post in posts %}
         <article class="post-card">
 
-            <h2>{{ post.title }}</h2>
+            {% if post.image %}
+                <img
+                    src="{{ post.image.url }}"
+                    alt="{{ post.title }}"
+                    style="width: 100%; border-radius: 12px; margin-bottom: 20px;"
+                >
+            {% endif %}
+
+            <h2>
+                <a href="{% url 'post_detail' post.pk %}">
+                    {{ post.title }}
+                </a>
+            </h2>
 
             <p class="post-date">
                 Published on {{ post.published_at|date:"F d, Y - h:i A" }}
@@ -25,6 +37,10 @@
             <div class="post-content">
                 {{ post.content }}
             </div>
+
+            <a href="{% url 'post_detail' post.pk %}" class="nav-button">
+                Read More
+            </a>
 
         </article>
 

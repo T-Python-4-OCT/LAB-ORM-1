@@ -1,6 +1,7 @@
 
 from django.test import TestCase
 from django.urls import reverse
+from django.core.files.uploadedfile import SimpleUploadedFile
 
 from .models import Post
 
@@ -58,7 +59,12 @@ class PostTests(TestCase):
             reverse('add_post'),
             {
                 'title': 'My First Test Post',
-                'content': 'This is a test post.'
+                'content': 'This is a test post.',
+                'image': SimpleUploadedFile(
+                    'test.jpg',
+                    b'test image content',
+                    content_type='image/jpeg'
+                )
             }
         )
 
@@ -90,7 +96,12 @@ class PostTests(TestCase):
             reverse('add_post'),
             {
                 'title': 'A' * 2049,
-                'content': 'Test content.'
+                'content': 'Test content.',
+                'image': SimpleUploadedFile(
+                    'test.jpg',
+                    b'test image content',
+                    content_type='image/jpeg'
+                )
             }
         )
 
