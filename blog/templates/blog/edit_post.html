@@ -1,0 +1,126 @@
+
+{% extends 'blog/base.html' %}
+
+{% block title %}Edit Post | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="form-section">
+
+    <div class="form-heading">
+        <span>UPDATE YOUR STORY</span>
+        <h1>Edit your post<span>.</span></h1>
+        <p>Make changes to your story and keep it updated.</p>
+    </div>
+
+    <form method="POST" enctype="multipart/form-data" class="post-form">
+        {% csrf_token %}
+
+        <div class="form-group">
+            <label for="title">Post Title</label>
+            <input
+                type="text"
+                id="title"
+                name="title"
+                maxlength="2048"
+                value="{{ post.title }}"
+                required
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="content">Your Story</label>
+            <textarea
+                id="content"
+                name="content"
+                rows="10"
+                required
+            >{{ post.content }}</textarea>
+        </div>
+
+        <!-- Current Attachment -->
+        <div class="form-group">
+            <label>Current Attachment</label>
+
+            {% if post.image %}
+
+                <img
+                    src="{{ post.image.url }}"
+                    alt="{{ post.title }}"
+                    class="post-image"
+                >
+
+            {% elif post.video %}
+
+                <video controls width="100%">
+                    <source src="{{ post.video.url }}">
+                    Your browser does not support video.
+                </video>
+
+            {% elif post.document %}
+
+                <p>
+                    <a href="{{ post.document.url }}" target="_blank">
+                        View Current PDF
+                    </a>
+                </p>
+
+            {% else %}
+
+                <p>No attachment currently.</p>
+
+            {% endif %}
+        </div>
+
+        <!-- Attachment Type -->
+        <div class="form-group">
+            <label for="attachment_type">New Attachment Type</label>
+
+            <select
+                name="attachment_type"
+                id="attachment_type"
+            >
+                <option value="">Keep Current Attachment</option>
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+                <option value="document">PDF</option>
+            </select>
+        </div>
+
+        <!-- New Attachment -->
+        <div class="form-group">
+            <label for="attachment">Choose New File</label>
+
+            <input
+                type="file"
+                id="attachment"
+                name="attachment"
+                accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,application/pdf"
+            >
+        </div>
+
+        <!-- Remove Attachment -->
+        <div class="form-group">
+            <label>
+                <input
+                    type="checkbox"
+                    name="remove_attachment"
+                    value="yes"
+                >
+                Remove Current Attachment
+            </label>
+        </div>
+
+        <button type="submit" class="submit-button">
+            Save Changes →
+        </button>
+
+        <a href="{% url 'post_detail' post.id %}" class="back-link">
+            Cancel
+        </a>
+
+    </form>
+
+</section>
+
+{% endblock %}

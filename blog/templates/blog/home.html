@@ -47,6 +47,39 @@
 
         {% for post in posts %}
             <article class="post-card">
+             
+{% if post.image %}
+
+    <img
+        src="{{ post.image.url }}"
+        alt="{{ post.title }}"
+        class="post-image"
+    >
+
+{% elif post.video %}
+
+    <video controls class="post-image">
+        <source src="{{ post.video.url }}">
+        Your browser does not support video.
+    </video>
+
+{% elif post.document %}
+
+    <div class="post-document">
+        <span>PDF Attachment</span>
+
+        <a
+            href="{{ post.document.url }}"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="read-more"
+        >
+            View PDF →
+        </a>
+    </div>
+
+{% endif %}
+
 
                 <span class="post-date">
                     {{ post.published_at|date:"M d, Y - h:i A" }}

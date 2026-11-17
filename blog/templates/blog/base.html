@@ -8,6 +8,8 @@
 
     <title>{% block title %}Blogger{% endblock %}</title>
 
+    <meta name="description" content="Blogger - A space for ideas, stories, and thoughts worth sharing.">
+
     <link rel="stylesheet" href="{% static 'blog/css/style.css' %}">
 </head>
 
@@ -16,21 +18,22 @@
     <header class="navbar">
 
         <a href="{% url 'home' %}" class="logo">
-            Blogger
+            Blogger<span>.</span>
         </a>
 
-        <nav>
+        <nav class="navbar-links">
             <a href="{% url 'home' %}">Home</a>
 
             <a href="{% url 'add_post' %}" class="nav-button">
-                Write a Post
+                Write a Post <span>↗</span>
             </a>
 
             <button
                 type="button"
                 id="themeToggle"
                 class="theme-button"
-                aria-label="Switch color theme">
+                aria-label="Switch color theme"
+                title="Switch color theme">
                 🌙
             </button>
         </nav>
@@ -42,8 +45,40 @@
         {% endblock %}
     </main>
 
-    <footer>
-        <p>© 2026 Blogger. All rights reserved.</p>
+    <footer class="site-footer">
+
+        <div class="footer-content">
+
+            <div class="footer-brand">
+                <a href="{% url 'home' %}" class="footer-logo">
+                    Blogger<span>.</span>
+                </a>
+
+                <p>
+                    A space for ideas, stories, and thoughts
+                    that inspire the world.
+                </p>
+            </div>
+
+            <div class="footer-links">
+                <h3>Explore</h3>
+                <a href="{% url 'home' %}">Home</a>
+                <a href="{% url 'add_post' %}">Write a Post</a>
+            </div>
+
+            <div class="footer-links">
+                <h3>About</h3>
+                <p>Stories worth sharing.</p>
+                <p>Created with passion.</p>
+            </div>
+
+        </div>
+
+        <div class="footer-bottom">
+            <p>© 2026 Blogger. All rights reserved.</p>
+            <a href="{% url 'home' %}">Back to Top ↑</a>
+        </div>
+
     </footer>
 
     <script>
@@ -77,13 +112,11 @@
         applyTheme(savedTheme);
 
         themeToggle.addEventListener('click', function () {
-
             const newTheme = document.body.classList.contains('dark-mode')
                 ? 'light'
                 : 'dark';
 
             saveThemeCookie(newTheme);
-
             applyTheme(newTheme);
         });
     </script>

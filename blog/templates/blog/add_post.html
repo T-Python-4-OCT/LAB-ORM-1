@@ -1,3 +1,4 @@
+
 {% extends 'blog/base.html' %}
 
 {% block title %}Write a Post | Blogger{% endblock %}
@@ -12,8 +13,16 @@
         <p>Every great story starts with an idea.</p>
     </div>
 
-    <form method="POST" class="post-form">
+    <form method="POST" enctype="multipart/form-data" class="post-form">
         {% csrf_token %}
+
+        {% if errors %}
+    <div class="error-message">
+        {% for message in errors %}
+            <p>{{ message }}</p>
+        {% endfor %}
+    </div>
+{% endif %}
 
         <div class="form-group">
             <label for="title">Post Title</label>
@@ -36,6 +45,28 @@
                 placeholder="Start writing your thoughts..."
                 required
             ></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="attachment_type">Attachment Type</label>
+
+            <select name="attachment_type" id="attachment_type">
+                <option value="">No Attachment</option>
+                <option value="image">Image</option>
+                <option value="video">Video</option>
+                <option value="document">PDF</option>
+            </select>
+        </div>
+
+        <div class="form-group">
+            <label for="attachment">Choose File</label>
+
+            <input
+                type="file"
+                id="attachment"
+                name="attachment"
+                accept="image/jpeg,image/png,image/webp,video/mp4,video/webm,application/pdf"
+            >
         </div>
 
         <button type="submit" class="submit-button">

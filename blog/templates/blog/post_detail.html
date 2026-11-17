@@ -17,12 +17,59 @@
             {{ post.published_at|date:"M d, Y - h:i A" }}
         </span>
 
+        <!-- Image Attachment -->
+        {% if post.image %}
+
+            <img
+                src="{{ post.image.url }}"
+                alt="{{ post.title }}"
+                class="detail-image"
+            >
+
+        <!-- Video Attachment -->
+        {% elif post.video %}
+
+            <video controls width="100%">
+                <source src="{{ post.video.url }}">
+                Your browser does not support video.
+            </video>
+
+        <!-- PDF Attachment -->
+        {% elif post.document %}
+
+            <div class="document-attachment">
+                <p>Attached PDF File</p>
+
+                <a
+                    href="{{ post.document.url }}"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="read-more"
+                >
+                    View PDF →
+                </a>
+            </div>
+
+        {% endif %}
+
         <h1>{{ post.title }}</h1>
 
         <div class="detail-divider"></div>
 
         <div class="detail-content">
             {{ post.content|linebreaks }}
+        </div>
+
+        <div class="post-actions">
+
+            <a href="{% url 'edit_post' post.id %}" class="read-more">
+                Edit Post →
+            </a>
+
+            <a href="{% url 'delete_post' post.id %}" class="read-more">
+                Delete Post
+            </a>
+
         </div>
 
     </article>

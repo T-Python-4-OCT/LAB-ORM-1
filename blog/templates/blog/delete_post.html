@@ -1,0 +1,38 @@
+
+{% extends 'blog/base.html' %}
+
+{% block title %}Delete Post | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="form-section">
+
+    <div class="form-heading">
+        <span>DELETE YOUR STORY</span>
+        <h1>Delete post<span>.</span></h1>
+        <p>Are you sure you want to delete this post?</p>
+    </div>
+
+    <div class="post-form">
+
+        <h3>{{ post.title }}</h3>
+
+        <p>This action cannot be undone.</p>
+
+        <form method="POST">
+            {% csrf_token %}
+
+            <button type="submit" class="submit-button">
+                Yes, Delete Post
+            </button>
+        </form>
+
+        <a href="{% url 'post_detail' post.id %}" class="back-link">
+            Cancel
+        </a>
+
+    </div>
+
+</section>
+
+{% endblock %}
