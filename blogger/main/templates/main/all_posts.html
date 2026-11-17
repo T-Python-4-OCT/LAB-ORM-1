@@ -1,0 +1,85 @@
+{% extends "main/base.html" %}
+{% load static %}
+{% block title %}كل التدوينات{% endblock %}
+
+{# All the posts with filtering (status + search), ordering and limiting. The form uses GET so the choices go in the URL #}
+{% block content %}
+<section class="container page">
+  <h1 class="page-title">كل التدوينات</h1>
+  <p class="page-lead">صفّ التدوينات، رتّبها، واختر كم وحدة تبي تشوف.</p>
+
+  <form class="filters" method="get" action="{% url 'main:all_posts' %}" role="search">
+    <div class="filter filter-search">
+      <label for="q">بحث</label>
+      <div class="search-box">
+        <i class="bi bi-search" aria-hidden="true"></i>
+        <input id="q" name="q" type="search" value="{{ search }}" placeholder="كلمة من العنوان أو المحتوى" maxlength="100">
+      </div>
+    </div>
+
+    <div class="filter">
+      <label for="order">الترتيب</label>
+      <select id="order" name="order">
+        {% for key, label in order_choices.items %}
+          <option value="{{ key }}" {% if key == order %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+      </select>
+    </div>
+
+    <div class="filter">
+      <label for="limit">العدد</label>
+      <select id="limit" name="limit">
+        {% for number in limit_choices %}
+          <option value="{{ number }}" {% if number|stringformat:"s" == limit %}selected{% endif %}>{{ number }}</option>
+        {% endfor %}
+        <option value="all" {% if limit == "all" %}selected{% endif %}>الكل</option>
+      </select>
+    </div>
+
+    <fieldset class="filter filter-status">
+      <legend>الحالة</legend>
+      <div class="chips">
+        {% for key, label in status_choices.items %}
+          <label class="chip"><input type="radio" name="status" value="{{ key }}" {% if key == status %}checked{% endif %}><span>{{ label }}</span></label>
+        {% endfor %}
+      </div>
+    </fieldset>
+
+    <div class="filter-actions">
+      <button class="btn btn-primary" type="submit"><i class="bi bi-funnel"></i> طبّق</button>
+      {% if is_filtered or order != "newest" or limit != "10" %}
+        <a class="btn btn-ghost" href="{% url 'main:all_posts' %}">مسح</a>
+      {% endif %}
+    </div>
+  </form>
+
+  <p class="results-count">
+    {% if found_count %}
+      يعرض <strong>{{ shown_count }}</strong> من <strong>{{ found_count }}</strong> تدوينة{% if search %} فيها «{{ search }}»{% endif %}
+    {% endif %}
+  </p>
+
+  {% for post in posts %}
+    {% include "main/partials/post_card.html" with featured=False %}
+  {% empty %}
+    <div class="empty">
+      <img src="{% static 'main/images/empty.svg' %}" alt="" width="200" height="160">
+      {% if is_filtered %}
+        <h3>ما لقينا تدوينات بهذا الاختيار</h3>
+        <p>جرّب كلمة ثانية أو غيّر الحالة.</p>
+        <a class="btn btn-ghost" href="{% url 'main:all_posts' %}">اعرض الكل</a>
+      {% else %}
+        <h3>ما فيه تدوينات للحين</h3>
+        <p>كن أول من يكتب في Blogger.</p>
+        <a class="btn btn-primary" href="{% url 'main:add_post' %}"><i class="bi bi-pencil-square"></i> اكتب أول تدوينة</a>
+      {% endif %}
+    </div>
+  {% endfor %}
+
+  {% if limit != "all" and found_count > shown_count %}
+    <div class="see-all">
+      <a class="btn btn-ghost" href="?q={{ search|urlencode }}&status={{ status }}&order={{ order }}&limit=all">اعرض الكل ({{ found_count }})</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

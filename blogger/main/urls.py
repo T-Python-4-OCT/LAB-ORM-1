@@ -6,6 +6,7 @@ app_name = "main"
 
 urlpatterns = [
     path("", views.home, name="home"),
+    path("posts/", views.all_posts, name="all_posts"),
     path("posts/new/", views.add_post, name="add_post"),
     # Path parameter: the post id is part of the link, e.g. /posts/3/update/
     path("posts/<int:post_id>/", views.post_detail, name="post_detail"),

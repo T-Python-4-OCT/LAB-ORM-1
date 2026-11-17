@@ -32,5 +32,21 @@
       <a class="btn-small btn-small-danger" href="{% url 'main:delete_post' post.id %}"><i class="bi bi-trash3"></i> حذف</a>
     </div>
   </footer>
+
+  {% if other_posts %}
+    <aside class="other-posts">
+      <h2 class="section-title">تدوينات أخرى</h2>
+      <ul>
+        {% for other in other_posts %}
+          <li>
+            <a href="{% url 'main:post_detail' other.id %}">
+              {% if other.image %}<img src="{{ other.image.url }}" alt="" loading="lazy">{% else %}<span class="other-icon"><i class="bi bi-file-text"></i></span>{% endif %}
+              <span><strong>{{ other.title }}</strong><small>{{ other.published_at|date:"j F Y" }}</small></span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </aside>
+  {% endif %}
 </article>
 {% endblock %}

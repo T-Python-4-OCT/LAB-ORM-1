@@ -1,6 +1,7 @@
-"""Views of the blog: home page, one post, add a post, update a post, delete a post."""
+"""Views of the blog: home page, all posts (filter / order / limit), one post, add, update, delete."""
 
 from django.contrib import messages
+from django.db.models import Q
 from django.http import HttpRequest, HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from PIL import Image, UnidentifiedImageError
@@ -10,6 +11,17 @@ from main.models import Post
 TITLE_MAX = 2048
 EXCERPT_WORDS = 40   # how many words of each post the home page shows
 IMAGE_MAX_MB = 5
+HOME_LIMIT = 5        # the home page shows only the latest 5 posts
+OTHER_POSTS = 3       # "تدوينات أخرى" under a post
+
+# The choices of the "all posts" page. Only these values are accepted from the URL.
+STATUS_CHOICES = {"all": "الكل", "published": "منشور", "unpublished": "غير منشور"}
+ORDER_CHOICES = {
+    "newest": ("-published_at", "الأحدث أولاً"),
+    "oldest": ("published_at", "الأقدم أولاً"),
+    "title": ("title", "العنوان (أ - ي)"),
+}
+LIMIT_CHOICES = [5, 10, 20]    # and "all" = no limit
 IMAGE_TYPES = {"image/jpeg", "image/png", "image/webp", "image/gif"}
 
 
@@ -60,21 +72,80 @@ def form_context(values: dict, errors: dict, post: Post | None = None) -> dict:
 
 
 def home(request: HttpRequest) -> HttpResponse:
-    """All the posts, newest first. Each one shows "منشور" (green) or "غير منشور" (grey) from is_published."""
-    posts = Post.objects.all().order_by("-published_at")
+    """The latest posts only. Each one shows "منشور" (green) or "غير منشور" (grey) from is_published."""
+    all_posts = Post.objects.all()
     context = {
-        "posts": posts,
+        # Ordering: newest first.  Limiting: [:HOME_LIMIT] becomes LIMIT 5 in the SQL.
+        "posts": all_posts.order_by("-published_at")[:HOME_LIMIT],
+        "total_count": all_posts.count(),
         "excerpt_words": EXCERPT_WORDS,
-        "published_count": posts.filter(is_published=True).count(),
-        "unpublished_count": posts.filter(is_published=False).count(),
+        # Filtering: only the rows where is_published is True / False
+        "published_count": all_posts.filter(is_published=True).count(),
+        "unpublished_count": all_posts.filter(is_published=False).count(),
     }
     return render(request, "main/home.html", context)
+
+
+def all_posts(request: HttpRequest) -> HttpResponse:
+    """/posts/?status=published&q=قهوة&order=oldest&limit=10
+
+    The choices come in the URL (a GET form), so a filtered page can be shared or refreshed.
+    Filtering -> filter() / Q,  Ordering -> order_by(),  Limiting -> [:limit]
+    """
+    # Read the choices, and fall back to the default when a value is missing or not allowed
+    status = request.GET.get("status", "all")
+    if status not in STATUS_CHOICES:
+        status = "all"
+    order = request.GET.get("order", "newest")
+    if order not in ORDER_CHOICES:
+        order = "newest"
+    limit = request.GET.get("limit", str(LIMIT_CHOICES[1]))
+    if limit != "all" and (not limit.isdigit() or int(limit) not in LIMIT_CHOICES):
+        limit = str(LIMIT_CHOICES[1])
+    search = request.GET.get("q", "").strip()
+
+    # Filtering
+    posts = Post.objects.all()
+    if status == "published":
+        posts = posts.filter(is_published=True)
+    elif status == "unpublished":
+        posts = posts.filter(is_published=False)
+    if search:
+        # Q( ) | Q( ) = OR: the word is in the title OR in the content (icontains ignores upper/lower case)
+        posts = posts.filter(Q(title__icontains=search) | Q(content__icontains=search))
+
+    # Ordering
+    posts = posts.order_by(ORDER_CHOICES[order][0])
+
+    # Limiting (count first, before slicing: a sliced QuerySet can not be filtered again)
+    found_count = posts.count()
+    if limit != "all":
+        posts = posts[: int(limit)]
+
+    context = {
+        "posts": posts,
+        "found_count": found_count,
+        "shown_count": len(posts),
+        "excerpt_words": EXCERPT_WORDS,
+        "status": status, "order": order, "limit": limit, "search": search,
+        "status_choices": STATUS_CHOICES,
+        "order_choices": {key: label for key, (_, label) in ORDER_CHOICES.items()},
+        "limit_choices": LIMIT_CHOICES,
+        "is_filtered": status != "all" or bool(search),
+    }
+    return render(request, "main/all_posts.html", context)
 
 
 def post_detail(request: HttpRequest, post_id: int) -> HttpResponse:
     """Path parameter: for /posts/3/ Django sends post_id = 3. Shows the whole post."""
     post = get_object_or_404(Post, id=post_id)
-    return render(request, "main/post_detail.html", {"post": post})
+    # Filtering + ordering + limiting together: other published posts, newest first, only 3
+    other_posts = (
+        Post.objects.filter(is_published=True)
+        .exclude(id=post.id)
+        .order_by("-published_at")[:OTHER_POSTS]
+    )
+    return render(request, "main/post_detail.html", {"post": post, "other_posts": other_posts})
 
 
 def add_post(request: HttpRequest) -> HttpResponse:

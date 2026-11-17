@@ -7,6 +7,7 @@
     </a>
     <ul class="nav-links">
       <li><a href="{% url 'main:home' %}" {% if request.resolver_match.url_name == "home" %}aria-current="page"{% endif %}><i class="bi bi-house"></i> الرئيسية</a></li>
+      <li><a href="{% url 'main:all_posts' %}" {% if request.resolver_match.url_name == "all_posts" %}aria-current="page"{% endif %}><i class="bi bi-journal-text"></i> كل التدوينات</a></li>
       <li><a class="nav-cta" href="{% url 'main:add_post' %}" {% if request.resolver_match.url_name == "add_post" %}aria-current="page"{% endif %}><i class="bi bi-pencil-square"></i> تدوينة جديدة</a></li>
     </ul>
   </nav>

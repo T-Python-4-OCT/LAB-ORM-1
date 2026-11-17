@@ -30,5 +30,12 @@
       <a class="btn btn-primary" href="{% url 'main:add_post' %}"><i class="bi bi-pencil-square"></i> اكتب أول تدوينة</a>
     </div>
   {% endfor %}
+
+  {# The home page shows only the latest posts (limiting); the rest are on the "all posts" page #}
+  {% if total_count > posts|length %}
+    <div class="see-all">
+      <a class="btn btn-ghost" href="{% url 'main:all_posts' %}"><i class="bi bi-journal-text"></i> كل التدوينات ({{ total_count }})</a>
+    </div>
+  {% endif %}
 </section>
 {% endblock %}
