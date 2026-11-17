@@ -48,16 +48,17 @@ def edit_post(request, pk):
     if request.method == 'POST':
         title = request.POST.get('title')
         content = request.POST.get('content')
+        new_image = request.FILES.get('poste')
 
         if title and content:
             post.title = title
             post.content = content
 
-            if request.FILES.get('image'):
-                post.image = request.FILES.get('image')
+            if new_image:
+                post.poste = new_image
 
             if request.POST.get('remove_image') == 'on':
-                post.image = None
+                post.poste = None
 
             post.save()
 
@@ -66,7 +67,6 @@ def edit_post(request, pk):
     return render(request, 'blog/edit_post.html', {
         'post': post
     })
-
 
 def delete_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
