@@ -1,0 +1,38 @@
+{% extends 'posts/base.html' %}
+
+{% block title %}حذف التدوينة | مدونتي{% endblock %}
+
+{% block content %}
+
+<section class="form-card confirm-card">
+
+    <div class="form-head">
+        <span class="head-icon">
+            <span class="material-symbols-outlined">delete</span>
+        </span>
+
+        <h1>حذف التدوينة</h1>
+        <p>هل أنت متأكد أنك تريد حذف هذه التدوينة؟</p>
+    </div>
+
+    <h3 dir="auto">{{ post.title }}</h3>
+
+    <form method="post">
+        {% csrf_token %}
+
+        <div class="actions">
+            <button class="btn delete-btn" type="submit">
+                <span class="material-symbols-outlined">delete</span>
+                تأكيد الحذف
+            </button>
+
+            <a class="btn btn-outline" href="{% url 'posts:home' %}">
+                <span class="material-symbols-outlined">close</span>
+                إلغاء
+            </a>
+        </div>
+    </form>
+
+</section>
+
+{% endblock %}

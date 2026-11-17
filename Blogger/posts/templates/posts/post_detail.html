@@ -1,0 +1,69 @@
+{% extends 'posts/base.html' %}
+{% load static %}
+
+{% block title %}{{ post.title }} | مدونتي{% endblock %}
+
+{% block content %}
+
+<article class="detail-card">
+
+    <div class="detail-cover">
+        {% if post.poster %}
+            {% if post.poster.name != 'images/default.jpg' %}
+                <img src="{{ post.poster.url }}" alt="{{ post.title }}">
+            {% else %}
+                <img
+                    src="{% static 'posts/img/covers/blog-cover.webp' %}"
+                    alt="{{ post.title }}"
+                >
+            {% endif %}
+        {% else %}
+            <img
+                src="{% static 'posts/img/covers/blog-cover.webp' %}"
+                alt="{{ post.title }}"
+            >
+        {% endif %}
+    </div>
+
+    <div class="detail-body">
+
+        <h1 dir="auto">{{ post.title }}</h1>
+
+        <div class="post-date">
+
+            <span class="material-symbols-outlined">
+                calendar_month
+            </span>
+
+            <span>
+                {{ post.published_at|date:"d F Y - h:i A" }}
+            </span>
+
+            {% if post.is_published %}
+                <span class="status status-on">
+                    منشور
+                </span>
+            {% else %}
+                <span class="status status-off">
+                    غير منشور
+                </span>
+            {% endif %}
+
+        </div>
+
+        <div class="detail-text" dir="auto">
+            {{ post.content|linebreaks }}
+        </div>
+
+        <a class="btn btn-outline" href="{% url 'posts:home' %}">
+            <span class="material-symbols-outlined">
+                arrow_forward
+            </span>
+            العودة للرئيسية
+        </a>
+
+    </div>
+
+</article>
+
+{% endblock %}
