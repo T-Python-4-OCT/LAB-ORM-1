@@ -1,0 +1,46 @@
+{% extends 'main/base.html' %}
+
+{% block title %}New Post | Blogger{% endblock %}
+
+{% block content %}
+<div class="page-head">
+    <div>
+        <h1>New Post</h1>
+        <p class="subtitle">Write something worth reading.</p>
+    </div>
+</div>
+
+<form method="POST" enctype="multipart/form-data" class="post-form">
+    {% csrf_token %}
+
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" maxlength="2048" placeholder="Post title" required>
+
+    <label for="content">Content</label>
+    <textarea id="content" name="content" rows="8" placeholder="Write your post here..." required></textarea>
+
+    <label for="image">Image (optional)</label>
+    <input type="file" id="image" name="image" accept="image/*">
+    <img id="image-preview" class="image-preview" alt="Preview" hidden>
+
+    <div class="form-actions">
+        <button type="submit" class="btn">Publish</button>
+        <a class="btn-link" href="{% url 'main:home' %}">Cancel</a>
+    </div>
+</form>
+
+<script>
+  const input = document.getElementById("image");
+  const preview = document.getElementById("image-preview");
+
+  input.addEventListener("change", function () {
+    const file = input.files[0];
+    if (file) {
+      preview.src = URL.createObjectURL(file);
+      preview.hidden = false;
+    } else {
+      preview.hidden = true;
+    }
+  });
+</script>
+{% endblock %}
