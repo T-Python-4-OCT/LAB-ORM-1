@@ -6,7 +6,7 @@
   </a>
   {% endif %}
   <div class="post__meta">
-    <span class="post__tag">{% if featured %}أحدث مقال{% else %}مقال{% endif %}</span>
+    <span class="post__tag">{{ post.get_category_display }}</span>
     <time datetime="{{ post.published_at|date:'c' }}">
       <span><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>{{ post.published_at|date:"j F Y" }}</span>
       <span><svg class="icon" aria-hidden="true"><use href="#i-clock"/></svg>{{ post.published_at|time:"H:i" }}</span>

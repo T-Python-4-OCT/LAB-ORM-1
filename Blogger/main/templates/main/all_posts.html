@@ -1,0 +1,51 @@
+{% extends "main/base.html" %}
+
+{% block title %}كل المقالات{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="مسار التصفح">
+      <a href="{% url 'main:home' %}">الرئيسية</a><span aria-hidden="true">‹</span><span>كل المقالات</span>
+    </nav>
+    <h1 class="page-head__title">كل المقالات</h1>
+    <p class="page-head__lead">{% if posts %}عدد المقالات المنشورة: {{ posts|length }} — مرتّبة {% if current_sort == 'oldest' %}من الأقدم إلى الأحدث{% else %}من الأحدث إلى الأقدم{% endif %}.{% else %}لا توجد مقالات منشورة بعد.{% endif %}</p>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="toolbar">
+      {# التصنيف: نحتفظ بالترتيب المختار عند تغيير التصنيف #}
+      <nav class="filters" aria-label="تصفية حسب التصنيف">
+        <a class="filters__item {% if not current_category %}is-active{% endif %}" href="{% url 'main:all_posts' %}{% if current_sort == 'oldest' %}?sort=oldest{% endif %}">الكل</a>
+        {% for value, label in categories %}
+          <a class="filters__item {% if current_category == value %}is-active{% endif %}" href="?category={{ value }}{% if current_sort == 'oldest' %}&amp;sort=oldest{% endif %}">{{ label }}</a>
+        {% endfor %}
+      </nav>
+
+      {# الترتيب: نحتفظ بالتصنيف المختار عند تغيير الترتيب #}
+      <div class="sort" role="group" aria-label="ترتيب المقالات">
+        <span class="sort__label"><svg class="icon" aria-hidden="true"><use href="#i-sort"/></svg>الترتيب:</span>
+        <a class="sort__item {% if current_sort == 'newest' %}is-active{% endif %}" href="{% url 'main:all_posts' %}{% if current_category %}?category={{ current_category }}{% endif %}">الأحدث أولاً</a>
+        <a class="sort__item {% if current_sort == 'oldest' %}is-active{% endif %}" href="?{% if current_category %}category={{ current_category }}&amp;{% endif %}sort=oldest">الأقدم أولاً</a>
+      </div>
+    </div>
+
+    {% if posts %}
+      <div class="posts posts--all">
+        {% for post in posts %}
+          {% include "main/partials/_post_card.html" with featured=False %}
+        {% endfor %}
+      </div>
+    {% else %}
+      <div class="empty">
+        <div class="empty__ball" aria-hidden="true">⚽</div>
+        <h3>لا توجد مقالات{% if current_category %} في هذا التصنيف{% endif %} بعد</h3>
+        <p>الملعب جاهز والمدرجات تنتظر… كن أول من يكتب.</p>
+        <a class="btn btn--accent" href="{% url 'main:add_post' %}"><svg class="icon" aria-hidden="true"><use href="#i-pen"/></svg>اكتب أول مقال</a>
+      </div>
+    {% endif %}
+  </div>
+</section>
+{% endblock %}

@@ -6,10 +6,11 @@
 <section class="page-head">
   <div class="container article-head">
     <nav class="crumbs" aria-label="مسار التصفح">
-      <a href="{% url 'main:home' %}">الرئيسية</a><span aria-hidden="true">‹</span><a href="{% url 'main:home' %}#latest">المقالات</a><span aria-hidden="true">‹</span><span>المقال</span>
+      <a href="{% url 'main:home' %}">الرئيسية</a><span aria-hidden="true">‹</span><a href="{% url 'main:all_posts' %}">المقالات</a><span aria-hidden="true">‹</span><span>المقال</span>
     </nav>
     <h1 class="page-head__title article-head__title">{{ post.title }}</h1>
     <div class="article-head__meta">
+      <a class="post__tag" href="{% url 'main:all_posts' %}?category={{ post.category }}">{{ post.get_category_display }}</a>
       <span class="post__tag {% if not post.is_published %}post__tag--draft{% endif %}">{% if post.is_published %}منشور{% else %}مسودة — لا يظهر في الرئيسية{% endif %}</span>
       <time datetime="{{ post.published_at|date:'c' }}">
         <span><svg class="icon" aria-hidden="true"><use href="#i-calendar"/></svg>{{ post.published_at|date:"j F Y" }}</span>
@@ -38,8 +39,8 @@
       <a class="btn btn--danger" href="{% url 'main:delete_post' post.id %}">
         <svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg>حذف المقال
       </a>
-      <a class="btn btn--outline article__back" href="{% url 'main:home' %}#latest">
-        العودة إلى المقالات<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
+      <a class="btn btn--outline article__back" href="{% url 'main:all_posts' %}">
+        كل المقالات<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
       </a>
     </div>
   </article>

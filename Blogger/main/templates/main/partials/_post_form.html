@@ -41,6 +41,12 @@
     </div>
   </div>
 
+  <div class="field {% if form.category.errors %}has-error{% endif %}">
+    <label class="field__label" for="{{ form.category.id_for_label }}">{{ form.category.label }}</label>
+    {{ form.category }}
+    {% for error in form.category.errors %}<span class="field__error">{{ error }}</span>{% endfor %}
+  </div>
+
   <label class="switch" for="{{ form.is_published.id_for_label }}">
     {{ form.is_published }}
     <span class="switch__track" aria-hidden="true"><span class="switch__thumb"></span></span>

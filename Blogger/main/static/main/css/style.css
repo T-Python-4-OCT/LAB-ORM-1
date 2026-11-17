@@ -272,3 +272,26 @@ p { margin: 0 0 1em; }
 .confirm__post span { color: var(--muted); font-size: .88rem; }
 .confirm__warn { color: var(--danger); font-weight: 700; }
 .confirm__actions { display: flex; flex-wrap: wrap; justify-content: center; gap: 12px; margin-top: 8px; }
+
+/* ---------- home: "all posts" button · all-posts page grid ---------- */
+.more-posts { display: flex; flex-wrap: wrap; align-items: center; justify-content: center; gap: 12px 20px; margin-top: 30px; padding: 22px; text-align: center; border: 2px dashed var(--line); border-radius: var(--radius); }
+.more-posts p { margin: 0; color: var(--muted); font-weight: 600; }
+.posts--all { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+.posts--all .post__more { margin-top: auto; padding-top: 14px; }
+@media (max-width: 1000px) { .posts--all { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 760px) { .posts--all { grid-template-columns: minmax(0, 1fr); } }
+
+/* ---------- category filter (all-posts page) ---------- */
+.filters { display: flex; flex-wrap: wrap; gap: 10px; }
+.filters__item { padding: 8px 18px; border-radius: 999px; border: 2px solid var(--line); background: var(--card); color: var(--ink); font-weight: 700; text-decoration: none; transition: border-color .2s, background .2s; }
+.filters__item:hover { border-color: var(--pitch-2); }
+.filters__item.is-active { background: var(--pitch); border-color: var(--pitch); color: #fff; }
+a.post__tag { text-decoration: none; }
+
+/* ---------- toolbar: category filter + date sort (all-posts page) ---------- */
+.toolbar { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 14px 20px; margin-bottom: 26px; }
+.sort { display: inline-flex; align-items: center; gap: 4px; padding: 4px; border: 2px solid var(--line); border-radius: 999px; background: var(--card); }
+.sort__label { display: inline-flex; align-items: center; gap: 6px; padding-inline: 10px 4px; color: var(--muted); font-weight: 700; font-size: .9rem; }
+.sort__item { padding: 6px 16px; border-radius: 999px; color: var(--ink); font-weight: 700; font-size: .92rem; text-decoration: none; transition: background .2s; }
+.sort__item:hover { background: #eef7f1; }
+.sort__item.is-active { background: var(--accent); color: var(--ink); }

@@ -17,8 +17,8 @@
       <a class="navbar__link {% if request.resolver_match.url_name == 'home' %}is-active{% endif %}" href="{% url 'main:home' %}">
         <svg class="icon" aria-hidden="true"><use href="#i-home"/></svg>الرئيسية
       </a>
-      <a class="navbar__link" href="{% url 'main:home' %}#latest">
-        <svg class="icon" aria-hidden="true"><use href="#i-news"/></svg>أحدث المقالات
+      <a class="navbar__link {% if request.resolver_match.url_name == 'all_posts' %}is-active{% endif %}" href="{% url 'main:all_posts' %}">
+        <svg class="icon" aria-hidden="true"><use href="#i-news"/></svg>كل المقالات
       </a>
       <a class="btn btn--accent btn--sm {% if request.resolver_match.url_name == 'add_post' %}is-active{% endif %}" href="{% url 'main:add_post' %}">
         <svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>أضف مقالاً

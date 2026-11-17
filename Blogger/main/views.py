@@ -5,10 +5,46 @@ from .forms import PostForm
 from .models import Post
 
 
+HOME_POSTS_LIMIT = 3  # how many posts the homepage shows
+
+
 def home(request):
-    """Homepage: the latest published posts, newest first."""
-    posts = Post.objects.filter(is_published=True).order_by("-published_at")
-    return render(request, "main/home.html", {"posts": posts})
+    """Homepage: only the latest 3 published posts, newest first."""
+    published = Post.objects.filter(is_published=True).order_by("-published_at")
+    return render(request, "main/home.html", {
+        "posts": published[:HOME_POSTS_LIMIT],
+        "posts_count": published.count(),  # total, for the counter and the "all posts" button
+    })
+
+
+# sorting options for the all-posts page: ?sort=newest (default) or ?sort=oldest
+SORT_OPTIONS = {
+    "newest": "-published_at",  # newest first
+    "oldest": "published_at",   # oldest first
+}
+
+
+def all_posts(request):
+    """All-posts page: every published post — can be filtered by category and sorted by date."""
+    posts = Post.objects.filter(is_published=True)
+
+    category = request.GET.get("category")  # e.g. /posts/?category=tactics
+    if category in Post.Category.values:
+        posts = posts.filter(category=category)
+    else:
+        category = None
+
+    sort = request.GET.get("sort", "newest")  # e.g. /posts/?sort=oldest
+    if sort not in SORT_OPTIONS:
+        sort = "newest"
+    posts = posts.order_by(SORT_OPTIONS[sort])
+
+    return render(request, "main/all_posts.html", {
+        "posts": posts,
+        "categories": Post.Category.choices,
+        "current_category": category,
+        "current_sort": sort,
+    })
 
 
 def add_post(request):

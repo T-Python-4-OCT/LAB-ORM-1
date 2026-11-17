@@ -8,12 +8,13 @@ class PostForm(forms.ModelForm):
 
     class Meta:
         model = Post
-        fields = ["title", "content", "is_published", "image"]
+        fields = ["title", "content", "category", "is_published", "image"]
         labels = {
             "title": "عنوان المقال",
             "content": "نص المقال",
             "is_published": "انشر المقال مباشرة في الصفحة الرئيسية",
             "image": "صورة المقال",
+            "category": "تصنيف المقال",
         }
         widgets = {
             "title": forms.TextInput(attrs={
@@ -28,6 +29,7 @@ class PostForm(forms.ModelForm):
                 "rows": 12,
             }),
             "is_published": forms.CheckboxInput(attrs={"class": "switch__input"}),
+            "category": forms.Select(attrs={"class": "field__input"}),
         }
         error_messages = {
             "title": {"required": "اكتب عنواناً للمقال."},

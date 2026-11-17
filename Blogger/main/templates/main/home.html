@@ -10,10 +10,10 @@
     <p class="hero__lead">تحليلات تكتيكية، وقصص من المدرجات، ونصائح للاعبين والمشجعين. اقرأ أحدث المقالات، أو شارك رأيك بمقال جديد.</p>
     <div class="hero__actions">
       <a class="btn btn--accent" href="{% url 'main:add_post' %}"><svg class="icon" aria-hidden="true"><use href="#i-pen"/></svg>اكتب مقالاً</a>
-      <a class="btn btn--ghost" href="#latest">تصفّح المقالات</a>
+      <a class="btn btn--ghost" href="{% url 'main:all_posts' %}">تصفّح كل المقالات</a>
     </div>
     <div class="scoreboard" aria-label="إحصاءات المدونة">
-      <div><strong>{{ posts|length }}</strong><span>مقال منشور</span></div>
+      <div><strong>{{ posts_count }}</strong><span>مقال منشور</span></div>
       <div><strong>90'</strong><span>دقيقة من الشغف</span></div>
       <div><strong>11</strong><span>لاعباً في كل قصة</span></div>
     </div>
@@ -27,7 +27,7 @@
         <p class="section__kicker">من الملعب</p>
         <h2 class="section__title">أحدث المقالات</h2>
       </div>
-      <a class="btn btn--outline btn--sm" href="{% url 'main:add_post' %}"><svg class="icon" aria-hidden="true"><use href="#i-plus"/></svg>مقال جديد</a>
+      <a class="btn btn--outline btn--sm" href="{% url 'main:all_posts' %}">كل المقالات<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg></a>
     </div>
 
     {% if posts %}
@@ -39,6 +39,13 @@
             {% include "main/partials/_post_card.html" with featured=False %}
           {% endif %}
         {% endfor %}
+      </div>
+
+      <div class="more-posts">
+        <p>{% if posts_count > posts|length %}هذه أحدث {{ posts|length }} مقالات من أصل {{ posts_count }}.{% else %}هذه كل المقالات المنشورة حالياً.{% endif %}</p>
+        <a class="btn btn--accent" href="{% url 'main:all_posts' %}">
+          عرض كل المقالات ({{ posts_count }})<svg class="icon" aria-hidden="true"><use href="#i-arrow"/></svg>
+        </a>
       </div>
     {% else %}
       <div class="empty">
