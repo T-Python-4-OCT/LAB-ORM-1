@@ -1,0 +1,43 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Blogger | Edit {{ post.title }}{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Edit Post</h1>
+    <p>Update “{{ post.title }}”.</p>
+</section>
+
+<form method="post" action="{% url 'main:post_update_view' post.id %}" enctype="multipart/form-data" class="post-form">
+    {% csrf_token %}
+
+    {% if error %}
+        <div class="alert">{{ error }}</div>
+    {% endif %}
+
+    <label for="title">Title</label>
+    <input type="text" id="title" name="title" maxlength="2048" value="{{ post.title }}" required>
+
+    <label for="content">Content</label>
+    <textarea id="content" name="content" rows="10" required>{{ post.content }}</textarea>
+
+    <label for="image">Cover Image</label>
+    <div class="image-field">
+        <img src="{{ post.image.url }}" alt="Current image">
+        <div>
+            <input type="file" id="image" name="image" accept="image/*">
+            <span class="hint">Leave empty to keep the current image.</span>
+        </div>
+    </div>
+
+    <label class="checkbox">
+        <input type="checkbox" name="is_published" {% if post.is_published %}checked{% endif %}>
+        Published
+    </label>
+
+    <div class="form-actions">
+        <a href="{% url 'main:post_detail_view' post.id %}" class="btn btn-outline">Cancel</a>
+        <button type="submit" class="btn">Save Changes</button>
+    </div>
+</form>
+{% endblock %}

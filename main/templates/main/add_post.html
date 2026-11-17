@@ -8,7 +8,7 @@
     <p>Share your thoughts with the world.</p>
 </section>
 
-<form method="post" action="{% url 'main:add_post_view' %}" class="post-form">
+<form method="post" action="{% url 'main:add_post_view' %}" enctype="multipart/form-data" class="post-form">
     {% csrf_token %}
 
     {% if error %}
@@ -20,6 +20,9 @@
 
     <label for="content">Content</label>
     <textarea id="content" name="content" rows="10" placeholder="Write your post here..." required>{{ content|default:'' }}</textarea>
+
+    <label for="image">Cover Image <span class="hint">(optional)</span></label>
+    <input type="file" id="image" name="image" accept="image/*">
 
     <label class="checkbox">
         <input type="checkbox" name="is_published" checked>

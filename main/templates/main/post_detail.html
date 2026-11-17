@@ -1,0 +1,36 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Blogger | {{ post.title }}{% endblock %}
+
+{% block content %}
+<article class="post-detail">
+    <a href="{% url 'main:home_view' %}" class="back-link">&larr; Back to posts</a>
+
+    <h1>{{ post.title }}</h1>
+    <div class="post-meta">
+        <time datetime="{{ post.published_at|date:'c' }}">
+            {{ post.published_at|date:"F j, Y" }} &middot; {{ post.published_at|time:"g:i A" }}
+        </time>
+        {% if not post.is_published %}<span class="badge">Draft</span>{% endif %}
+    </div>
+
+    <img src="{{ post.image.url }}" alt="{{ post.title }}" class="detail-image">
+
+    <div class="post-actions">
+        <a href="{% url 'main:post_update_view' post.id %}" class="btn btn-outline">Edit</a>
+        <button type="button" class="btn btn-danger" onclick="document.getElementById('delete-dialog').showModal()">Delete</button>
+    </div>
+
+    <div class="post-content">{{ post.content|linebreaks }}</div>
+</article>
+
+<dialog id="delete-dialog" class="dialog">
+    <h3>Delete Post</h3>
+    <p>Are you sure you want to delete <strong>{{ post.title }}</strong>? This can't be undone.</p>
+    <form method="post" action="{% url 'main:post_delete_view' post.id %}" class="form-actions">
+        {% csrf_token %}
+        <button type="button" class="btn btn-outline" onclick="this.closest('dialog').close()">Cancel</button>
+        <button type="submit" class="btn btn-danger">Delete</button>
+    </form>
+</dialog>
+{% endblock %}
