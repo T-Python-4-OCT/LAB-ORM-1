@@ -1,0 +1,70 @@
+
+{% extends "base.html" %}
+
+{% block title %}Home | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="hero">
+    <p class="eyebrow">WELCOME TO BLOGGER</p>
+    <h1>Stories, ideas, and inspiration.</h1>
+    <p>Explore the latest articles and share your own ideas.</p>
+    <a href="{% url 'create_post' %}" class="btn btn-primary">Create a Post</a>
+</section>
+
+<section class="posts-section">
+    <div class="section-heading">
+        <h2>Latest Posts</h2>
+        <span>{{ posts|length }} Posts</span>
+    </div>
+
+    <div class="posts-grid">
+        {% for post in posts %}
+            <article class="post-card">
+                <a
+                    href="{% url 'post_detail' post.pk %}"
+                    class="post-cover-link"
+                >
+                    <img
+                        src="{{ post.cover_url }}"
+                        alt="Cover image for {{ post.title }}"
+                        loading="lazy"
+                    >
+                </a>
+
+                <span class="post-label">ARTICLE</span>
+
+                <h3>
+                    <a class="post-title-link" href="{% url 'post_detail' post.pk %}">
+                        {{ post.title }}
+                    </a>
+                </h3>
+
+                <div class="post-content">
+                    {{ post.content|truncatewords:35|linebreaks }}
+                </div>
+
+                <a class="post-read-more" href="{% url 'post_detail' post.pk %}">
+                    Read Full Post &rarr;
+                </a>
+
+                <div class="post-footer">
+                    <time datetime="{{ post.published_at|date:'c' }}">
+                        {{ post.published_at|date:"F j, Y" }}
+                        · {{ post.published_at|time:"g:i A" }} KSA
+                    </time>
+                </div>
+            </article>
+        {% empty %}
+            <div class="empty-state">
+                <h3>No posts available yet</h3>
+                <p>Be the first to share something!</p>
+                <a href="{% url 'create_post' %}" class="btn btn-primary">
+                    Create First Post
+                </a>
+            </div>
+        {% endfor %}
+    </div>
+</section>
+
+{% endblock %}

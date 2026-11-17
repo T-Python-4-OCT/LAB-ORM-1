@@ -1,0 +1,64 @@
+
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>{% block title %}Blogger{% endblock %}</title>
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+
+    <script>
+        const savedTheme = localStorage.getItem("blogger-theme");
+
+        if (savedTheme === "dark") {
+            document.documentElement.dataset.theme = "dark";
+        }
+    </script>
+
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+<body>
+    <header class="site-header">
+        <nav class="navbar container">
+            <a href="{% url 'home' %}" class="logo">
+                Blogger<span>.</span>
+            </a>
+
+            <div class="nav-links">
+                <a href="{% url 'home' %}">Home</a>
+
+                <a href="{% url 'create_post' %}" class="btn btn-primary">
+                    + Write a Post
+                </a>
+
+                <button
+                    type="button"
+                    id="theme-toggle"
+                    class="theme-toggle"
+                    aria-label="Switch to dark mode"
+                    aria-pressed="false"
+                >
+                    <span aria-hidden="true">🌙</span>
+                </button>
+            </div>
+        </nav>
+    </header>
+
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer class="footer">
+        <p>© {% now "Y" %} Blogger. Built with Django ORM.</p>
+    </footer>
+
+    <script src="{% static 'js/theme.js' %}"></script>
+</body>
+</html>

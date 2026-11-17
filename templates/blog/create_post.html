@@ -1,0 +1,72 @@
+
+{% extends "base.html" %}
+
+{% block title %}Create Post | Blogger{% endblock %}
+
+{% block content %}
+<section class="form-section">
+    <div class="form-header">
+        <p class="eyebrow">SHARE YOUR STORY</p>
+        <h1>Create a New Post</h1>
+        <p>Write something worth sharing.</p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="post-form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div class="form-group">
+            <label for="{{ form.title.id_for_label }}">Post Title</label>
+            {{ form.title }}
+            {{ form.title.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.content.id_for_label }}">Content</label>
+            {{ form.content }}
+            {{ form.content.errors }}
+        </div>
+
+        <div class="form-group upload-group">
+            <label for="{{ form.cover_image.id_for_label }}">
+                Post Cover Image
+                <span class="optional-label">(optional)</span>
+            </label>
+
+            {{ form.cover_image }}
+            {{ form.cover_image.errors }}
+
+            <small class="field-help">
+                Upload a JPG, PNG, WEBP, or GIF image
+                (maximum 10 MB).
+                Leave empty to use the default Blogger cover.
+            </small>
+        </div>
+
+        <div class="form-group upload-group">
+            <label for="{{ form.media_files.id_for_label }}">
+                Attach images, videos or documents
+                <span class="optional-label">(optional)</span>
+            </label>
+
+            {{ form.media_files }}
+
+            <small class="field-help">
+                {{ form.media_files.help_text }}
+            </small>
+
+            {{ form.media_files.errors }}
+        </div>
+
+        <div class="form-actions">
+            <a href="{% url 'home' %}" class="btn btn-secondary">
+                Cancel
+            </a>
+
+            <button type="submit" class="btn btn-primary">
+                Publish Post
+            </button>
+        </div>
+    </form>
+</section>
+{% endblock %}

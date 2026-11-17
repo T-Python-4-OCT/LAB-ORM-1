@@ -1,0 +1,126 @@
+
+{% extends "base.html" %}
+
+{% block title %}Edit Post | Blogger{% endblock %}
+
+{% block content %}
+<section class="form-section">
+
+    <div class="form-header">
+        <p class="eyebrow">UPDATE YOUR STORY</p>
+        <h1>Edit Post</h1>
+        <p>Update your story and manage its attachments.</p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="post-form">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div class="form-group">
+            <label for="{{ form.title.id_for_label }}">
+                Post Title
+            </label>
+
+            {{ form.title }}
+            {{ form.title.errors }}
+        </div>
+
+        <div class="form-group">
+            <label for="{{ form.content.id_for_label }}">
+                Content
+            </label>
+
+            {{ form.content }}
+            {{ form.content.errors }}
+        </div>
+
+        <div class="form-group upload-group">
+            <label for="{{ form.cover_image.id_for_label }}">
+                Post Cover Image
+            </label>
+
+            <div class="cover-preview">
+                <img
+                    src="{{ post.cover_url }}"
+                    alt="Current cover for {{ post.title }}"
+                >
+            </div>
+
+            {{ form.cover_image }}
+            {{ form.cover_image.errors }}
+
+            <small class="field-help">
+                Upload a new image to replace the current cover.
+                Leave the existing selection unchanged to keep it.
+                Clearing a custom image restores the default cover.
+            </small>
+        </div>
+
+        {% if attachments %}
+        <fieldset class="existing-attachments">
+            <legend>Existing attachments</legend>
+
+            <p class="field-help">
+                Check the attachments you want removed
+                when you save changes.
+            </p>
+
+            <div class="existing-attachments-list">
+                {% for attachment in attachments %}
+
+                <label class="attachment-removal-item">
+                    <input
+                        type="checkbox"
+                        name="remove_media"
+                        value="{{ attachment.pk }}"
+                    >
+
+                    <span class="attachment-kind">
+                        {{ attachment.get_media_type_display }}
+                    </span>
+
+                    <span class="attachment-filename">
+                        {{ attachment.original_name }}
+                    </span>
+
+                    <span class="remove-caption">
+                        Remove
+                    </span>
+                </label>
+
+                {% endfor %}
+            </div>
+        </fieldset>
+        {% endif %}
+
+        <div class="form-group upload-group">
+            <label for="{{ form.media_files.id_for_label }}">
+                Add more images, videos or documents
+                <span class="optional-label">(optional)</span>
+            </label>
+
+            {{ form.media_files }}
+
+            <small class="field-help">
+                {{ form.media_files.help_text }}
+            </small>
+
+            {{ form.media_files.errors }}
+        </div>
+
+        <div class="form-actions">
+            <a
+                href="{% url 'post_detail' post.pk %}"
+                class="btn btn-secondary"
+            >
+                Cancel
+            </a>
+
+            <button type="submit" class="btn btn-primary">
+                Save Changes
+            </button>
+        </div>
+    </form>
+
+</section>
+{% endblock %}

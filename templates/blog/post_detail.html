@@ -1,0 +1,147 @@
+
+{% extends "base.html" %}
+
+{% block title %}{{ post.title }} | Blogger{% endblock %}
+
+{% block content %}
+<section class="detail-section">
+    <a class="back-link" href="{% url 'home' %}">
+        &larr; Back to Posts
+    </a>
+
+    <article class="detail-card">
+
+        <div class="detail-heading">
+            <p class="eyebrow">ARTICLE DETAILS</p>
+            <h1>{{ post.title }}</h1>
+
+            <time class="detail-date" datetime="{{ post.published_at|date:'c' }}">
+                Published {{ post.published_at|date:"F j, Y" }}
+                at {{ post.published_at|time:"g:i A" }} KSA (UTC+3)
+            </time>
+        </div>
+
+        <div class="detail-cover-wrapper">
+            <img
+                src="{{ post.cover_url }}"
+                alt="Cover image for {{ post.title }}"
+                class="detail-cover"
+            >
+        </div>
+
+        <div class="detail-content">
+            {{ post.content|linebreaks }}
+        </div>
+
+        {% if images or videos or documents %}
+
+        <section class="post-attachments" aria-label="Post attachments">
+            <h2>Attachments</h2>
+
+            {% if images %}
+            <div class="attachment-section">
+                <h3>
+                    Images <span>({{ images|length }})</span>
+                </h3>
+
+                <div class="media-image-grid">
+                    {% for attachment in images %}
+                    <a
+                        href="{{ attachment.file.url }}"
+                        target="_blank"
+                        rel="noopener"
+                        class="media-image-link"
+                        aria-label="Open {{ attachment.original_name }}"
+                    >
+                        <img
+                            src="{{ attachment.file.url }}"
+                            alt="{{ attachment.original_name }}"
+                            loading="lazy"
+                        >
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if videos %}
+            <div class="attachment-section">
+                <h3>
+                    Videos <span>({{ videos|length }})</span>
+                </h3>
+
+                <div class="media-video-grid">
+                    {% for attachment in videos %}
+
+                    <div class="media-video-card">
+                        <video controls preload="metadata" playsinline>
+                            <source src="{{ attachment.file.url }}">
+                            Your browser doesn't support HTML5 video.
+                        </video>
+
+                        <p>{{ attachment.original_name }}</p>
+                    </div>
+
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+
+            {% if documents %}
+            <div class="attachment-section">
+                <h3>
+                    Documents <span>({{ documents|length }})</span>
+                </h3>
+
+                <div class="document-list">
+                    {% for attachment in documents %}
+
+                    <a
+                        class="document-item"
+                        href="{{ attachment.file.url }}"
+                        download="{{ attachment.original_name }}"
+                    >
+                        <span aria-hidden="true">📄</span>
+                        <span class="document-name">
+                            {{ attachment.original_name }}
+                        </span>
+                        <span class="document-download">
+                            Download
+                        </span>
+                    </a>
+
+                    {% endfor %}
+                </div>
+            </div>
+            {% endif %}
+        </section>
+        {% endif %}
+
+        <div class="detail-actions">
+            <a
+                class="btn btn-primary"
+                href="{% url 'update_post' post.pk %}"
+            >
+                Edit Post
+            </a>
+
+            <form
+                method="post"
+                action="{% url 'delete_post' post.pk %}"
+                onsubmit="return confirm('Delete this post and all attachments permanently? This cannot be undone.');"
+            >
+                {% csrf_token %}
+
+                <button class="btn btn-danger" type="submit">
+                    Delete Post
+                </button>
+            </form>
+
+            <a class="btn btn-secondary" href="{% url 'home' %}">
+                Back to Posts
+            </a>
+        </div>
+
+    </article>
+</section>
+{% endblock %}
