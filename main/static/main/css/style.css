@@ -135,3 +135,82 @@ a { color: inherit; text-decoration: none; }
     .nav-links { gap: 12px; }
     .post-card, .form-wrap { padding: 20px; }
 }
+/* ========== Images ========== */
+.post-image {
+    width: 100%;
+    aspect-ratio: 16 / 9;
+    object-fit: cover;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.post-form input[type="file"] {
+    padding: 10px;
+    border: 1px dashed var(--line);
+    border-radius: 12px;
+    background: var(--bg);
+    font: inherit;
+    cursor: pointer;
+}
+
+.optional { color: var(--muted); font-weight: 400; font-size: 0.9rem; }
+/* ========== Detail page ========== */
+.post-image-link { display: block; }
+.post-title a:hover { color: var(--accent); }
+
+.read-more {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    margin-top: 12px;
+    color: var(--accent);
+    font-weight: 700;
+    transition: gap 0.2s;
+}
+.read-more:hover { gap: 10px; }
+
+.post-detail {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 36px;
+}
+.back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--muted); font-weight: 500; margin-bottom: 16px; }
+.back-link:hover { color: var(--accent); }
+
+.detail-title { font-family: "Reem Kufi", sans-serif; font-size: clamp(1.8rem, 5vw, 2.5rem); line-height: 1.4; margin-bottom: 10px; }
+.detail-image { width: 100%; max-height: 460px; object-fit: cover; border-radius: 12px; margin: 18px 0; }
+.detail-content { font-size: 1.1rem; color: #3d4148; }
+.detail-content p { margin-bottom: 14px; }
+
+.badge-draft { background: #fff4e6; color: var(--accent-dark); padding: 0 10px; border-radius: 999px; font-weight: 700; }
+
+@media (max-width: 560px) {
+    .post-detail { padding: 20px; }
+}
+/* ========== Update ========== */
+.current-image { width: 200px; aspect-ratio: 16 / 9; object-fit: cover; border-radius: 10px; }
+
+.detail-actions {
+    display: flex;
+    gap: 12px;
+    margin-top: 28px;
+    padding-top: 20px;
+    border-top: 1px solid var(--line);
+}
+/* ========== Delete ========== */
+.btn-danger {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 20px;
+    border-radius: 999px;
+    font: inherit;
+    font-weight: 700;
+    cursor: pointer;
+    border: 1px solid #f1c2c2;
+    background: #fff5f5;
+    color: #c92a2a;
+    transition: background 0.2s, color 0.2s;
+}
+.btn-danger:hover { background: #c92a2a; color: #fff; }

@@ -1,0 +1,37 @@
+{% extends "main/base.html" %}
+
+{% block title %}تعديل: {{ post.title }}{% endblock %}
+
+{% block content %}
+
+<section class="form-wrap">
+    <h1><i class="bi bi-pencil"></i> تعديل المقال</h1>
+
+    <form method="post" action="{% url 'main:update_post' post.id %}" enctype="multipart/form-data" class="post-form">
+        {% csrf_token %}
+
+        <label for="title">العنوان</label>
+        <input type="text" id="title" name="title" maxlength="2048" required value="{{ post.title }}">
+
+        <label for="content">المحتوى</label>
+        <textarea id="content" name="content" rows="10" required>{{ post.content }}</textarea>
+
+        <label for="image">صورة المقال <span class="optional">(اتركها فاضية لو ما تبي تغيّرها)</span></label>
+        {% if post.image %}
+            <img src="{{ post.image.url }}" alt="الصورة الحالية" class="current-image">
+        {% endif %}
+        <input type="file" id="image" name="image" accept="image/*">
+
+        <label class="check">
+            <input type="checkbox" name="is_published" {% if post.is_published %}checked{% endif %}>
+            منشور
+        </label>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary"><i class="bi bi-check-lg"></i> حفظ التعديلات</button>
+            <a href="{% url 'main:post_detail' post.id %}" class="btn-ghost">إلغاء</a>
+        </div>
+    </form>
+</section>
+
+{% endblock %}
