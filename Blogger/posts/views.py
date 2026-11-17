@@ -1,4 +1,4 @@
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest
 from django.contrib import messages
 
@@ -14,6 +14,7 @@ def add_post_view(request: HttpRequest):
             title=request.POST["title"],
             content=request.POST["content"],
             is_published="is_published" in request.POST,  # checkbox is only sent when checked
+            image=request.FILES.get("image"),
         )
         new_post.save()
 
@@ -25,3 +26,41 @@ def add_post_view(request: HttpRequest):
         return redirect("main:home_view")
 
     return render(request, "posts/add_post.html")
+
+
+def update_post_view(request: HttpRequest, post_id: int):
+
+    post = get_object_or_404(Post, pk=post_id)
+
+    if request.method == "POST":
+        post.title = request.POST["title"]
+        post.content = request.POST["content"]
+        post.is_published = "is_published" in request.POST
+
+        if "image" in request.FILES:
+            if post.image:
+                post.image.delete(save=False)
+            post.image = request.FILES["image"]
+        elif "remove_image" in request.POST and post.image:
+            post.image.delete(save=False)
+
+        post.save()
+        messages.success(request, "Your changes have been saved.")
+        return redirect("main:home_view")
+
+    return render(request, "posts/add_post.html", {"post": post})
+
+
+def delete_post_view(request: HttpRequest, post_id: int):
+
+    post = get_object_or_404(Post, pk=post_id)
+
+    if request.method == "POST":
+        if post.image:
+            post.image.delete(save=False)
+        post.delete()
+
+        messages.success(request, "The post has been deleted.")
+        return redirect("main:home_view")
+
+    return render(request, "posts/delete_post.html", {"post": post})

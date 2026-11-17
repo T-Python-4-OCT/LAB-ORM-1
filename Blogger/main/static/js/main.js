@@ -144,4 +144,27 @@ if (titleInput && contentInput && previewTitle && previewContent) {
   [titleInput, contentInput].forEach((el) => el.addEventListener("input", updatePreview));
   if (publishInput) publishInput.addEventListener("change", updatePreview);
   updatePreview();
+
+  const imageInput = document.getElementById("image");
+  const previewImage = document.getElementById("previewImage");
+  const removeImage = document.getElementById("remove_image");
+  if (imageInput && previewImage) {
+    const originalSrc = previewImage.getAttribute("src");
+
+    const updateImagePreview = () => {
+      const file = imageInput.files[0];
+      if (previewImage.src.startsWith("blob:")) URL.revokeObjectURL(previewImage.src);
+      if (file) {
+        previewImage.src = URL.createObjectURL(file);
+      } else if (originalSrc && !(removeImage && removeImage.checked)) {
+        previewImage.src = originalSrc;
+      } else {
+        previewImage.removeAttribute("src");
+      }
+      previewImage.hidden = !previewImage.getAttribute("src");
+    };
+
+    imageInput.addEventListener("change", updateImagePreview);
+    if (removeImage) removeImage.addEventListener("change", updateImagePreview);
+  }
 }

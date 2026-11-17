@@ -41,7 +41,8 @@
   </div>
 
   <article class="cover">
-    <div class="cover-art reveal" data-tilt aria-hidden="true">
+    <div class="cover-art reveal{% if featured_post.image %} has-image{% endif %}" data-tilt aria-hidden="true">
+      {% if featured_post.image %}<img class="cover-image" src="{{ featured_post.image.url }}" alt="" />{% endif %}
       <div class="label">Blogger &middot; Nº {{ posts_count|stringformat:"02d" }}</div>
       <div>
         <div class="cover-day">{{ featured_post.published_at|date:"d" }}</div>
@@ -59,6 +60,14 @@
         </span>
         <span><span class="material-symbols-outlined">menu_book</span>{{ featured_post.reading_time }} min read</span>
       </div>
+      <div class="post-actions">
+        <a href="{% url 'posts:update_post_view' featured_post.id %}" class="icon-action" title="Edit post" aria-label="Edit post">
+          <span class="material-symbols-outlined">edit</span>
+        </a>
+        <a href="{% url 'posts:delete_post_view' featured_post.id %}" class="icon-action danger" title="Delete post" aria-label="Delete post">
+          <span class="material-symbols-outlined">delete</span>
+        </a>
+      </div>
     </div>
   </article>
 
@@ -71,6 +80,7 @@
     <div class="post-grid">
       {% for post in other_posts %}
         <article class="post-card reveal" style="--d: {% cycle '0s' '.08s' '.16s' %}">
+          {% if post.image %}<img class="post-image" src="{{ post.image.url }}" alt="{{ post.title }}" loading="lazy" />{% endif %}
           <div class="post-index">{{ forloop.counter|add:1|stringformat:"02d" }}</div>
           <h3 class="post-title" dir="auto">{{ post.title }}</h3>
           <p class="post-content" dir="auto">{{ post.content|linebreaksbr }}</p>
@@ -80,6 +90,14 @@
               <span class="label">Read more</span>
               <span class="material-symbols-outlined">expand_more</span>
             </button>
+            <div class="post-actions">
+              <a href="{% url 'posts:update_post_view' post.id %}" class="icon-action" title="Edit post" aria-label="Edit post">
+                <span class="material-symbols-outlined">edit</span>
+              </a>
+              <a href="{% url 'posts:delete_post_view' post.id %}" class="icon-action danger" title="Delete post" aria-label="Delete post">
+                <span class="material-symbols-outlined">delete</span>
+              </a>
+            </div>
           </div>
         </article>
       {% endfor %}

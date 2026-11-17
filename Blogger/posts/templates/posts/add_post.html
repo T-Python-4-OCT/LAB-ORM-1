@@ -1,20 +1,25 @@
 {% extends 'main/base.html' %}
 
-{% block title %}Blogger | The Writing Desk{% endblock %}
+{% block title %}Blogger | {% if post %}Edit Story{% else %}The Writing Desk{% endif %}{% endblock %}
 
 {% block content %}
 
 <section class="desk-head reveal">
-  <div class="label issue-kicker">The Writing Desk</div>
+  <div class="label issue-kicker">{% if post %}Editing &middot; Nº {{ post.id|stringformat:"02d" }}{% else %}The Writing Desk{% endif %}</div>
   <h1 class="display-title">
-    <span class="line"><span>Set your story</span></span>
-    <span class="line"><span style="--ld: .12s"><em>in ink.</em></span></span>
+    {% if post %}
+      <span class="line"><span>Revise your story</span></span>
+      <span class="line"><span style="--ld: .12s"><em>in ink.</em></span></span>
+    {% else %}
+      <span class="line"><span>Set your story</span></span>
+      <span class="line"><span style="--ld: .12s"><em>in ink.</em></span></span>
+    {% endif %}
   </h1>
 </section>
 
 <div class="desk">
 
-  <form class="editor reveal" style="--d: .1s" action="{% url 'posts:add_post_view' %}" method="post">
+  <form class="editor reveal" style="--d: .1s" action="{% if post %}{% url 'posts:update_post_view' post.id %}{% else %}{% url 'posts:add_post_view' %}{% endif %}" method="post" enctype="multipart/form-data">
     {% csrf_token %}
 
     <div class="field">
@@ -22,7 +27,7 @@
         <span>Headline</span>
         <span class="field-count" data-count-for="title"></span>
       </label>
-      <input type="text" id="title" name="title" class="input-title" placeholder="A headline worth reading" maxlength="2048" dir="auto" autocomplete="off" required />
+      <input type="text" id="title" name="title" class="input-title" placeholder="A headline worth reading" maxlength="2048" dir="auto" autocomplete="off" value="{{ post.title }}" required />
     </div>
 
     <div class="field">
@@ -30,12 +35,30 @@
         <span>Story</span>
         <span class="field-count" data-count-for="content" data-mode="words"></span>
       </label>
-      <textarea id="content" name="content" class="input-content" placeholder="Begin your story here…" dir="auto" required></textarea>
+      <textarea id="content" name="content" class="input-content" placeholder="Begin your story here…" dir="auto" required>{{ post.content }}</textarea>
+    </div>
+
+    <div class="field">
+      <label for="image" class="field-label label">
+        <span>Cover image</span>
+        <span class="field-count">{% if post.image %}Choose a file to replace it{% else %}Optional{% endif %}</span>
+      </label>
+      <input type="file" id="image" name="image" class="input-image" accept="image/*" />
+
+      {% if post.image %}
+        <label class="current-image" for="remove_image">
+          <img src="{{ post.image.url }}" alt="Current cover image" />
+          <span>
+            <input type="checkbox" id="remove_image" name="remove_image" />
+            Remove current image
+          </span>
+        </label>
+      {% endif %}
     </div>
 
     <div class="editor-foot">
       <label class="toggle" for="is_published">
-        <input type="checkbox" id="is_published" name="is_published" checked />
+        <input type="checkbox" id="is_published" name="is_published" {% if not post or post.is_published %}checked{% endif %} />
         <span class="toggle-track"></span>
         <span><strong>Publish now</strong> &middot; off = draft</span>
       </label>
@@ -43,7 +66,11 @@
       <div class="actions">
         <a href="{% url 'main:home_view' %}" class="btn-line">Cancel</a>
         <button type="submit" class="btn-ink">
-          <span class="material-symbols-outlined">send</span> Publish
+          {% if post %}
+            <span class="material-symbols-outlined">save</span> Save changes
+          {% else %}
+            <span class="material-symbols-outlined">send</span> Publish
+          {% endif %}
         </button>
       </div>
     </div>
@@ -55,13 +82,22 @@
       <span class="preview-dot"></span> Printer's proof
     </div>
     <article class="post-card preview-card">
-      <div class="post-index" id="previewStatus">Publishing &middot; {% now "M d, Y" %}</div>
+      <img class="post-image" id="previewImage" alt="" {% if post.image %}src="{{ post.image.url }}"{% else %}hidden{% endif %} />
+      <div class="post-index" id="previewStatus">Publishing &middot; {% if post %}{{ post.published_at|date:"M d, Y" }}{% else %}{% now "M d, Y" %}{% endif %}</div>
       <h3 class="post-title" id="previewTitle" dir="auto" data-empty="Your headline appears here">Your headline appears here</h3>
       <p class="post-content" id="previewContent" dir="auto" data-empty="Start writing and watch your story take shape on the page.">Start writing and watch your story take shape on the page.</p>
       <div class="post-foot">
         <span class="label"><span id="previewRead">1 min read</span></span>
       </div>
     </article>
+
+    {% if post %}
+      <div class="danger-zone">
+        <a href="{% url 'posts:delete_post_view' post.id %}" class="btn-danger">
+          <span class="material-symbols-outlined">delete</span> Delete this post
+        </a>
+      </div>
+    {% endif %}
   </aside>
 
 </div>
