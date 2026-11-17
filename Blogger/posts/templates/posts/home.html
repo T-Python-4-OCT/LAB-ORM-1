@@ -1,0 +1,38 @@
+{% extends 'posts/base.html' %}
+
+{% block title %}Home - Blogger{% endblock %}
+
+{% block content %}
+
+    <div class="page-heading">
+        <h2>Latest Posts</h2>
+        <p>Discover the latest stories and ideas.</p>
+    </div>
+    <div class="posts-grid">
+    {% for post in posts %}
+        <article class="post-card">
+            <h3>
+    <a href="{% url 'posts:detail' post.id %}">
+        {{ post.title }}
+    </a>
+</h3>
+
+          
+            <img src="{{ post.poster.url }}" class="post-image" alt="{{ post.title }}">
+
+            <div class="post-date">
+                Published: {{ post.published_at|date:"Y-m-d H:i" }}
+            </div>
+        </article>
+    {% empty %}
+        <div class="empty-state">
+            <h3>No posts yet.</h3>
+            <p>Be the first to share something!</p>
+            <a href="{% url 'posts:add_post' %}" class="button">
+                Create First Post
+            </a>
+        </div>
+    {% endfor %}
+    </div>
+
+{% endblock %}

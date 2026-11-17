@@ -1,0 +1,45 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Blogger{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'posts/css/style.css' %}">
+</head>
+<body>
+
+    <header class="site-header">
+        <div class="container header-content">
+            <h1>Blogger</h1>
+
+            <nav>
+                
+                <a href="{% url 'posts:home' %}">Home</a>
+                <a href="{% url 'posts:all_posts' %}">All Posts</a>
+                <a href="{% url 'posts:add_post' %}" class="nav-button">Add Post</a>
+            </nav>
+        </div>
+    </header>
+
+    <main class="container">
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+   {% if request.path == '/' %}
+    <a href="#top" class="footer-back-btn">
+        <span>↑</span> Back to Top
+    </a>
+{% else %}
+    <a href="{% url 'posts:home' %}" class="footer-back-btn">
+        <span>←</span> Back to Home
+    </a>
+{% endif %}
+        <p>&copy; 2026 Blogger. All rights reserved.</p>
+    </footer>
+
+</body>
+</html>

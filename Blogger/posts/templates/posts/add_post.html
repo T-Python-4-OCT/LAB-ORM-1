@@ -1,0 +1,74 @@
+{% extends 'posts/base.html' %}
+
+{% block title %}Add Post - Blogger{% endblock %}
+
+{% block content %}
+
+    <div class="page-heading">
+        <h2>Create New Post</h2>
+        <p>Share your thoughts with the world.</p>
+    </div>
+
+    <div class="form-card">
+        {% if error %}
+            <p class="error-message">{{ error }}</p>
+        {% endif %}
+
+        <form method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {% if errors %}
+    <div class="validation-errors">
+        {% for error in errors %}
+            <p>{{ error }}</p>
+        {% endfor %}
+            </div>
+            {% endif %}
+          <label for="title">Post Title</label>
+    <input
+    type="text"
+    id="title"
+    name="title"
+    placeholder="Enter your post title"
+    value="{{ title|default:'' }}"
+    minlength="3"
+    maxlength="100"
+    required
+>
+
+<label for="publisher_name">Publisher Name</label>
+
+<input
+    type="text"
+    id="publisher_name"
+    name="publisher_name"
+    placeholder="Enter publisher name"
+    value="{{ publisher_name|default:'' }}"
+    minlength="2"
+    maxlength="100"
+    required
+>
+
+            <label for="content">Post Content</label>
+<textarea
+    id="content"
+    name="content"
+    placeholder="Write your post here..."
+    minlength="10"
+    required
+>{{ content|default:'' }}</textarea>
+
+            <label for="poster">Post Image</label>
+            <input
+                type="file"
+                id="poster"
+                name="poster"
+                accept="image/*"
+            >
+
+            <button type="submit" class="button">
+                Publish Post
+            </button>
+        </form>
+    </div>
+
+{% endblock %}

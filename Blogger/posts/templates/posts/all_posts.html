@@ -1,0 +1,110 @@
+{% extends 'posts/base.html' %}
+
+{% block content %}
+
+<div class="container">
+
+    <div class="page-heading">
+        <h2>All Posts</h2>
+        <p>Search and explore all published posts.</p>
+    </div>
+
+    <form method="GET" class="posts-filter-form">
+
+    <div class="filters-header">
+        <h3>Search & Filters</h3>
+        <p>Find your favorite posts</p>
+    </div>
+
+    <div class="filters-grid">
+
+        <div class="filter-field">
+            <label for="search">Post Title</label>
+            <input
+                type="search"
+                id="search"
+                name="search"
+                placeholder="Search by title..."
+                value="{{ search }}"
+            >
+        </div>
+
+        <div class="filter-field">
+            <label for="publisher">Publisher Name</label>
+            <input
+                type="search"
+                id="publisher"
+                name="publisher"
+                placeholder="Search by publisher..."
+                value="{{ publisher }}"
+            >
+        </div>
+
+        <div class="filter-field">
+            <label for="starts_with">Title Filter</label>
+            <select id="starts_with" name="starts_with">
+                <option value="">All Titles</option>
+                <option value="F" {% if starts_with == 'F' %}selected{% endif %}>Starts with F</option>
+                <option value="C" {% if starts_with == 'C' %}selected{% endif %}>Starts with C</option>
+                <option value="E" {% if starts_with == 'E' %}selected{% endif %}>Starts with E</option>
+            </select>
+        </div>
+
+        <div class="filter-field">
+            <label for="sort">Sort By</label>
+            <select id="sort" name="sort">
+                <option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest First</option>
+                <option value="oldest" {% if sort == 'oldest' %}selected{% endif %}>Oldest First</option>
+                <option value="title" {% if sort == 'title' %}selected{% endif %}>Title A-Z</option>
+            </select>
+        </div>
+
+    </div>
+
+    <div class="filters-actions">
+        <a href="{% url 'posts:all_posts' %}" class="filter-reset">
+            Reset
+        </a>
+
+        <button type="submit" class="filter-apply">
+            Apply Filters
+        </button>
+    </div>
+
+</form>
+
+  
+    <div class="posts-grid">
+
+        {% for post in posts %}
+            <article class="post-card">
+
+                <h3>
+                    <a href="{% url 'posts:detail' post.id %}">
+                        {{ post.title }}
+                    </a>
+                </h3>
+
+                {% if post.poster %}
+                    <img
+                        src="{{ post.poster.url }}"
+                        alt="{{ post.title }}"
+                        class="post-image"
+                    >
+                {% endif %}
+
+                <p class="post-date">
+                    Published: {{ post.published_at|date:"Y-m-d H:i" }}
+                </p>
+
+            </article>
+
+        {% empty %}
+            <p>No posts found matching your search.</p>
+        {% endfor %}
+
+    </div>
+
+</div>
+
+{% endblock %}

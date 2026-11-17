@@ -1,0 +1,57 @@
+{% extends 'posts/base.html' %}
+
+{% block title %}Update Post - Blogger{% endblock %}
+
+{% block content %}
+
+<div class="page-heading">
+    <h2>Update Post</h2>
+    <p>Edit your post details</p>
+</div>
+
+<div class="post-card">
+
+    {% if error %}
+        <p style="color: red;">{{ error }}</p>
+    {% endif %}
+
+    <form method="POST" enctype="multipart/form-data">
+        {% csrf_token %}
+
+        <label>Title:</label>
+        <input
+            type="text"
+            name="title"
+            value="{{ post.title }}"
+            maxlength="2048"
+            required
+        >
+
+        <label>Content:</label>
+        <textarea
+    name="content"
+    class="content-textarea"
+    rows="12"
+    required
+>{{ post.content }}</textarea>
+
+        <label>Change Image:</label>
+        <input type="file" name="poster" accept="image/*">
+
+        <button type="submit" class="button">Save Changes</button>
+        <label for="publisher_name">Publisher Name</label>
+
+<input
+    type="text"
+    id="publisher_name"
+    name="publisher_name"
+    value="{{ post.publisher_name }}"
+    minlength="2"
+    maxlength="100"
+    required
+>
+    </form>
+
+</div>
+
+{% endblock %}
