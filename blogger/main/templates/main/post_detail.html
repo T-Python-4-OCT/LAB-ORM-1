@@ -1,0 +1,52 @@
+{% extends "main/base.html" %}
+{% load arabic_time %}
+{% block title %}{{ post.title }}{% endblock %}
+
+{# The whole post: the home page shows only its first words #}
+{% block content %}
+<article class="container page post-page">
+  <a class="back" href="{% url 'main:home' %}"><i class="bi bi-arrow-right"></i> كل التدوينات</a>
+
+  <header class="post-page-head">
+    {% if post.is_published %}
+      <span class="post-badge badge-published"><i class="bi bi-check-circle-fill"></i> منشور</span>
+    {% else %}
+      <span class="post-badge badge-unpublished"><i class="bi bi-eye-slash"></i> غير منشور</span>
+    {% endif %}
+    <h1>{{ post.title }}</h1>
+    <p class="post-meta">
+      <span><i class="bi bi-calendar3"></i> {{ post.published_at|date:"l j F Y" }}</span>
+      <span><i class="bi bi-clock"></i> {{ post.published_at|time:"g:i A" }}</span>
+      <span><i class="bi bi-hourglass-split"></i> {{ post.published_at|ago }}</span>
+    </p>
+  </header>
+
+  {% if post.image %}<img class="post-page-image" src="{{ post.image.url }}" alt="صورة {{ post.title }}">{% endif %}
+
+  <div class="post-page-content">{{ post.content|linebreaks }}</div>
+
+  <footer class="post-page-foot">
+    <a class="btn btn-ghost" href="{% url 'main:home' %}"><i class="bi bi-arrow-right"></i> رجوع</a>
+    <div class="post-actions">
+      <a class="btn-small" href="{% url 'main:update_post' post.id %}"><i class="bi bi-pencil"></i> تعديل</a>
+      <a class="btn-small btn-small-danger" href="{% url 'main:delete_post' post.id %}"><i class="bi bi-trash3"></i> حذف</a>
+    </div>
+  </footer>
+
+  {% if other_posts %}
+    <aside class="other-posts">
+      <h2 class="section-title">تدوينات أخرى</h2>
+      <ul>
+        {% for other in other_posts %}
+          <li>
+            <a href="{% url 'main:post_detail' other.id %}">
+              {% if other.image %}<img src="{{ other.image.url }}" alt="" loading="lazy">{% else %}<span class="other-icon"><i class="bi bi-file-text"></i></span>{% endif %}
+              <span><strong>{{ other.title }}</strong><small>{{ other.published_at|date:"j F Y" }}</small></span>
+            </a>
+          </li>
+        {% endfor %}
+      </ul>
+    </aside>
+  {% endif %}
+</article>
+{% endblock %}

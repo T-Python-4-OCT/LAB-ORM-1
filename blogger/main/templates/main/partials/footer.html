@@ -1,0 +1,11 @@
+{% load static %}
+<footer class="site-footer">
+  <div class="container footer-inner">
+    <a class="brand brand-small" href="{% url 'main:home' %}">
+      <img src="{% static 'main/images/logo.svg' %}" alt="" width="26" height="26">
+      <span>Blogger</span>
+    </a>
+    <p>اكتب فكرتك، وخلّ الناس يقرؤونها.</p>
+    <a href="{% url 'main:add_post' %}">اكتب تدوينة <i class="bi bi-arrow-left"></i></a>
+  </div>
+</footer>
