@@ -1,88 +1,169 @@
 # 📝 Blogger — Technology Blog
 
-A modern blog website built with **Django** that allows users to create, publish, and explore technology articles.
+A modern and responsive technology blog website built with **Django**, allowing users to create, manage, and explore technology articles.
 
 ## ✨ Features
 
-- 🏠 **Homepage** — Clean layout with a welcoming hero section.
-- ✍️ **Create Posts** — Add new articles with a title, content, and image.
+- 🏠 **Homepage** — Modern editorial layout with a featured article.
+- ✍️ **Create Posts** — Publish articles with titles, content, and images.
 - 🖼️ **Image Uploads** — Attach images to blog posts.
-- 🎠 **Posts Carousel** — Browse articles in a horizontal carousel with a highlighted center card.
-- 📖 **Article Preview** — Read the full article in a modal window.
+- 📝 **Rich Text Editor** — Format articles with bold, italic, underline, headings, and lists.
+- 📖 **Article Details** — Read full articles in a dedicated preview.
+- ✏️ **Edit & Delete Posts** — Manage published articles.
 - 🌓 **Light & Dark Mode** — Switch between light and dark themes.
-- 📱 **Responsive Design** — User-friendly layout across different screen sizes.
+- 📱 **Responsive Design** — Optimized for desktop, tablet, and mobile devices.
+- 🔒 **HTML Sanitization** — Clean article content using Bleach.
 
 ## 🛠️ Built With
 
 - Python
 - Django
-- HTML
-- CSS
+- HTML5
+- CSS3
 - JavaScript
 - SQLite
+- Pillow
+- Bleach
 
 ## 📸 Screenshots
 
 ### 🏠 Homepage — Light Mode
-![Blogger Light](Blogger/BlogApp/static/BlogApp/images/screenshot/BloggerLight.png)
+
+![Home Light](Blogger/BlogApp/static/BlogApp/images/screenshot/HomeLight.png)
 
 ### 🌙 Homepage — Dark Mode
-![Blogger Dark](Blogger/BlogApp/static/BlogApp/images/screenshot/BloggerDark.png)
 
-### ✍️ Create New Article
-![Create Article](Blogger/BlogApp/static/BlogApp/images/screenshot/BloggerCreate.png)
+![Home Dark](Blogger/BlogApp/static/BlogApp/images/screenshot/HomeDark.png)
 
-### 📖 Article Details
-![Article Details](Blogger/BlogApp/static/BlogApp/images/screenshot/BloggerArticle.png)
+### ✍️ Add New Post
+
+![Add Post](Blogger/BlogApp/static/BlogApp/images/screenshot/AddPost.png)
+
+### 📖 Post Details
+
+![Post Details](Blogger/BlogApp/static/BlogApp/images/screenshot/PostDetails.png)
 
 ## 🚀 Getting Started
 
-1. Clone the repository:
+### 1. Clone the Repository
 
-   ```bash
-   git clone <your-repository-url>
-   ```
+```bash
+git clone https://github.com/iimustafa/LAB-ORM-1.git
+```
 
-2. Open the project folder:
+### 2. Navigate to the Project Directory
 
-   ```bash
-   cd Blogger
-   ```
+```bash
+cd LAB-ORM-1/Blogger
+```
 
-3. Create and activate a virtual environment:
+### 3. Create a Virtual Environment
 
-   ```bash
-   python -m venv venv
-   source venv/bin/activate
-   ```
+```bash
+python -m venv venv
+```
 
-   On Windows:
+### 4. Activate the Virtual Environment
 
-   ```bash
-   venv\\Scripts\\activate
-   ```
+**macOS / Linux:**
 
-4. Install dependencies:
+```bash
+source venv/bin/activate
+```
 
-   ```bash
-   pip install django pillow
-   ```
+**Windows:**
 
-5. Apply database migrations:
+```bash
+venv\Scripts\activate
+```
 
-   ```bash
-   python manage.py migrate
-   ```
+### 5. Install Dependencies
 
-6. Start the development server:
+```bash
+pip install django pillow bleach
+```
 
-   ```bash
-   python manage.py runserver
-   ```
+### 6. Apply Database Migrations
 
-7. Open the website at http://127.0.0.1:8000/
+```bash
+python manage.py migrate
+```
 
-## 👨‍💻 Project
+### 7. Run the Development Server
 
-**Blogger** — Django Assignment
+```bash
+python manage.py runserver
+```
 
+### 8. Open the Website
+
+Visit:
+
+```text
+http://127.0.0.1:8000/
+```
+
+## 📂 Project Structure
+
+```text
+LAB-ORM-1/
+│
+├── Blogger/
+│   │
+│   ├── Blogger/
+│   │   ├── __init__.py
+│   │   ├── settings.py
+│   │   ├── urls.py
+│   │   ├── asgi.py
+│   │   └── wsgi.py
+│   │
+│   ├── BlogApp/
+│   │   ├── migrations/
+│   │   │
+│   │   ├── static/
+│   │   │   └── BlogApp/
+│   │   │       ├── css/
+│   │   │       │   └── style.css
+│   │   │       └── images/
+│   │   │           └── screenshot/
+│   │   │               ├── HomeLight.png
+│   │   │               ├── HomeDark.png
+│   │   │               ├── AddPost.png
+│   │   │               └── PostDetails.png
+│   │   │
+│   │   ├── templates/
+│   │   │   └── BlogApp/
+│   │   │       ├── add_post.html
+│   │   │       ├── base.html
+│   │   │       ├── delete_post.html
+│   │   │       ├── edit_post.html
+│   │   │       ├── home.html
+│   │   │       └── post_detail.html
+│   │   │
+│   │   ├── templatetags/
+│   │   ├── __init__.py
+│   │   ├── admin.py
+│   │   ├── apps.py
+│   │   ├── forms.py
+│   │   ├── models.py
+│   │   ├── tests.py
+│   │   ├── urls.py
+│   │   └── views.py
+│   │
+│   ├── media/
+│   ├── db.sqlite3
+│   └── manage.py
+│
+└── README.md
+```
+
+## 👨‍💻 Project Information
+
+**Project:** Blogger — Technology Blog  
+**Framework:** Django  
+**Type:** Django Assignment  
+**Repository:** [LAB-ORM-1](https://github.com/iimustafa/LAB-ORM-1)
+
+---
+
+© 2026 **Mustafa Al Ali**. All Rights Reserved.
