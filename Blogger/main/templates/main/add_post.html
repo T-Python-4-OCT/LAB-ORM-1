@@ -1,0 +1,34 @@
+{% extends "main/base.html" %}
+
+{% block title %}أضف مقالاً{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="مسار التصفح">
+      <a href="{% url 'main:home' %}">الرئيسية</a><span aria-hidden="true">‹</span><span>أضف مقالاً</span>
+    </nav>
+    <h1 class="page-head__title">اكتب مقالاً جديداً</h1>
+    <p class="page-head__lead">شارك تحليلك أو رأيك أو قصتك الكروية مع قرّاء Blogger.</p>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container editor">
+    {% url 'main:add_post' as form_action %}
+    {% url 'main:home' as cancel_url %}
+    {% include "main/partials/_post_form.html" with submit_label="انشر المقال" form_hint="سيُسجَّل تاريخ ووقت النشر تلقائياً لحظة الحفظ." %}
+
+    <aside class="card tips">
+      <h2 class="tips__title"><svg class="icon" aria-hidden="true"><use href="#i-bulb"/></svg>نصائح لمقال كروي ناجح</h2>
+      <ol class="tips__list">
+        <li><strong>عنوان واضح:</strong> اطرح سؤالاً أو فكرة يريد القارئ معرفتها.</li>
+        <li><strong>فكرة واحدة:</strong> ركّز على موضوع واحد، مثل خطة لعب أو مركز لاعب.</li>
+        <li><strong>فقرات قصيرة:</strong> اترك سطراً فارغاً بين الفقرات ليسهل القراءة.</li>
+        <li><strong>رأي محترم:</strong> انتقد الأداء لا الأشخاص، واحترم كل الجماهير.</li>
+      </ol>
+      <div class="tips__pitch" aria-hidden="true"></div>
+    </aside>
+  </div>
+</section>
+{% endblock %}

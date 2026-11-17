@@ -1,0 +1,33 @@
+{% extends "main/base.html" %}
+
+{% block title %}تعديل: {{ post.title }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="مسار التصفح">
+      <a href="{% url 'main:home' %}">الرئيسية</a><span aria-hidden="true">‹</span><a href="{% url 'main:post_detail' post.id %}">المقال</a><span aria-hidden="true">‹</span><span>تعديل</span>
+    </nav>
+    <h1 class="page-head__title">تعديل المقال</h1>
+    <p class="page-head__lead">عدّل العنوان أو النص أو الصورة ثم احفظ التعديلات.</p>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container editor">
+    {% url 'main:update_post' post.id as form_action %}
+    {% url 'main:post_detail' post.id as cancel_url %}
+    {% include "main/partials/_post_form.html" with submit_label="حفظ التعديلات" form_hint="تاريخ ووقت النشر الأصليان لا يتغيّران عند التعديل." %}
+
+    <aside class="card tips">
+      <h2 class="tips__title"><svg class="icon" aria-hidden="true"><use href="#i-bulb"/></svg>قبل أن تحفظ</h2>
+      <ol class="tips__list">
+        <li><strong>الصورة:</strong> إذا لم تختر صورة جديدة ستبقى الصورة الحالية كما هي.</li>
+        <li><strong>النشر:</strong> أطفئ زر النشر لتحويل المقال إلى مسودة تختفي من الرئيسية.</li>
+        <li><strong>التاريخ:</strong> يبقى تاريخ النشر الأصلي، فالتعديل لا يجعل المقال «أحدث مقال».</li>
+      </ol>
+      <div class="tips__pitch" aria-hidden="true"></div>
+    </aside>
+  </div>
+</section>
+{% endblock %}

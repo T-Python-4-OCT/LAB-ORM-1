@@ -1,0 +1,39 @@
+{% extends "main/base.html" %}
+
+{% block title %}حذف: {{ post.title }}{% endblock %}
+
+{% block content %}
+<section class="page-head">
+  <div class="container">
+    <nav class="crumbs" aria-label="مسار التصفح">
+      <a href="{% url 'main:home' %}">الرئيسية</a><span aria-hidden="true">‹</span><a href="{% url 'main:post_detail' post.id %}">المقال</a><span aria-hidden="true">‹</span><span>حذف</span>
+    </nav>
+    <h1 class="page-head__title">حذف المقال</h1>
+  </div>
+</section>
+
+<section class="section section--tight">
+  <div class="container">
+    <div class="card confirm">
+      <div class="confirm__icon" aria-hidden="true"><svg class="icon"><use href="#i-trash"/></svg></div>
+      <h2 class="confirm__title">هل أنت متأكد من حذف هذا المقال؟</h2>
+
+      <div class="confirm__post">
+        {% if post.image %}<img src="{{ post.image.url }}" alt="">{% endif %}
+        <div>
+          <strong>{{ post.title }}</strong>
+          <span>{{ post.published_at|date:"j F Y" }} · {{ post.published_at|time:"H:i" }}</span>
+        </div>
+      </div>
+
+      <p class="confirm__warn">سيُحذف المقال نهائياً، ولا يمكن التراجع عن هذه الخطوة.</p>
+
+      <form method="post" action="{% url 'main:delete_post' post.id %}" class="confirm__actions">
+        {% csrf_token %}
+        <button class="btn btn--danger" type="submit"><svg class="icon" aria-hidden="true"><use href="#i-trash"/></svg>نعم، احذف المقال</button>
+        <a class="btn btn--outline" href="{% url 'main:post_detail' post.id %}">إلغاء</a>
+      </form>
+    </div>
+  </div>
+</section>
+{% endblock %}
