@@ -2,54 +2,89 @@
 
 {% block content %}
 
-<h1>Add New Post</h1>
+<h1>Create Post</h1>
 
-<form action="{% url 'add_post' %}" method="POST" enctype="multipart/form-data" class="post-form">
+<form method="POST" enctype="multipart/form-data">
 
     {% csrf_token %}
 
-    <label>Post Title</label>
+    <!-- Title -->
 
-    <input
-        type="text"
-        name="title"
-        maxlength="2048"
-        required
-    >
+    <label for="title">Title</label>
 
-    <br><br>
+    <input type="text"
+           id="title"
+           name="title"
+           maxlength="2048"
+           placeholder="Enter post title"
+           required>
 
-    <label>Post Content</label>
 
-    <textarea
-        name="content"
-        rows="6"
-        required
-    ></textarea>
+    <!-- Content -->
 
-    <br><br>
+    <label for="content">Content</label>
 
-    <label>Publication Status</label>
+    <textarea id="content"
+              name="content"
+              rows="8"
+              placeholder="Write your story..."
+              required></textarea>
 
-    <select name="is_published">
+
+    <!-- Status -->
+
+    <label for="is_published">Status</label>
+
+    <select id="is_published" name="is_published">
+
         <option value="True">Published</option>
+
         <option value="False">Unpublished</option>
+
     </select>
 
-    <br><br>
 
-    <label>Post Image</label>
+    <!-- Poster -->
 
-    <input
-        type="file"
-        name="poster"
-        accept="image/*"
-    >
+    <label for="poster">Poster</label>
 
-    <br><br>
+    <input type="file"
+           id="poster"
+           name="poster"
+           accept="image/*">
 
-    <button type="submit" name="post" value="1">
-        Post
+
+    <!-- Star Rating -->
+
+    <div class="rating-section">
+
+        <h3>Post Rating</h3>
+
+        <div class="star-input">
+
+            {% for star in "54321" %}
+
+                <input type="radio"
+                       name="rating"
+                       id="star{{ star }}"
+                       value="{{ star }}">
+
+                <label for="star{{ star }}"
+                       title="{{ star }} out of 5">★</label>
+
+            {% endfor %}
+
+        </div>
+
+        <p>Select your rating out of 5 stars.</p>
+
+    </div>
+
+
+    <!-- Submit Button -->
+
+    <button type="submit">
+        Create Post
     </button>
 
 </form>

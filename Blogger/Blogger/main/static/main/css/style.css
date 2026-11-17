@@ -952,3 +952,199 @@ body {
 .delete-confirm-btn:hover {
     background: #991b1b;
 }
+/* =========================
+   Navbar Search
+========================= */
+
+.nav-search {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.nav-search input {
+    width: 190px;
+    height: 40px;
+    padding: 10px 14px;
+    margin: 0;
+    background: rgba(255, 255, 255, 0.08);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 6px;
+    font-size: 13px;
+    outline: none;
+}
+
+.nav-search input::placeholder {
+    color: #b8bec9;
+}
+
+.nav-search input:focus {
+    border-color: var(--gold);
+}
+
+.nav-search button {
+    height: 40px;
+    padding: 10px 15px;
+    margin: 0;
+    background: var(--gold);
+    color: var(--navy-dark);
+    border: none;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.nav-search button:hover {
+    background: var(--gold-light);
+}
+
+@media (max-width: 768px) {
+
+    .nav-links {
+        flex-wrap: wrap;
+    }
+
+    .nav-search input {
+        width: 150px;
+    }
+
+}
+/* =========================
+   Star Rating
+========================= */
+
+.rating-section {
+    margin: 30px 0;
+    padding: 20px 0;
+    border-top: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+}
+
+.rating-section h3 {
+    color: var(--navy);
+    font-size: 18px;
+    margin-bottom: 10px;
+}
+
+.container .rating-form {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    padding: 0;
+    margin: 10px 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.container .rating-form .rating-star {
+    background: transparent;
+    border: none;
+    padding: 0;
+    margin: 0;
+    color: #d1d5db;
+    font-size: 36px;
+    line-height: 1.2;
+    cursor: pointer;
+    transition: 0.2s ease;
+}
+
+.container .rating-form .rating-star.active {
+    color: var(--gold);
+}
+
+.container .rating-form .rating-star:hover {
+    background: transparent;
+    color: var(--gold);
+    transform: scale(1.2);
+}
+
+.rating-section p {
+    color: var(--muted);
+    font-size: 14px;
+    margin-top: 10px;
+}
+/* Add Post Star Rating */
+
+.star-input {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    gap: 8px;
+}
+
+.star-input input {
+    position: absolute;
+    opacity: 0;
+    width: 1px;
+    height: 1px;
+}
+
+.star-input label {
+    font-size: 38px;
+    color: #d1d5db;
+    cursor: pointer;
+    transition: 0.2s ease;
+    margin: 0;
+}
+
+.star-input input:checked ~ label,
+.star-input label:hover,
+.star-input label:hover ~ label {
+    color: var(--gold);
+}
+
+.star-input input:focus-visible + label {
+    outline: 2px solid var(--gold);
+}
+
+.star-input label:hover {
+    transform: scale(1.15);
+}
+.order-section {
+    display: flex;
+    justify-content: flex-end;
+    margin-bottom: 25px;
+}
+
+.container .order-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    width: auto;
+    margin: 0;
+    padding: 0;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+}
+
+.container .order-form .form-select {
+    width: 190px;
+    height: 40px;
+    margin: 0;
+    padding: 8px 30px 8px 12px;
+    font-size: 14px;
+    border-radius: 6px;
+}
+
+.container .order-form button {
+    height: 40px;
+    margin: 0;
+    padding: 0 20px;
+    background: var(--navy);
+    color: white;
+    border: none;
+    border-radius: 6px;
+}
+
+.container .order-form button:hover {
+    background: var(--gold);
+}

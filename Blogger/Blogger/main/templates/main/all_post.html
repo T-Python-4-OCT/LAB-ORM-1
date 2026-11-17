@@ -1,0 +1,81 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+<div class="section-heading">
+    <h2>All Posts</h2>
+    <span>{{ posts|length }} Posts</span>
+</div>
+
+<div class="post-grid">
+
+    {% for post in posts %}
+
+    <a href="{% url 'post_detail' post.id %}" class="post-card-link">
+
+        <article class="post-card">
+
+            <div class="post-image-wrapper">
+
+                {% if post.poster %}
+                    <img src="{{ post.poster.url }}"
+                         alt="{{ post.title }}"
+                         class="post-image">
+                {% endif %}
+
+                {% if post.is_published %}
+                    <span class="status-badge published">Published</span>
+                {% else %}
+                    <span class="status-badge unpublished">Unpublished</span>
+                {% endif %}
+
+            </div>
+
+            <div class="post-content">
+
+                <h2>{{ post.title }}</h2>
+
+                <div class="card-rating">
+
+    {% for star in "12345" %}
+
+        {% if forloop.counter <= post.rating %}
+            ★
+        {% else %}
+            ☆
+        {% endif %}
+
+    {% endfor %}
+
+    <small>({{ post.rating }}/5)</small>
+
+</div>
+
+                <p class="post-description">
+                    {{ post.content|truncatewords:25 }}
+                </p>
+
+                <small>
+                    {{ post.published_at|date:"d M Y, h:i A" }}
+                </small>
+
+                <div class="card-footer">
+                    <span class="read-more">View Details</span>
+                    <span class="read-arrow">↗</span>
+                </div>
+
+            </div>
+
+        </article>
+
+    </a>
+
+    {% empty %}
+
+        <p>No posts available yet.</p>
+
+    {% endfor %}
+
+</div>
+
+{% endblock %}

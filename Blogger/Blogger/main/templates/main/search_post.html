@@ -1,0 +1,168 @@
+{% extends 'main/base.html' %}
+
+{% block content %}
+
+
+
+<!-- Search Results Heading -->
+<div class="section-heading">
+
+    <div>
+        <h2>Search Results</h2>
+        <p>Results for "{{ search }}"</p>
+    </div>
+
+    <span class="posts-label">
+        {{ posts|length }} Posts Found
+    </span>
+
+</div>
+<!-- Order By -->
+
+<div class="order-section">
+
+    <form method="GET"
+          action="{% url 'search_post' %}"
+          class="order-form">
+
+        <input type="hidden"
+               name="search"
+               value="{{ search }}">
+
+        <select name="order" class="form-select">
+
+            <option value="">Order By</option>
+
+            <option value="newest"
+                {% if order == 'newest' %}selected{% endif %}>
+                Newest First
+            </option>
+
+            <option value="oldest"
+                {% if order == 'oldest' %}selected{% endif %}>
+                Oldest First
+            </option>
+
+            <option value="highest"
+                {% if order == 'highest' %}selected{% endif %}>
+                Highest Rating
+            </option>
+
+            <option value="lowest"
+                {% if order == 'lowest' %}selected{% endif %}>
+                Lowest Rating
+            </option>
+
+        </select>
+
+        <button type="submit" class="btn-solid theme-primary">
+            Apply
+        </button>
+
+    </form>
+
+</div>
+<!-- Posts -->
+<div class="post-grid">
+
+    {% for post in posts %}
+
+        <a href="{% url 'post_detail' post.id %}"
+           class="post-card-link">
+
+            <article class="post-card">
+
+                <div class="post-image-wrapper">
+
+                    {% if post.poster %}
+                        <img src="{{ post.poster.url }}"
+                             alt="{{ post.title }}"
+                             class="post-image">
+                    {% endif %}
+
+                    {% if post.is_published %}
+
+                        <span class="status-badge published">
+                            Published
+                        </span>
+
+                    {% else %}
+
+                        <span class="status-badge unpublished">
+                            Unpublished
+                        </span>
+
+                    {% endif %}
+
+                </div>
+
+                <div class="post-content">
+
+                    <h2>{{ post.title }}</h2>
+
+                    <div class="card-rating">
+
+    {% for star in "12345" %}
+
+        {% if forloop.counter <= post.rating %}
+            ★
+        {% else %}
+            ☆
+        {% endif %}
+
+    {% endfor %}
+
+    <small>({{ post.rating }}/5)</small>
+
+</div>
+
+                    <p class="post-description">
+                        {{ post.content|truncatewords:25 }}
+                    </p>
+
+                    <small>
+                        {{ post.published_at|date:"d M Y, h:i A" }}
+                    </small>
+
+                    <div class="card-footer">
+
+                        <span class="read-more">
+                            View Details
+                        </span>
+
+                        <span class="read-arrow">↗</span>
+
+                    </div>
+
+                </div>
+
+            </article>
+
+        </a>
+
+    {% empty %}
+
+        <div class="text-center py-5 w-100">
+
+            <h3>No Posts Found</h3>
+
+            <p class="text-muted">
+                Try searching with a different keyword.
+            </p>
+
+        </div>
+
+    {% endfor %}
+
+</div>
+
+<!-- Back Button -->
+<div class="text-center mt-5">
+
+    <a href="{% url 'home' %}" class="heading-button">
+        ← Back to Home
+    </a>
+
+</div>
+
+{% endblock %}

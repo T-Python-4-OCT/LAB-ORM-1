@@ -23,12 +23,14 @@
         <nav class="nav-inner">
 
             <a href="{% url 'home' %}" class="brand">
+
                 <span class="brand-mark">B</span>
 
                 <span class="brand-name">
                     Blogger
                     <small>STORIES & IDEAS</small>
                 </span>
+
             </a>
 
             <div class="nav-links">
@@ -36,6 +38,28 @@
                 <a href="{% url 'home' %}" class="nav-link">
                     Home
                 </a>
+
+                <a href="{% url 'all_posts' %}" class="nav-link">
+                    All Posts
+                </a>
+
+                <!-- Search Bar -->
+                <form method="GET"
+                      action="{% url 'search_post' %}"
+                      class="nav-search">
+
+                    <input type="search"
+                           name="search"
+                           placeholder="Search posts..."
+                           aria-label="Search posts"
+                           value="{{ search|default:'' }}"
+                           required>
+
+                    <button type="submit">
+                        Search
+                    </button>
+
+                </form>
 
                 <a href="{% url 'add_post' %}" class="nav-cta">
                     + Create Post

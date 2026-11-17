@@ -13,6 +13,7 @@
     {% endif %}
 
     <h2>{{ post.title }}</h2>
+    
 
     <p>{{ post.content }}</p>
 
@@ -33,17 +34,44 @@
 
     </div>
 
+
+    <!-- Star Rating -->
+
+    <div class="rating-section">
+
+    <h3>Post Rating</h3>
+
+    <div class="card-rating">
+
+        {% for star in "12345" %}
+
+            {% if forloop.counter <= post.rating %}
+                ★
+            {% else %}
+                ☆
+            {% endif %}
+
+        {% endfor %}
+
+    </div>
+
+    <p>{{ post.rating }}/5 — {{ post.get_rating_display }}</p>
+
+    </div>
+
+
+    <!-- Post Actions -->
+
     <div class="post-actions">
 
         <a href="{% url 'update_post' post.id %}">
             Update Post
         </a>
 
-        <button
-            type="button"
-            class="btn-solid theme-primary"
-            data-bs-toggle="dialog"
-            data-bs-target="#deleteDialog">
+        <button type="button"
+                class="btn-solid theme-primary"
+                data-bs-toggle="dialog"
+                data-bs-target="#deleteDialog">
             Delete Post
         </button>
 
@@ -57,6 +85,7 @@
 <dialog class="dialog dialog-instant" id="deleteDialog">
 
     <div class="dialog-header">
+
         <h1 class="dialog-title">Delete Post</h1>
 
         <button type="button"
@@ -64,6 +93,7 @@
                 data-bs-dismiss="dialog"
                 aria-label="Close">
         </button>
+
     </div>
 
     <div class="dialog-body">
@@ -96,6 +126,9 @@
 
 </dialog>
 
+
+<!-- Delete Form -->
+
 <form id="deleteForm"
       method="POST"
       action="{% url 'delete_post' post.id %}"
@@ -104,12 +137,5 @@
     {% csrf_token %}
 
 </form>
-            </button>
-
-        </form>
-
-    </div>
-
-</dialog>
 
 {% endblock %}
