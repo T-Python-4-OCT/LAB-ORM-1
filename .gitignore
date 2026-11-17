@@ -218,3 +218,6 @@ __marimo__/
 
 # Streamlit
 .streamlit/secrets.toml
+
+Blogger/main/media/images/*
+!Blogger/main/media/images/default.jpg
