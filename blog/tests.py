@@ -111,3 +111,82 @@ class PostTests(TestCase):
             response,
             'The title must not exceed 2048 characters.'
         )
+
+
+
+    def test_post_detail_page_loads(self):
+        post = Post.objects.create(
+            title='Detail Test',
+            content='Testing post details.'
+        )
+
+        response = self.client.get(
+            reverse('post_detail', args=[post.pk])
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertContains(response, 'Detail Test')
+        self.assertTemplateUsed(response, 'blog/post_detail.html')
+
+    def test_edit_post_page_loads(self):
+        post = Post.objects.create(
+            title='Edit Test',
+            content='Original content.'
+        )
+
+        response = self.client.get(
+            reverse('edit_post', args=[post.pk])
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'blog/edit_post.html')
+
+    def test_edit_post_successfully(self):
+        post = Post.objects.create(
+            title='Old Title',
+            content='Old content.'
+        )
+
+        response = self.client.post(
+            reverse('edit_post', args=[post.pk]),
+            {
+                'title': 'New Title',
+                'content': 'New content.'
+            }
+        )
+
+        post.refresh_from_db()
+
+        self.assertEqual(post.title, 'New Title')
+        self.assertEqual(post.content, 'New content.')
+        self.assertRedirects(
+            response,
+            reverse('post_detail', args=[post.pk])
+        )
+
+    def test_delete_confirmation_page_loads(self):
+        post = Post.objects.create(
+            title='Delete Test',
+            content='Testing deletion.'
+        )
+
+        response = self.client.get(
+            reverse('delete_post', args=[post.pk])
+        )
+
+        self.assertEqual(response.status_code, 200)
+        self.assertTemplateUsed(response, 'blog/delete_post.html')
+        self.assertEqual(Post.objects.count(), 1)
+
+    def test_delete_post_successfully(self):
+        post = Post.objects.create(
+            title='Delete Test',
+            content='Testing deletion.'
+        )
+
+        response = self.client.post(
+            reverse('delete_post', args=[post.pk])
+        )
+
+        self.assertEqual(Post.objects.count(), 0)
+        self.assertRedirects(response, reverse('home'))

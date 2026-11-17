@@ -27,9 +27,20 @@
     {{ post.content|linebreaks }}
     </div>
 
-    <a href="{% url 'home' %}" class="submit-button">
+<div style="display: flex; gap: 12px; flex-wrap: wrap;">
+    <a href="{% url 'edit_post' post.pk %}" class="submit-button">
+        Edit Post
+    </a>
+
+    <a href="{% url 'delete_post' post.pk %}" class="nav-button">
+        Delete Post
+    </a>
+
+    <a href="{% url 'home' %}" class="nav-button">
         Back to Home
     </a>
+</div>
+
 
 </section>
 

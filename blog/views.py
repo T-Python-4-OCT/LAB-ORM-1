@@ -114,3 +114,20 @@ def edit_post(request, pk):
     return render(request, 'blog/edit_post.html', {
         'post': post
     })
+
+
+def delete_post(request, pk):
+    post = get_object_or_404(
+        Post,
+        pk=pk,
+        is_published=True
+    )
+
+    if request.method == 'POST':
+        post.delete()
+        messages.success(request, 'Your post has been deleted!')
+        return redirect('home')
+
+    return render(request, 'blog/delete_post.html', {
+        'post': post
+    })
