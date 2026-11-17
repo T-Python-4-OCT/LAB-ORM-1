@@ -1,0 +1,48 @@
+
+{% extends 'blog/base.html' %}
+
+{% block title %}{{ post.title }} | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="page-heading">
+    <span class="eyebrow">POST DETAILS</span>
+    <h1>{{ post.title }}</h1>
+    <p>
+        Published on {{ post.published_at|date:"F d, Y - h:i A" }}
+    </p>
+</section>
+
+<section class="form-card">
+
+    {% if post.image %}
+        <img
+            src="{{ post.image.url }}"
+            alt="{{ post.title }}"
+            style="width: 100%; border-radius: 12px; margin-bottom: 24px;"
+        >
+    {% endif %}
+
+    <div class="post-content" style="margin-bottom: 30px;">
+    {{ post.content|linebreaks }}
+    </div>
+
+<div style="display: flex; gap: 12px; flex-wrap: wrap;">
+    <a href="{% url 'edit_post' post.pk %}" class="submit-button">
+        Edit Post
+    </a>
+
+    <a href="{% url 'delete_post' post.pk %}" class="nav-button">
+        Delete Post
+    </a>
+
+    <a href="{% url 'home' %}" class="nav-button">
+        Back to Home
+    </a>
+</div>
+
+
+</section>
+
+{% endblock %}
+

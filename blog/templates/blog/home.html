@@ -1,0 +1,60 @@
+
+{% extends 'blog/base.html' %}
+
+{% block title %}Home | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="page-heading">
+    <span class="eyebrow">THE BLOG</span>
+    <h1>Ideas worth sharing.</h1>
+    <p>Discover thoughts, stories, and ideas from our community.</p>
+</section>
+
+<section class="post-list">
+
+    {% for post in posts %}
+        <article class="post-card">
+
+            {% if post.image %}
+                <img
+                    src="{{ post.image.url }}"
+                    alt="{{ post.title }}"
+                    style="width: 100%; border-radius: 12px; margin-bottom: 20px;"
+                >
+            {% endif %}
+
+            <h2>
+                <a href="{% url 'post_detail' post.pk %}">
+                    {{ post.title }}
+                </a>
+            </h2>
+
+            <p class="post-date">
+                Published on {{ post.published_at|date:"F d, Y - h:i A" }}
+            </p>
+
+            <div class="post-content">
+                {{ post.content }}
+            </div>
+
+            <a href="{% url 'post_detail' post.pk %}" class="nav-button">
+                Read More
+            </a>
+
+        </article>
+
+    {% empty %}
+        <div class="empty-state">
+            <h2>No posts yet</h2>
+            <p>Be the first to share your thoughts with the world.</p>
+
+            <a href="{% url 'add_post' %}" class="nav-button">
+                Create First Post
+            </a>
+        </div>
+    {% endfor %}
+
+</section>
+
+{% endblock %}
