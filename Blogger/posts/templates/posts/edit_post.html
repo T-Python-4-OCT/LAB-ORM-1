@@ -75,10 +75,8 @@
             <div class="image-upload">
                 {{ form.poster }}
 
-                <label
-                    class="image-upload-btn"
-                    for="{{ form.poster.id_for_label }}"
-                >
+                <label class="image-upload-btn"
+                       for="{{ form.poster.id_for_label }}">
                     <span class="material-symbols-outlined">
                         add_photo_alternate
                     </span>
@@ -122,16 +120,14 @@
                 حفظ التعديلات
             </button>
 
-            <a
-                class="btn btn-outline"
-                href="{% url 'posts:post_detail' post.id %}"
-            >
+            <a class="btn btn-outline"
+               href="{% url 'posts:post_detail' post.id %}">
                 <span class="material-symbols-outlined">close</span>
                 إلغاء
             </a>
         </div>
-
     </form>
+
 </section>
 
 <script>

@@ -13,6 +13,7 @@
 </section>
 
 <section class="latest">
+
     <h2 class="section-title">
         <span class="material-symbols-outlined icon-lg">
             description
@@ -20,83 +21,203 @@
         أحدث التدوينات
     </h2>
 
+    <form method="get" class="advanced-filters">
+
+        <div class="filter-field">
+            <label for="search">بحث في العنوان</label>
+
+            <input
+                id="search"
+                name="search"
+                type="search"
+                value="{{ search }}"
+                placeholder="ابحث عن تدوينة..."
+            >
+        </div>
+
+        <div class="filter-field">
+            <label for="status">حالة المنشور</label>
+
+            <select id="status" name="status">
+                <option value="all"
+                    {% if status == 'all' %}selected{% endif %}>
+                    الكل
+                </option>
+
+                <option value="published"
+                    {% if status == 'published' %}selected{% endif %}>
+                    منشور
+                </option>
+
+                <option value="draft"
+                    {% if status == 'draft' %}selected{% endif %}>
+                    غير منشور
+                </option>
+            </select>
+        </div>
+
+        <div class="filter-field">
+            <label for="ordering">ترتيب النتائج</label>
+
+            <select id="ordering" name="ordering">
+                <option value="newest"
+                    {% if ordering == 'newest' %}selected{% endif %}>
+                    الأحدث أولا
+                </option>
+
+                <option value="oldest"
+                    {% if ordering == 'oldest' %}selected{% endif %}>
+                    الأقدم أولا
+                </option>
+            </select>
+        </div>
+
+        <div class="filter-field">
+            <label for="limit">عدد النتائج</label>
+
+            <input
+                id="limit"
+                name="limit"
+                type="text"
+                inputmode="numeric"
+                pattern="[0-9]*"
+                value="{{ limit|default_if_none:'' }}"
+                placeholder="الكل"
+            >
+        </div>
+
+        <div class="filter-buttons">
+            <button class="btn" type="submit">
+                <span class="material-symbols-outlined">
+                    filter_alt
+                </span>
+                تطبيق
+            </button>
+
+            <a class="btn btn-outline"
+               href="{% url 'posts:home' %}">
+                <span class="material-symbols-outlined">
+                    restart_alt
+                </span>
+                إعادة ضبط
+            </a>
+        </div>
+
+    </form>
+
+    <p class="results-note">
+        عدد النتائج المعروضة: {{ posts|length }} من {{ matching_count }}
+    </p>
+
     {% if posts %}
 
-    <div class="posts">
-        {% for post in posts %}
+        <div class="posts">
 
-        <article class="post{% if not post.is_published %} is-draft{% endif %}">
+            {% for post in posts %}
 
-            <a class="thumb" href="{% url 'posts:post_detail' post.id %}">
-                {% if post.poster and post.poster.name != 'images/default.jpg' %}
-                    <img src="{{ post.poster.url }}" alt="{{ post.title }}" loading="lazy">
-                {% else %}
-                    <img src="{% static 'posts/img/covers/blog-cover.webp' %}" alt="غلاف التدوينة" loading="lazy">
-                {% endif %}
-            </a>
+                <article class="post{% if not post.is_published %} is-draft{% endif %}">
 
-            <div class="post-body">
+                    <a class="thumb"
+                       href="{% url 'posts:post_detail' post.id %}">
 
-                <h3 class="post-title">{{ post.title }}</h3>
-
-                <p class="post-content">
-                    {{ post.content|truncatechars:130 }}
-                </p>
-
-                <div class="post-date">
-                    <span class="material-symbols-outlined">
-                        calendar_month
-                    </span>
-
-                    <time datetime="{{ post.published_at|date:'c' }}">
-                        {{ post.published_at|date:'j F Y' }}
-                        ·
-                        {{ post.published_at|time:'h:i A' }}
-                    </time>
-
-                    <span class="status {% if post.is_published %}status-on{% else %}status-off{% endif %}">
-                        {% if post.is_published %}
-                            منشور
+                        {% if post.poster and post.poster.name != 'images/default.jpg' %}
+                            <img
+                                src="{{ post.poster.url }}"
+                                alt="{{ post.title }}"
+                                loading="lazy"
+                            >
                         {% else %}
-                            غير منشور
+                            <img
+                                src="{% static 'posts/img/covers/blog-cover.webp' %}"
+                                alt="غلاف التدوينة"
+                                loading="lazy"
+                            >
                         {% endif %}
-                    </span>
-                </div>
 
-                <a class="read-more-btn" href="{% url 'posts:post_detail' post.id %}">
-                    قراءة المزيد
-                </a>
-
-                <div class="post-actions">
-                    <a class="small-btn" href="{% url 'posts:edit_post' post.id %}">
-                        <span class="material-symbols-outlined">edit</span>
-                        تعديل
                     </a>
 
-                    <a class="small-btn delete-link" href="{% url 'posts:delete_post' post.id %}">
-                        <span class="material-symbols-outlined">delete</span>
-                        حذف
-                    </a>
-                </div>
+                    <div class="post-body">
 
-            </div>
+                        <h3 class="post-title" dir="auto">
+                            {{ post.title }}
+                        </h3>
 
-        </article>
+                        <p class="post-content" dir="auto">
+                            {{ post.content|truncatechars:130 }}
+                        </p>
 
-        {% endfor %}
-    </div>
+                        <div class="post-date">
+
+                            <span class="material-symbols-outlined">
+                                calendar_month
+                            </span>
+
+                            <time datetime="{{ post.published_at|date:'c' }}">
+                                {{ post.published_at|date:'j F Y' }}
+                                ·
+                                {{ post.published_at|time:'h:i A' }}
+                            </time>
+
+                            <span class="status {% if post.is_published %}status-on{% else %}status-off{% endif %}">
+                                {% if post.is_published %}
+                                    منشور
+                                {% else %}
+                                    غير منشور
+                                {% endif %}
+                            </span>
+
+                        </div>
+
+                        <a class="read-more-btn"
+                           href="{% url 'posts:post_detail' post.id %}">
+                            قراءة المزيد
+                        </a>
+
+                        <div class="post-actions">
+
+                            <a class="small-btn"
+                               href="{% url 'posts:edit_post' post.id %}">
+                                <span class="material-symbols-outlined">
+                                    edit
+                                </span>
+                                تعديل
+                            </a>
+
+                            <a class="small-btn delete-link"
+                               href="{% url 'posts:delete_post' post.id %}">
+                                <span class="material-symbols-outlined">
+                                    delete
+                                </span>
+                                حذف
+                            </a>
+
+                        </div>
+
+                    </div>
+
+                </article>
+
+            {% endfor %}
+
+        </div>
 
     {% else %}
 
-    <div class="empty">
-        <h3>لا توجد تدوينات بعد</h3>
-        <p>كن أول من يكتب على المدونة.</p>
-        <a class="btn" href="{% url 'posts:add_post' %}">
-            أضف تدوينة
-        </a>
-    </div>
+        <div class="empty">
+            <h3>لا توجد نتائج مطابقة</h3>
+
+            <p>
+                جرب البحث بعنوان آخر أو تغيير خيارات التصفية.
+            </p>
+
+            <a class="btn btn-outline"
+               href="{% url 'posts:home' %}">
+                عرض جميع التدوينات
+            </a>
+        </div>
 
     {% endif %}
+
 </section>
 
 {% endblock %}
