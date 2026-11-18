@@ -1,0 +1,101 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}All Stories | Blogger{% endblock %}
+
+{% block content %}
+
+<section class="posts-section">
+
+    <div class="section-heading">
+        <span>ALL STORIES</span>
+        <h2>Explore all stories</h2>
+    </div>
+    
+    <div class="search-box">
+    <input
+        type="search"
+        id="postSearch"
+        placeholder="Search for a story..."
+        aria-label="Search posts"
+        >
+        <span class="search-icon">⌕</span>
+    </div>
+
+    <div class="posts-grid">
+
+        {% for post in posts %}
+            <article class="post-card">
+
+                {% if post.image %}
+                    <img
+                        src="{{ post.image.url }}"
+                        alt="{{ post.title }}"
+                        class="post-image"
+                    >
+
+                {% elif post.video %}
+                    <video controls class="post-image">
+                        <source src="{{ post.video.url }}">
+                        Your browser does not support video.
+                    </video>
+
+                {% elif post.document %}
+                    <div class="post-document">
+                        <span>PDF Attachment</span>
+                        <a href="{{ post.document.url }}" target="_blank" class="read-more">
+                            View PDF →
+                        </a>
+                    </div>
+
+                    
+                {% endif %}
+
+                <span class="post-date">
+                    {{ post.published_at|date:"M d, Y - h:i A" }}
+                </span>
+
+                <h3>{{ post.title }}</h3>
+
+                <p>{{ post.content|truncatewords:25 }}</p>
+
+                <a href="{% url 'post_detail' post.id %}" class="read-more">
+                    Read More <span>→</span>
+                </a>
+
+            </article>
+
+        {% empty %}
+            <p>No stories available yet.</p>
+        {% endfor %}
+        <p id="noResults" class="no-results" hidden>
+            No matching stories found. 
+        </p>
+
+    </div>
+
+</section>
+<script>
+    const searchInput = document.getElementById('postSearch');
+    const postCards = document.querySelectorAll('.post-card');
+    const noResults = document.getElementById('noResults');
+
+    searchInput.addEventListener('input', function () {
+        const searchValue = this.value.toLowerCase().trim();
+        let visiblePosts = 0;
+
+        postCards.forEach(function (card) {
+            const postText = card.textContent.toLowerCase();
+            const isMatch = postText.includes(searchValue);
+
+            card.style.display = isMatch ? '' : 'none';
+
+            if (isMatch) {
+                visiblePosts++;
+            }
+        });
+
+        noResults.hidden = visiblePosts !== 0;
+    });
+</script>
+
+{% endblock %}

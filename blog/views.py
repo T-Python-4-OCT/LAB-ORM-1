@@ -1,17 +1,25 @@
 # Create your views here.
-
 from django.shortcuts import render, redirect, get_object_or_404
 from .models import Post
 from django.core.exceptions import ValidationError
 
 def home(request):
-    posts = Post.objects.filter(is_published=True).order_by('-published_at')
+    posts = Post.objects.filter(
+        is_published=True
+    ).order_by('-published_at')[:3]
 
     return render(request, 'blog/home.html', {
         'posts': posts
     })
 
+def all_stories(request):
+    posts = Post.objects.filter(
+        is_published=True
+    ).order_by('-published_at')
 
+    return render(request, 'blog/all_stories.html', {
+        'posts': posts
+    })
 
 
 def add_post(request):
