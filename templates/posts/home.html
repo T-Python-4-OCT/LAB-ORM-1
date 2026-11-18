@@ -1,0 +1,42 @@
+{% extends 'base.html' %}
+{% block title %}Latest posts · Blogger{% endblock %}
+{% block content %}
+<section class="hero">
+    <p class="eyebrow">YOUR PERSONAL JOURNAL</p>
+    <h1>{% if managing %}Your posts.<br><em>All in one place.</em>{% else %}Good stories.<br><em>Beautifully shared.</em>{% endif %}</h1>
+    <p class="intro">Create a post, add a photo, and share your ideas.<br>Edit your stories whenever inspiration strikes.</p>
+    <a class="button" href="{% url 'posts:create' %}">Write your story <span aria-hidden="true">↗</span></a>
+    <div class="hero-art" aria-hidden="true"><span class="art-circle"></span><span class="art-paper">Good stories<br>start with<br><em>one idea.</em><span>✳</span></span></div>
+</section>
+<div class="journal-strip"><span>THINK FREELY</span><i aria-hidden="true">&#10038;</i><span>WRITE HONESTLY</span><i aria-hidden="true">&#10038;</i><span>SHARE SOMETHING REAL</span></div>
+<section class="feed" aria-labelledby="feed-title">
+    <div class="section-heading"><h2 id="feed-title">{% if managing %}Manage your posts{% else %}Latest stories{% endif %}</h2><a class="button button-small" href="{% url 'posts:create' %}">+ Add post &amp; photo</a></div>
+    <form method="get" class="filter-bar">
+        <div><label for="search">البحث</label><input id="search" type="search" name="q" value="{{ query }}" placeholder="عنوان، محتوى أو تصنيف: التقنية، الرياضة، الهلال" dir="auto"></div>
+        <div><label for="category">التصنيف</label><select id="category" name="category"><option value="">كل التصنيفات</option>{% for value, label in categories %}<option value="{{ value }}" {% if category == value %}selected{% endif %}>{{ label }}</option>{% endfor %}</select></div>
+        <div><label for="sort">Sort by</label><select id="sort" name="sort"><option value="newest" {% if sort == 'newest' %}selected{% endif %}>Newest first</option><option value="oldest" {% if sort == 'oldest' %}selected{% endif %}>Oldest first</option></select></div>
+        {% if managing %}<div><label for="status">Status</label><select id="status" name="status"><option value="">All statuses</option><option value="published" {% if status == 'published' %}selected{% endif %}>Published</option><option value="draft" {% if status == 'draft' %}selected{% endif %}>Draft</option></select></div>{% endif %}
+        <button type="submit" class="button">Apply</button><a class="back-link" href="{% if managing %}{% url 'posts:manage' %}{% else %}{% url 'posts:home' %}{% endif %}">Reset</a>
+    </form>
+    <p class="result-count">{{ result_count }} post{{ result_count|pluralize }} found</p>
+    <div class="post-grid">
+    {% for post in posts %}
+    <article class="post">
+        <div class="post-actions"><a href="{% url 'posts:edit' post.pk %}">Edit post</a><a class="delete-link" href="{% url 'posts:delete' post.pk %}">Delete post</a></div>
+        {% if post.image %}<img class="post-image" src="{{ post.image.url }}" alt="Image for {{ post.title }}" loading="lazy">{% endif %}
+        <div class="post-meta"><span class="post-label">{% if post.is_published %}PUBLISHED{% else %}DRAFT{% endif %}</span><time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:'M j, Y' }} · {{ post.published_at|date:'g:i A' }}</time></div>
+        <h3 dir="auto">{{ post.title }}</h3>
+        <span class="category-badge">{{ post.get_category_display }}</span>
+        <div class="post-content" dir="auto">{{ post.content|linebreaks }}</div>
+    </article>
+    {% empty %}
+    <div class="empty-state"><span class="empty-icon" aria-hidden="true">✎</span><h3>No stories found.</h3><p>Try another search or category, or add a new post.</p><a class="button" href="{% url 'posts:create' %}">Write a post <span aria-hidden="true">↗</span></a></div>
+    {% endfor %}
+    </div>
+    {% if page_obj.has_other_pages %}<nav class="pagination" aria-label="Post pages">
+        {% if page_obj.has_previous %}<a class="button button-small" href="?{{ filter_query }}&amp;page={{ page_obj.previous_page_number }}">Previous</a>{% endif %}
+        <span>Page {{ page_obj.number }} of {{ page_obj.paginator.num_pages }}</span>
+        {% if page_obj.has_next %}<a class="button button-small" href="?{{ filter_query }}&amp;page={{ page_obj.next_page_number }}">Next</a>{% endif %}
+    </nav>{% endif %}
+</section>
+{% endblock %}

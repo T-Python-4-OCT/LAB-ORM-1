@@ -1,0 +1,28 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}Blogger{% endblock %}</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta name="theme-color" content="#f5f6fa">
+    <link rel="stylesheet" href="{% static 'css/luxury.css' %}?v=6">
+</head>
+<body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+        <a class="brand" href="{% url 'posts:home' %}"><span class="brand-icon" aria-hidden="true">b.</span>Blogger</a>
+        <nav aria-label="Main navigation">
+            <a href="{% url 'posts:manage' %}">Manage posts</a>
+            <a {% if request.resolver_match.url_name == 'home' %}aria-current="page"{% endif %} href="{% url 'posts:home' %}">All posts</a>
+            <a class="button button-small" href="{% url 'posts:create' %}">+ Write a post</a>
+        </nav>
+    </header>
+    <main id="main" class="container">
+        {% if messages %}<div class="messages" role="status">{% for message in messages %}<p>{{ message }}</p>{% endfor %}</div>{% endif %}
+        {% block content %}{% endblock %}
+    </main>
+    <footer class="site-footer"><a href="{% url 'posts:home' %}">Blogger.</a><span>Independent thoughts. Lasting impressions.</span></footer>
+</body>
+</html>

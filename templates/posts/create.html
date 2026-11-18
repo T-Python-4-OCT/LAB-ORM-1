@@ -1,0 +1,26 @@
+{% extends 'base.html' %}
+{% block title %}{% if post %}Edit post{% else %}Write a post{% endif %} · Blogger{% endblock %}
+{% block content %}
+<section class="editor">
+    <a class="back-link" href="{% url 'posts:home' %}">← Back to all posts</a>
+    <p class="eyebrow">MAKE YOURSELF HEARD</p>
+    <h1>{% if post %}Edit your post.{% else %}Create a post.{% endif %}</h1>
+    <p class="intro">Big thoughts or small moments. There’s a story in both.</p>
+    <form method="post" enctype="multipart/form-data" class="post-form">
+        <div class="form-heading"><span>THE WRITING ROOM</span><span aria-hidden="true">&#10038;</span></div>
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+        <div class="form-field image-field">
+            <label for="{{ form.image.id_for_label }}">Add or change photo</label>
+            {% if post.image %}<img class="image-preview" src="{{ post.image.url }}" alt="Current post image">{% endif %}
+            {{ form.image }}{{ form.image.errors }}
+            <p class="image-help">Choose a photo from your device. To replace it, choose another file. Select Clear to remove the saved photo.</p>
+        </div>
+        <div class="form-field"><label for="{{ form.title.id_for_label }}">Title</label>{{ form.title }}{{ form.title.errors }}</div>
+        <div class="form-field"><label for="{{ form.category.id_for_label }}">Category</label>{{ form.category }}{{ form.category.errors }}</div>
+        <div class="form-field"><label for="{{ form.content.id_for_label }}">Your story</label>{{ form.content }}{{ form.content.errors }}</div>
+        <div class="publish-option"><label for="{{ form.is_published.id_for_label }}">{{ form.is_published }} {{ form.is_published.label }}</label><p>Unpublished posts are saved and can be managed in the admin.</p>{{ form.is_published.errors }}</div>
+        <div class="form-actions"><a class="back-link" href="{% url 'posts:home' %}">Cancel</a><button class="button" type="submit">Save post <span aria-hidden="true">↗</span></button></div>
+    </form>
+</section>
+{% endblock %}
