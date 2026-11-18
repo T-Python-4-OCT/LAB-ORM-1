@@ -1,6 +1,6 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpRequest
-from .models import Post, Category
+from .models import Post, Category, Comment
 
 # Create your views here.
 
@@ -105,8 +105,36 @@ def add_post_view(request: HttpRequest):
 def post_detail_view(request: HttpRequest, post_id: int):
 
     post = get_object_or_404(Post, pk=post_id)
+    comments = post.comment_set.all()
 
-    return render(request, "main/post_detail.html", {"post": post})
+    return render(request, "main/post_detail.html", {"post": post, "comments": comments})
+
+
+def add_comment_view(request: HttpRequest, post_id: int):
+
+    post = get_object_or_404(Post, pk=post_id)
+
+    if request.method == "POST":
+        new_comment = Comment(
+            post=post,
+            name=request.POST.get("name", ""),
+            content=request.POST.get("content", ""),
+        )
+        if new_comment.name.strip() and new_comment.content.strip():
+            new_comment.save()
+
+    return redirect("main:post_detail_view", post_id=post.id)
+
+
+def delete_comment_view(request: HttpRequest, comment_id: int):
+
+    comment = get_object_or_404(Comment, pk=comment_id)
+    post_id = comment.post.id
+
+    if request.method == "POST":
+        comment.delete()
+
+    return redirect("main:post_detail_view", post_id=post_id)
 
 
 def update_post_view(request: HttpRequest, post_id: int):
@@ -145,4 +173,4 @@ def delete_post_view(request: HttpRequest, post_id: int):
             post.image.delete(save=False)
         post.delete()
 
-    return redirect("main:home_view")
+    return redirect("main:home_view")

@@ -21,5 +21,9 @@
             {% csrf_token %}
             <button type="submit" class="btn btn-small btn-danger">Delete</button>
         </form>
+
+        {% with comments_count=post.comment_set.count %}
+            <a href="{% url 'main:post_detail_view' post.id %}#comments" class="comments-link">{{ comments_count }} Comment{{ comments_count|pluralize }}</a>
+        {% endwith %}
     </div>
 </article>

@@ -34,4 +34,38 @@
     </div>
 </article>
 
-{% endblock %}
+<section class="comments" id="comments">
+    <h2 class="section-label">{{ comments|length }} Comment{{ comments|length|pluralize }}</h2>
+
+    {% for comment in comments %}
+        <div class="comment">
+            <p class="comment-meta">
+                <span dir="auto">{{ comment.name }}</span> &middot;
+                <time datetime="{{ comment.created_at|date:'c' }}">{{ comment.created_at|date:"F j, Y · g:i A" }}</time>
+            </p>
+            <div class="comment-content" dir="auto">{{ comment.content|linebreaks }}</div>
+            <form action="{% url 'main:delete_comment_view' comment.id %}" method="post" onsubmit="return confirm('Delete this comment?');">
+                {% csrf_token %}
+                <button type="submit" class="comment-delete">Delete</button>
+            </form>
+        </div>
+    {% empty %}
+        <p class="comments-empty">No comments yet. Be the first to comment.</p>
+    {% endfor %}
+
+    <form action="{% url 'main:add_comment_view' post.id %}" method="post" class="post-form comment-form">
+        {% csrf_token %}
+
+        <label for="name" class="field-label">Name</label>
+        <input type="text" id="name" name="name" maxlength="100" placeholder="Your name" dir="auto" required>
+
+        <label for="comment" class="field-label">Comment</label>
+        <textarea id="comment" name="content" placeholder="Write a comment..." dir="auto" required></textarea>
+
+        <div class="form-actions">
+            <button type="submit" class="btn">Post Comment</button>
+        </div>
+    </form>
+</section>
+
+{% endblock %}

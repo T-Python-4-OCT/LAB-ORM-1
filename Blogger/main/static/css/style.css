@@ -298,6 +298,7 @@ main.container {
         gap: 20px;
     }
 }
+
 .post-title a:hover {
     color: var(--red);
 }
@@ -524,4 +525,69 @@ main.container {
 
 .form-errors p + p {
     margin-top: 4px;
+}
+
+.comments {
+    margin-top: 56px;
+}
+
+.comment {
+    padding-bottom: 20px;
+    margin-bottom: 20px;
+    border-bottom: 1px solid rgba(22, 21, 19, 0.15);
+}
+
+.comment-meta {
+    margin-bottom: 6px;
+    color: var(--red);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.comment-content {
+    color: var(--ink-soft);
+    overflow-wrap: anywhere;
+}
+
+.comments-empty {
+    margin-bottom: 28px;
+    color: var(--muted);
+    font-style: italic;
+}
+
+.comment-form {
+    margin-top: 32px;
+}
+
+.comment-form textarea {
+    min-height: 120px;
+}
+
+.comments-link {
+    margin-left: auto;
+    color: var(--red);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+}
+
+.comment-delete {
+    margin-top: 8px;
+    padding: 0;
+    border: none;
+    background: none;
+    color: var(--muted);
+    font: inherit;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    cursor: pointer;
+}
+
+.comment-delete:hover {
+    color: var(--red);
 }
