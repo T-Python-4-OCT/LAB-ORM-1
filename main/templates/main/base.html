@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Blogger{% endblock %}</title>
+    <link rel="icon" href="{% static 'main/images/logo.svg' %}" type="image/svg+xml">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
+</head>
+<body>
+    {% with url_name=request.resolver_match.url_name %}
+    <header class="navbar">
+        <div class="container nav-inner">
+            <a href="{% url 'main:home_view' %}" class="brand">
+                <img src="{% static 'main/images/logo.svg' %}" alt="Blogger logo">
+                <span>Blogger</span>
+            </a>
+            <nav>
+                <a href="{% url 'main:home_view' %}" class="{% if url_name == 'home_view' %}active{% endif %}">Home</a>
+                <a href="{% url 'main:all_posts_view' %}" class="{% if url_name == 'all_posts_view' %}active{% endif %}">All Posts</a>
+                <a href="{% url 'main:add_post_view' %}" class="btn">+ New Post</a>
+            </nav>
+        </div>
+        <div class="container">
+            <form class="search-bar" method="get" action="{% url 'main:search_posts_view' %}" role="search">
+                <input type="search" name="search" placeholder="Search posts..." aria-label="Search posts"
+                       value="{{ request.GET.search|default:'' }}" required minlength="3">
+                <button type="submit" class="btn">Search</button>
+            </form>
+        </div>
+    </header>
+    {% endwith %}
+
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="footer">
+        <div class="container">&copy; {% now "Y" %} Blogger &mdash; Write. Share. Inspire.</div>
+    </footer>
+</body>
+</html>

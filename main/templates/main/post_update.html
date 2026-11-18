@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Blogger | Edit {{ post.title }}{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Edit Post</h1>
+    <p>Update “{{ post.title }}”.</p>
+</section>
+
+<form method="post" action="{% url 'main:post_update_view' post.id %}" enctype="multipart/form-data" class="post-form">
+    {% csrf_token %}
+    {% include 'main/partials/post_form_fields.html' %}
+
+    <div class="form-actions">
+        <a href="{% url 'main:post_detail_view' post.id %}" class="btn btn-outline">Cancel</a>
+        <button type="submit" class="btn">Save Changes</button>
+    </div>
+</form>
+{% endblock %}

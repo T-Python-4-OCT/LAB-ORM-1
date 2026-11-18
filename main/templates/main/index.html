@@ -1,0 +1,27 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Blogger | Latest Posts{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Latest Posts</h1>
+    <p>Fresh stories and ideas from the Blogger community.</p>
+</section>
+
+<section class="posts">
+    {% for post in posts %}
+        {% include 'main/partials/post_card.html' %}
+    {% empty %}
+        <div class="empty">
+            <p>No posts yet. Be the first to write one!</p>
+            <a href="{% url 'main:add_post_view' %}" class="btn">Write a Post</a>
+        </div>
+    {% endfor %}
+</section>
+
+{% if total > posts|length %}
+    <div class="view-all">
+        <a href="{% url 'main:all_posts_view' %}" class="btn btn-outline">View all {{ total }} posts &rarr;</a>
+    </div>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,33 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Blogger | All Posts{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>All Posts</h1>
+    <p>{{ count }} post{{ count|pluralize }} found.</p>
+</section>
+
+<form method="get" action="{% url 'main:all_posts_view' %}" class="filter-bar">
+    <select name="category" aria-label="Category">
+        <option value="">All categories</option>
+        {% for value, label in categories %}
+            <option value="{{ value }}" {% if value == selected_category %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <select name="order_by" aria-label="Order by">
+        {% for value, label in ordering_options %}
+            <option value="{{ value }}" {% if value == selected_order %}selected{% endif %}>{{ label }}</option>
+        {% endfor %}
+    </select>
+    <button type="submit" class="btn">Apply</button>
+</form>
+
+<section class="posts">
+    {% for post in posts %}
+        {% include 'main/partials/post_card.html' %}
+    {% empty %}
+        <div class="empty"><p>No posts in this category yet.</p></div>
+    {% endfor %}
+</section>
+{% endblock %}

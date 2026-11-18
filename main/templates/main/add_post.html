@@ -1,0 +1,20 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Blogger | New Post{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Add a New Post</h1>
+    <p>Share your thoughts with the world.</p>
+</section>
+
+<form method="post" action="{% url 'main:add_post_view' %}" enctype="multipart/form-data" class="post-form">
+    {% csrf_token %}
+    {% include 'main/partials/post_form_fields.html' %}
+
+    <div class="form-actions">
+        <a href="{% url 'main:home_view' %}" class="btn btn-outline">Cancel</a>
+        <button type="submit" class="btn">Publish Post</button>
+    </div>
+</form>
+{% endblock %}

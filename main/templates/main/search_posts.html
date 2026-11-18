@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Blogger | Search{% endblock %}
+
+{% block content %}
+<section class="hero">
+    <h1>Search Results ({{ count }})</h1>
+    {% if search %}<p>Results for: “{{ search }}”</p>{% endif %}
+</section>
+
+{% if posts %}
+    <form method="get" action="{% url 'main:search_posts_view' %}" class="filter-bar">
+        <input type="hidden" name="search" value="{{ search }}">
+        <select name="order_by" aria-label="Order by">
+            {% for value, label in ordering_options %}
+                <option value="{{ value }}" {% if value == selected_order %}selected{% endif %}>{{ label }}</option>
+            {% endfor %}
+        </select>
+        <button type="submit" class="btn">Apply</button>
+    </form>
+
+    <section class="posts">
+        {% for post in posts %}
+            {% include 'main/partials/post_card.html' %}
+        {% endfor %}
+    </section>
+{% elif search|length < 3 %}
+    <div class="alert">Please type at least 3 characters to search.</div>
+{% else %}
+    <div class="empty"><p>No results found for “{{ search }}”.</p></div>
+{% endif %}
+{% endblock %}

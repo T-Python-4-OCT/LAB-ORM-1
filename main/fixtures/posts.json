@@ -1,0 +1,50 @@
+[
+  {
+    "model": "main.post",
+    "pk": 1,
+    "fields": {
+      "title": "Welcome to Blogger",
+      "content": "Hello and welcome to Blogger! This is a simple place to write and share your thoughts.\n\nYou can add a new post with a cover image, read any post on its own page, edit it, or delete it. Start by clicking \"+ New Post\" at the top.",
+      "category": "general",
+      "is_published": true,
+      "published_at": "2026-11-15T09:00:00Z",
+      "image": "images/welcome.jpg"
+    }
+  },
+  {
+    "model": "main.post",
+    "pk": 2,
+    "fields": {
+      "title": "5 Tips for Learning Django",
+      "content": "1. Understand the request/response cycle: URL -> view -> template.\n2. Use template inheritance so every page shares one base layout.\n3. Always use {% url %} instead of hard-coded links.\n4. Learn the ORM well: create, filter, update and delete objects.\n5. Write tests early — they catch mistakes before your users do.",
+      "category": "tech",
+      "is_published": true,
+      "published_at": "2026-11-15T15:30:00Z",
+      "image": "images/django-tips.jpg"
+    }
+  },
+  {
+    "model": "main.post",
+    "pk": 3,
+    "fields": {
+      "title": "Ronaldo",
+      "content": "The best player in the world.\n\nCristiano Ronaldo has won league titles in England, Spain and Italy, five Ballon d'Or awards, and is the all-time top scorer in international football.",
+      "category": "sports",
+      "is_published": true,
+      "published_at": "2026-11-16T16:05:00Z",
+      "image": "images/ronaldo.jpeg"
+    }
+  },
+  {
+    "model": "main.post",
+    "pk": 4,
+    "fields": {
+      "title": "My Morning Coffee Routine",
+      "content": "Every good day of coding starts with a good cup of coffee.\n\nI grind the beans fresh, brew a V60, and spend ten quiet minutes planning what I want to build before opening my laptop.",
+      "category": "lifestyle",
+      "is_published": true,
+      "published_at": "2026-11-17T06:45:00Z",
+      "image": "images/coffee.jpg"
+    }
+  }
+]

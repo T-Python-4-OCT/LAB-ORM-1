@@ -1,0 +1,24 @@
+{% if form.non_field_errors %}
+    <div class="alert">{{ form.non_field_errors|join:" " }}</div>
+{% endif %}
+
+{% for field in form %}
+    {% if field.name == "is_published" %}
+        <label class="checkbox">{{ field }} {{ field.label }}</label>
+    {% elif field.name == "image" %}
+        <label for="{{ field.id_for_label }}">{{ field.label }} <span class="hint">(optional)</span></label>
+        <div class="image-field">
+            {% if post %}<img src="{{ post.image.url }}" alt="Current image">{% endif %}
+            <div>
+                {{ field }}
+                {% if post %}<span class="hint">Leave empty to keep the current image.</span>{% endif %}
+            </div>
+        </div>
+    {% else %}
+        <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+        {{ field }}
+    {% endif %}
+    {% for error in field.errors %}
+        <span class="field-error">{{ error }}</span>
+    {% endfor %}
+{% endfor %}
