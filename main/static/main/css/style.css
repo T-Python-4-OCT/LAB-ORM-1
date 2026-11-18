@@ -864,8 +864,33 @@ a.category:hover {
   color: var(--sand-muted);
   font-size: 15px;
 }
+/* ===== زر حذف التعليق ===== */
+.comment-delete {
+  margin-left: auto;
+}
 
+.comment-delete button {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  min-height: 30px;
+  padding: 4px 12px;
+  border: none;
+  border-radius: 999px;
+  background: rgba(192, 80, 63, 0.14);
+  font-family: var(--font-body);
+  font-size: 12px;
+  font-weight: 500;
+  color: var(--danger-text);
+  cursor: pointer;
+}
 
+.comment-delete button .ti { font-size: 14px; }
+
+.comment-delete button:hover {
+  background: rgba(192, 80, 63, 0.26);
+  color: #F0907F;
+}
 /* ===== التابلت: صورة أصغر ===== */
 @media (max-width: 900px) {
   .post { grid-template-columns: 200px 1fr; gap: 18px; }

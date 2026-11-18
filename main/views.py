@@ -120,3 +120,11 @@ def add_comment(request: HttpRequest, post_id: int):
     return redirect("main:post_detail", post_id=post.id)
 
 
+def delete_comment(request: HttpRequest, comment_id: int):
+    comment = Comment.objects.get(id=comment_id)
+    post_id = comment.post.id
+
+    if request.method == "POST":
+        comment.delete()
+
+    return redirect("main:post_detail", post_id=post_id)

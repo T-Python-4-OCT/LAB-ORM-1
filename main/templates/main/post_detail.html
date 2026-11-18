@@ -59,10 +59,16 @@
           <li class="comment">
             <div class="comment-avatar" aria-hidden="true">{{ comment.name|first|upper }}</div>
             <div class="comment-body">
-              <div class="comment-head">
-                <span class="comment-name">{{ comment.name }}</span>
-                <time datetime="{{ comment.created_at|date:'c' }}">{{ comment.created_at|date:"j M Y, g:i a" }}</time>
-              </div>
+            <div class="comment-head">
+  <span class="comment-name">{{ comment.name }}</span>
+  <time datetime="{{ comment.created_at|date:'c' }}">{{ comment.created_at|date:"j M Y, g:i a" }}</time>
+  <form method="post" action="{% url 'main:delete_comment' comment.id %}" class="comment-delete">
+    {% csrf_token %}
+    <button type="submit" aria-label="Delete comment by {{ comment.name }}">
+      <i class="ti ti-trash" aria-hidden="true"></i> Delete
+    </button>
+  </form>
+</div>
               <div class="comment-text">{{ comment.content|linebreaks }}</div>
             </div>
           </li>
