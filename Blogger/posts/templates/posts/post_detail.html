@@ -1,0 +1,32 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Blogger | {{ post.title }}{% endblock %}
+
+{% block content %}
+
+<article class="article">
+  <a class="back-link" href="{% url 'main:home_view' %}"><span class="icon">arrow_back</span> Back to home</a>
+
+  <header class="article-head">
+    <div class="post-meta">
+      <a class="badge" href="{% url 'posts:search_posts_view' %}?category={{ post.category }}">{{ post.get_category_display }}</a>
+      {% if not post.is_published %}<span class="badge badge-draft">Draft</span>{% endif %}
+      <span><span class="icon">calendar_today</span>{{ post.published_at|date:"M j, Y" }}</span>
+      <span><span class="icon">schedule</span>{{ post.reading_time }} min read</span>
+    </div>
+    <h1 class="article-title" dir="auto">{{ post.title }}</h1>
+  </header>
+
+  {% if post.image %}
+    <img class="article-image" src="{{ post.image.url }}" alt="{{ post.title }}" />
+  {% endif %}
+
+  <div class="article-content" dir="auto">{{ post.content|linebreaks }}</div>
+
+  <div class="article-actions">
+    <a class="btn btn-light" href="{% url 'posts:update_post_view' post.id %}"><span class="icon">edit</span> Edit</a>
+    <a class="btn btn-danger-outline" href="{% url 'posts:delete_post_view' post.id %}"><span class="icon">delete</span> Delete</a>
+  </div>
+</article>
+
+{% endblock %}

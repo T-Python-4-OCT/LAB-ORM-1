@@ -1,0 +1,26 @@
+<article class="card">
+  <div class="card-media">
+    <a class="card-media-link" href="{% url 'posts:post_detail_view' post.id %}" tabindex="-1" aria-hidden="true">
+      {% if post.image %}
+        <img src="{{ post.image.url }}" alt="" loading="lazy" />
+      {% else %}
+        <span class="media-placeholder"><span class="icon">article</span></span>
+      {% endif %}
+    </a>
+    <a class="badge card-badge" href="{% url 'posts:search_posts_view' %}?category={{ post.category }}">{{ post.get_category_display }}</a>
+  </div>
+  <div class="card-body">
+    <h3 class="card-title" dir="auto"><a href="{% url 'posts:post_detail_view' post.id %}">{{ post.title }}</a></h3>
+    <p class="card-excerpt" dir="auto">{{ post.content|truncatewords:30 }}</p>
+    <div class="card-foot">
+      <div class="post-meta">
+        <span><span class="icon">calendar_today</span>{{ post.published_at|date:"M j, Y" }}</span>
+        <span><span class="icon">schedule</span>{{ post.reading_time }} min</span>
+      </div>
+      <div class="card-actions">
+        <a href="{% url 'posts:update_post_view' post.id %}" class="icon-btn" title="Edit" aria-label="Edit"><span class="icon">edit</span></a>
+        <a href="{% url 'posts:delete_post_view' post.id %}" class="icon-btn danger" title="Delete" aria-label="Delete"><span class="icon">delete</span></a>
+      </div>
+    </div>
+  </div>
+</article>

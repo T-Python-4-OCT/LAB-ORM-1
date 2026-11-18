@@ -1,0 +1,132 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Blogger | {% if post %}Edit post{% else %}New post{% endif %}{% endblock %}
+
+{% block content %}
+
+<section class="page-head">
+  {% if post %}
+    <a class="back-link" href="{% url 'posts:post_detail_view' post.id %}"><span class="icon">arrow_back</span> Back to post</a>
+    <h1>Edit post</h1>
+    <p>Change the title, content or image, then save.</p>
+  {% else %}
+    <h1>New post</h1>
+    <p>Write a title and content, then pick a category and a cover image.</p>
+  {% endif %}
+</section>
+
+<div class="editor-layout">
+
+  <form class="panel editor" action="{% if post %}{% url 'posts:update_post_view' post.id %}{% else %}{% url 'posts:add_post_view' %}{% endif %}" method="post" enctype="multipart/form-data" novalidate>
+    {% csrf_token %}
+
+    <div class="field{% if post_form.title.errors %} has-error{% endif %}">
+      <label for="title" class="field-label">
+        Title
+        <span class="field-hint" data-count-for="title"></span>
+      </label>
+      <input type="text" id="title" name="title" class="input title-input" placeholder="Post title" maxlength="2048" dir="auto" autocomplete="off" value="{{ post_form.title.value|default_if_none:'' }}" />
+      {% for error in post_form.title.errors %}<div class="field-error"><span class="icon">error</span>{{ error }}</div>{% endfor %}
+    </div>
+
+    <div class="field{% if post_form.content.errors %} has-error{% endif %}">
+      <label for="content" class="field-label">
+        Content
+        <span class="field-hint" data-count-for="content" data-mode="words"></span>
+      </label>
+      <textarea id="content" name="content" class="textarea" placeholder="Start writing here…" dir="auto">{{ post_form.content.value|default_if_none:'' }}</textarea>
+      {% for error in post_form.content.errors %}<div class="field-error"><span class="icon">error</span>{{ error }}</div>{% endfor %}
+    </div>
+
+    <div class="field-row">
+      <div class="field{% if post_form.category.errors %} has-error{% endif %}">
+        <label for="category" class="field-label">Category</label>
+        <select id="category" name="category" class="select">
+          {% for value, label in categories %}
+            <option value="{{ value }}" {% if post_form.category.value == value %}selected{% endif %}>{{ label }}</option>
+          {% endfor %}
+        </select>
+        {% for error in post_form.category.errors %}<div class="field-error"><span class="icon">error</span>{{ error }}</div>{% endfor %}
+      </div>
+
+      <div class="field">
+        <span class="field-label">Status</span>
+        <label class="switch" for="is_published">
+          <input type="checkbox" id="is_published" name="is_published" {% if post_form.is_published.value %}checked{% endif %} />
+          <span class="switch-track"></span>
+          <span>Publish now <span class="field-hint">(off = draft)</span></span>
+        </label>
+      </div>
+    </div>
+
+    <div class="field{% if post_form.image.errors %} has-error{% endif %}">
+      <span class="field-label">
+        Cover image
+        <span class="field-hint">{% if post.image %}Choose a file to replace it{% else %}Optional{% endif %}</span>
+      </span>
+      <label class="file-drop" for="image">
+        <span class="file-drop-icon"><span class="icon">add_photo_alternate</span></span>
+        <span>
+          <strong id="fileName">Choose an image</strong>
+          <small>JPG, PNG or WEBP</small>
+        </span>
+        <input type="file" id="image" name="image" accept="image/*" />
+      </label>
+
+      {% if post.image %}
+        <label class="current-image" for="remove_image">
+          <img src="{{ post.image.url }}" alt="Current cover image" />
+          <span>
+            <input type="checkbox" id="remove_image" name="remove_image" />
+            Remove current image
+          </span>
+        </label>
+      {% endif %}
+      {% for error in post_form.image.errors %}<div class="field-error"><span class="icon">error</span>{{ error }}</div>{% endfor %}
+    </div>
+
+    <div class="form-actions">
+      <a href="{% if post %}{% url 'posts:post_detail_view' post.id %}{% else %}{% url 'main:home_view' %}{% endif %}" class="btn btn-light">Cancel</a>
+      <button type="submit" class="btn btn-primary">
+        {% if post %}
+          <span class="icon">save</span> Save changes
+        {% else %}
+          <span class="icon">send</span> Publish
+        {% endif %}
+      </button>
+    </div>
+  </form>
+
+  <aside class="preview" aria-label="Preview">
+    <div class="preview-label"><span class="preview-dot"></span> Live preview</div>
+
+    <article class="card">
+      <div class="card-media">
+        <img id="previewImage" alt="" {% if post.image %}src="{{ post.image.url }}"{% else %}hidden{% endif %} />
+        <span class="media-placeholder" id="previewPlaceholder" {% if post.image %}hidden{% endif %}><span class="icon">image</span></span>
+      </div>
+      <div class="card-body">
+        <div>
+          <span class="badge" id="previewCategory"></span>
+          <span class="badge badge-draft" id="previewStatus" hidden>Draft</span>
+        </div>
+        <h3 class="card-title" id="previewTitle" dir="auto" data-empty="Your title appears here"></h3>
+        <p class="card-excerpt" id="previewContent" dir="auto" data-empty="Start writing and watch your post take shape."></p>
+        <div class="card-foot">
+          <div class="post-meta">
+            <span><span class="icon">schedule</span><span id="previewRead">1 min read</span></span>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    {% if post %}
+      <a href="{% url 'posts:delete_post_view' post.id %}" class="btn btn-danger-outline btn-block">
+        <span class="icon">delete</span> Delete post
+      </a>
+    {% endif %}
+  </aside>
+
+</div>
+
+{% endblock %}
