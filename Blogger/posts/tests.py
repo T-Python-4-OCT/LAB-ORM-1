@@ -3,11 +3,55 @@ from datetime import datetime, timedelta, timezone as datetime_timezone
 from tempfile import TemporaryDirectory
 
 from django.core.files.uploadedfile import SimpleUploadedFile
-from django.test import TestCase, override_settings
+from django.test import Client, TestCase, override_settings
 from django.urls import reverse
 from django.utils import timezone
 
-from .models import Post
+from .models import Comment, Post
+
+
+class CommentTests(TestCase):
+    def setUp(self):
+        self.post = Post.objects.create(title="Game review", content="Review")
+        self.url = reverse("posts:detail", args=[self.post.pk])
+
+    def test_comment_is_saved_on_current_post_and_refresh_does_not_resubmit(self):
+        other = Post.objects.create(title="Other review", content="Other")
+        response = self.client.post(self.url, {
+            "name": " Reader ", "content": " Great review! ", "post": other.pk,
+        })
+        comment = Comment.objects.get()
+        self.assertEqual((comment.post, comment.name, comment.content), (self.post, "Reader", "Great review!"))
+        self.assertRedirects(response, self.url + f"#comment-{comment.pk}")
+        self.assertContains(self.client.get(self.url), "Great review!")
+        self.assertEqual(Comment.objects.count(), 1)
+        self.assertNotContains(self.client.get(reverse("posts:detail", args=[other.pk])), "Great review!")
+
+    def test_blank_and_oversized_comments_are_rejected(self):
+        for data in [{}, {"name": " ", "content": " "}, {"name": "x" * 81, "content": "Text"}, {"name": "Reader", "content": "x" * 2001}]:
+            with self.subTest(data=data):
+                response = self.client.post(self.url, data)
+                self.assertContains(response, "Check the fields below")
+                self.assertTrue(response.context["comment_form"].errors)
+                self.assertFalse(Comment.objects.exists())
+
+    def test_draft_and_missing_posts_reject_comments(self):
+        self.post.is_published = False
+        self.post.save()
+        for pk in [self.post.pk, self.post.pk + 100]:
+            response = self.client.post(reverse("posts:detail", args=[pk]), {"name": "Reader", "content": "Text"})
+            self.assertEqual(response.status_code, 404)
+        self.assertFalse(Comment.objects.exists())
+
+    def test_comment_text_is_escaped_and_csrf_is_required(self):
+        Comment.objects.create(post=self.post, name="<b>Reader</b>", content="<script>alert(1)</script>")
+        response = self.client.get(self.url)
+        self.assertContains(response, "&lt;b&gt;Reader&lt;/b&gt;")
+        self.assertContains(response, "&lt;script&gt;")
+        self.assertNotContains(response, "<script>alert(1)</script>")
+        response = Client(enforce_csrf_checks=True).post(self.url, {"name": "Reader", "content": "Text"})
+        self.assertEqual(response.status_code, 403)
+        self.assertEqual(Comment.objects.count(), 1)
 
 
 class BloggerTests(TestCase):
@@ -132,3 +176,16 @@ class BloggerTests(TestCase):
         draft = Post.objects.create(title="Draft", content="Secret", is_published=False)
         self.assertContains(self.client.get(reverse("home")), f'href="{reverse("posts:detail", args=[post.pk])}"')
         self.assertEqual(self.client.get(reverse("posts:detail", args=[draft.pk])).status_code, 404)
+
+    def test_filter_order_and_limit_rated_posts(self):
+        for rating in [1, 2, 3, 4, 5, 5]:
+            Post.objects.create(title=f"Game {rating}", content="Text", rating=rating)
+        Post.objects.create(title="Draft", content="Text", rating=5, is_published=False)
+        response = self.client.get(reverse("home"), {"rating": "2", "order": "rating", "limit": "5"})
+        self.assertEqual([post.rating for post in response.context["posts"]], [5, 5, 4, 3, 2])
+        self.assertNotContains(response, "Draft")
+
+    def test_invalid_rating_is_rejected(self):
+        response = self.client.post(reverse("posts:create"), {"title": "Game", "content": "Text", "rating": "9", "is_published": "true"})
+        self.assertEqual(response.status_code, 200)
+        self.assertFalse(Post.objects.filter(title="Game").exists())

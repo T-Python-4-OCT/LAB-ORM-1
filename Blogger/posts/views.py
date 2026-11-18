@@ -1,6 +1,7 @@
 from django.contrib import messages
 from django.shortcuts import get_object_or_404, redirect, render
-from .forms import PostForm
+from django.urls import reverse
+from .forms import CommentForm, PostForm
 from .models import Post
 
 
@@ -50,4 +51,13 @@ def delete(request, pk):
 
 def detail(request, pk):
     post = get_object_or_404(Post, pk=pk, is_published=True)
-    return render(request, "posts/detail.html", {"post": post})
+    form = CommentForm(request.POST if request.method == "POST" else None)
+    if request.method == "POST" and form.is_valid():
+        comment = form.save(commit=False)
+        comment.post = post
+        comment.save()
+        messages.success(request, "Comment added.")
+        return redirect(reverse("posts:detail", args=[post.pk]) + f"#comment-{comment.pk}")
+    return render(request, "posts/detail.html", {
+        "post": post, "comment_form": form, "comments": post.comments.all(),
+    })

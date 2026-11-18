@@ -1,0 +1,44 @@
+{% extends "main/base.html" %}
+{% block title %}Search posts | Blogger{% endblock %}
+{% block content %}
+<section class="page search-page" aria-labelledby="search-title">
+  <header class="page-heading">
+    <h1 id="search-title">Find your next read.</h1>
+    <p>Search the journal for games, reviews, and stories.</p>
+  </header>
+  <form class="panel search-form" method="get" action="{% url 'search' %}" role="search">
+    <div class="field">
+      <label for="{{ form.q.id_for_label }}">{{ form.q.label }}</label>
+      {{ form.q }}
+      {{ form.q.errors }}
+    </div>
+    <button class="button" type="submit">Search</button>
+  </form>
+  {% if query %}
+    <div class="section-heading search-results-heading">
+      <div>
+        <h2>Search results</h2>
+        <p>{{ posts|length }} result{{ posts|length|pluralize }} for “{{ query }}”</p>
+      </div>
+      <a class="filter-reset" href="{% url 'search' %}">Clear</a>
+    </div>
+    {% if posts %}
+      <div class="post-grid">
+        {% for post in posts %}{% include "posts/card.html" %}{% endfor %}
+      </div>
+    {% else %}
+      <div class="empty">
+        <h3>No matching posts</h3>
+        <p>Try a different game title or a shorter search.</p>
+        <a class="button button-secondary" href="{% url 'home' %}">Browse all posts</a>
+      </div>
+    {% endif %}
+  {% elif not form.errors %}
+    <div class="empty search-empty">
+      <h2>What are you looking for?</h2>
+      <p>Enter a game title or a few words to search post titles and content.</p>
+      <a class="button button-secondary" href="{% url 'home' %}">Browse all posts</a>
+    </div>
+  {% endif %}
+</section>
+{% endblock %}

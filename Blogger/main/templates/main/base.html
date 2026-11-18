@@ -33,6 +33,7 @@
       {% with route=request.resolver_match.url_name %}
         <div class="nav-links">
           <a href="{% url 'home' %}"{% if route == 'home' %} aria-current="page"{% endif %}>Discover</a>
+          <a href="{% url 'search' %}"{% if route == 'search' %} aria-current="page"{% endif %}>Search</a>
           <a href="{% url 'posts:list' %}"{% if route == 'list' %} aria-current="page"{% endif %}>Manage posts</a>
         </div>
         <a class="button nav-write" href="{% url 'posts:create' %}"{% if route == 'create' %} aria-current="page"{% endif %}>

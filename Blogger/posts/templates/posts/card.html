@@ -1,0 +1,13 @@
+<article class="post-card">
+  {% include "posts/cover.html" with lazy=True %}
+  <div class="card-body">
+    <time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:"F j, Y" }} at {{ post.published_at|date:"g:i A" }}</time>
+    <h3>{{ post.title }}</h3>
+    {% if post.rating %}<p class="post-rating">Rating: {{ post.rating }}/5</p>{% endif %}
+    <p class="card-excerpt">{{ post.content|truncatechars:180 }}</p>
+    <a class="card-link card-more" href="{% url 'posts:detail' post.pk %}" aria-label="Read post: {{ post.title }}">
+      Read post
+      <span class="card-arrow" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span>
+    </a>
+  </div>
+</article>

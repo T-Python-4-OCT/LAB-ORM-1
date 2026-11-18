@@ -6,8 +6,50 @@
   <header class="page-heading">
     <time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:"F j, Y" }} at {{ post.published_at|date:"g:i A" }}</time>
     <h1>{{ post.title }}</h1>
+    {% if post.rating %}<p class="post-rating">Rating: {{ post.rating }}/5</p>{% endif %}
   </header>
   {% include "posts/cover.html" %}
   <div class="article-copy">{{ post.content|linebreaks }}</div>
+  <section class="comments" id="comments" aria-labelledby="comments-heading">
+    <div class="section-heading">
+      <h2 id="comments-heading">Comments</h2>
+      <span class="count">{{ comments|length }} comment{{ comments|length|pluralize }}</span>
+    </div>
+    {% if comments %}
+      <ol class="comment-list">
+        {% for comment in comments %}
+          <li class="comment" id="comment-{{ comment.pk }}">
+            <header class="comment-meta">
+              <h3>{{ comment.name }}</h3>
+              <time datetime="{{ comment.created_at|date:'c' }}">{{ comment.created_at|date:"F j, Y" }} at {{ comment.created_at|date:"g:i A" }}</time>
+            </header>
+            <div class="comment-copy">{{ comment.content|linebreaks }}</div>
+          </li>
+        {% endfor %}
+      </ol>
+    {% else %}
+      <p class="comment-empty">No comments yet. Share your thoughts below.</p>
+    {% endif %}
+    <form class="panel comment-form" method="post" action="{% url 'posts:detail' post.pk %}#comment-form" id="comment-form" aria-labelledby="comment-form-heading" novalidate>
+      {% csrf_token %}
+      <h3 id="comment-form-heading">Leave a comment</h3>
+      {% if comment_form.errors %}
+        <div class="form-errors" role="alert">
+          <h4>Check the fields below</h4>
+          {{ comment_form.non_field_errors }}
+          <ul>{% for field in comment_form %}{% if field.errors %}<li><a href="#{{ field.id_for_label }}">{{ field.label }}</a></li>{% endif %}{% endfor %}</ul>
+        </div>
+      {% endif %}
+      {% for field in comment_form %}
+        <div class="field">
+          <label for="{{ field.id_for_label }}">{{ field.label }}</label>
+          {{ field }}
+          {% if field.help_text %}<p class="field-hint" id="{{ field.auto_id }}_helptext">{{ field.help_text }}</p>{% endif %}
+          {{ field.errors }}
+        </div>
+      {% endfor %}
+      <div class="form-actions"><button class="button" type="submit">Post comment</button></div>
+    </form>
+  </section>
 </article>
 {% endblock %}

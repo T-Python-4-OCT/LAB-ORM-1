@@ -19,27 +19,21 @@
     </div>
     {% if posts %}<span class="count">{{ posts|length }} post{{ posts|length|pluralize }}</span>{% endif %}
   </div>
+  <form class="filters" method="get" action="{% url 'home' %}#latest-heading" aria-label="Filter posts">
+    {% for field in filter_form %}<div class="field"><label for="{{ field.id_for_label }}">{{ field.label }}</label>{{ field }}{{ field.errors }}</div>{% endfor %}
+    <button class="button button-secondary" type="submit">Apply</button>
+    <a class="filter-reset" href="{% url 'home' %}#latest-heading">Clear</a>
+  </form>
   {% if posts %}
     <div class="post-grid">
       {% for post in posts %}
-        <article class="post-card">
-          {% include "posts/cover.html" with lazy=True %}
-          <div class="card-body">
-            <time datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:"F j, Y" }} at {{ post.published_at|date:"g:i A" }}</time>
-            <h3>{{ post.title }}</h3>
-            <p class="card-excerpt">{{ post.content|truncatechars:180 }}</p>
-            <a class="card-link card-more" href="{% url 'posts:detail' post.pk %}" aria-label="Read post: {{ post.title }}">
-              Read post
-              <span class="card-arrow" aria-hidden="true"><svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg></span>
-            </a>
-          </div>
-        </article>
+        {% include "posts/card.html" %}
       {% endfor %}
     </div>
   {% else %}
     <div class="empty">
-      <h3>No posts yet</h3>
-      <p>Start the journal with a game you keep coming back to.</p>
+      <h3>No posts found</h3>
+      <p>Try changing your filters or write a post.</p>
       <a class="button" href="{% url 'posts:create' %}">Write the first post</a>
     </div>
   {% endif %}
