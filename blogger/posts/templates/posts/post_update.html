@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+{% block title %}Update Post | Blogger{% endblock %}
+
+{% block content %}
+    <div class="layout">
+        <section>
+            <div class="section-head">
+                <h2><i class="bi bi-pencil-square"></i>Update Post</h2>
+            </div>
+
+            <form method="post" class="form-box" enctype="multipart/form-data">
+                {% csrf_token %}
+
+                <label for="title"><i class="bi bi-fonts"></i>Title</label>
+                <input type="text" id="title" name="title" maxlength="2048" required value="{{ post.title }}">
+
+                <label for="category"><i class="bi bi-tag"></i>Category</label>
+                <select id="category" name="category">
+                    {% for value, label in categories %}
+                        <option value="{{ value }}" {% if post.category == value %}selected{% endif %}>{{ label }}</option>
+                    {% endfor %}
+                </select>
+
+                <label for="content"><i class="bi bi-card-text"></i>Content</label>
+                <textarea id="content" name="content" rows="10" required>{{ post.content }}</textarea>
+
+                <label class="check">
+                    <input type="checkbox" name="is_published" {% if post.is_published %}checked{% endif %}>
+                    Publish immediately
+                </label> 
+
+                <label for="image"><i class="bi bi-image"></i>Image <br><b>Note:</b> Upload an image to accompany your post. If no image is uploaded, a default image will be used.</label>
+                {% if post.image %}
+                    <img class="img-fluid" src="{{ post.image.url }}" alt="Post image" width="15%" height="auto"/>
+                {% endif %}
+                <input type="file" id="image" name="image" accept="image/*">
+                <br>
+                <br>
+                <button type="submit" class="btn"><i class="bi bi-send"></i>Publish</button>
+            </form>
+        </section>
+
+        <aside>
+            <div class="box">
+                <h3><i class="bi bi-lightbulb"></i>Writing tips</h3>
+                <ul class="tips">
+                    <li><i class="bi bi-check2-circle"></i>Choose a clear and short title.</li>
+                    <li><i class="bi bi-check2-circle"></i>Pick the category that fits best.</li>
+                    <li><i class="bi bi-check2-circle"></i>Split long text into paragraphs.</li>
+                    <li><i class="bi bi-check2-circle"></i>Untick the box to save it as a draft.</li>
+                </ul>
+            </div>
+        </aside>
+    </div>
+{% endblock %}
