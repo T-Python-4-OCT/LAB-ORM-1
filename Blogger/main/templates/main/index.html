@@ -1,118 +1,61 @@
 {% extends 'main/base.html' %}
 
-{% block title %}Blogger | The Journal{% endblock %}
+{% block title %}Blogger | Home{% endblock %}
 
 {% block content %}
 
-<section class="issue">
-  <div class="reveal">
-    <div class="label issue-kicker">Issue Nº {{ posts_count|stringformat:"02d" }} &middot; {% now "F Y" %}</div>
-    <h1 class="display-title">
-      <span class="line"><span>The Art of</span></span>
-      <span class="line"><span style="--ld: .12s"><em>Slow Words.</em></span></span>
-    </h1>
-  </div>
-
-  <div class="issue-side reveal" style="--d: .15s">
-    <p class="issue-lead">Welcome to the journal. Here you'll find the latest stories, essays and notes, set in ink and arranged newest first.</p>
-    <div>
-      <div class="issue-stats">
-        <div>
-          <div class="stat-num">{{ posts_count }}</div>
-          <div class="label stat-label">Published</div>
-        </div>
-        <div>
-          <div class="stat-num wine">{% now "d" %}</div>
-          <div class="label stat-label">{% now "F" %}</div>
-        </div>
-      </div>
-      <a class="btn-ink mt-4" href="{% url 'posts:add_post_view' %}">
-        <span class="material-symbols-outlined">edit</span> Write a story
-      </a>
-    </div>
-  </div>
-</section>
-
 {% if featured_post %}
 
-  <div class="section-rule reveal mt-5" id="latest">
-    <span class="label">Cover story</span>
-    <h2>This Issue</h2>
-  </div>
-
-  <article class="cover">
-    <div class="cover-art reveal{% if featured_post.image %} has-image{% endif %}" data-tilt aria-hidden="true">
-      {% if featured_post.image %}<img class="cover-image" src="{{ featured_post.image.url }}" alt="" />{% endif %}
-      <div class="label">Blogger &middot; Nº {{ posts_count|stringformat:"02d" }}</div>
-      <div>
-        <div class="cover-day">{{ featured_post.published_at|date:"d" }}</div>
-        <div class="cover-month">{{ featured_post.published_at|date:"F Y" }}</div>
+  <section class="hero{% if featured_post.image %} has-image{% endif %}">
+    {% if featured_post.image %}
+      <img class="hero-bg" src="{{ featured_post.image.url }}" alt="" />
+    {% endif %}
+    <div class="hero-body">
+      <div class="hero-top">
+        <span class="badge badge-gold">Latest</span>
+        <a class="badge" href="{% url 'posts:search_posts_view' %}?category={{ featured_post.category }}">{{ featured_post.get_category_display }}</a>
+      </div>
+      <h1 class="hero-title" dir="auto"><a href="{% url 'posts:post_detail_view' featured_post.id %}">{{ featured_post.title }}</a></h1>
+      <p class="hero-excerpt" dir="auto">{{ featured_post.content|truncatewords:30 }}</p>
+      <div class="post-meta">
+        <span><span class="icon">calendar_today</span>{{ featured_post.published_at|date:"M j, Y" }}</span>
+        <span><span class="icon">schedule</span>{{ featured_post.reading_time }} min read</span>
+      </div>
+      <div class="hero-actions">
+        <a class="btn btn-primary" href="{% url 'posts:post_detail_view' featured_post.id %}">
+          Read post <span class="icon">arrow_forward</span>
+        </a>
+        <a href="{% url 'posts:update_post_view' featured_post.id %}" class="icon-btn" title="Edit" aria-label="Edit"><span class="icon">edit</span></a>
+        <a href="{% url 'posts:delete_post_view' featured_post.id %}" class="icon-btn danger" title="Delete" aria-label="Delete"><span class="icon">delete</span></a>
       </div>
     </div>
-
-    <div class="cover-body reveal" style="--d: .12s">
-      <span class="label">The latest</span>
-      <h2 class="cover-title" dir="auto">{{ featured_post.title }}</h2>
-      <p class="cover-content" dir="auto">{{ featured_post.content|linebreaksbr }}</p>
-      <div class="byline label">
-        <span><span class="material-symbols-outlined">schedule</span>
-          <time datetime="{{ featured_post.published_at|date:'c' }}">{{ featured_post.published_at|date:"M d, Y · h:i A" }}</time>
-        </span>
-        <span><span class="material-symbols-outlined">menu_book</span>{{ featured_post.reading_time }} min read</span>
-      </div>
-      <div class="post-actions">
-        <a href="{% url 'posts:update_post_view' featured_post.id %}" class="icon-action" title="Edit post" aria-label="Edit post">
-          <span class="material-symbols-outlined">edit</span>
-        </a>
-        <a href="{% url 'posts:delete_post_view' featured_post.id %}" class="icon-action danger" title="Delete post" aria-label="Delete post">
-          <span class="material-symbols-outlined">delete</span>
-        </a>
-      </div>
-    </div>
-  </article>
+  </section>
 
   {% if other_posts %}
-    <div class="section-rule reveal">
-      <span class="label">Archive</span>
-      <h2>Also in this issue</h2>
+    <div class="section-head">
+      <h2>Latest posts</h2>
+      <nav class="chips" aria-label="Categories">
+        <a class="chip" href="{% url 'posts:search_posts_view' %}">All</a>
+        {% for value, label in categories %}
+          <a class="chip" href="{% url 'posts:search_posts_view' %}?category={{ value }}">{{ label }}</a>
+        {% endfor %}
+      </nav>
     </div>
 
-    <div class="post-grid">
+    <div class="card-grid">
       {% for post in other_posts %}
-        <article class="post-card reveal" style="--d: {% cycle '0s' '.08s' '.16s' %}">
-          {% if post.image %}<img class="post-image" src="{{ post.image.url }}" alt="{{ post.title }}" loading="lazy" />{% endif %}
-          <div class="post-index">{{ forloop.counter|add:1|stringformat:"02d" }}</div>
-          <h3 class="post-title" dir="auto">{{ post.title }}</h3>
-          <p class="post-content" dir="auto">{{ post.content|linebreaksbr }}</p>
-          <div class="post-foot">
-            <time class="label" datetime="{{ post.published_at|date:'c' }}">{{ post.published_at|date:"M d, Y · h:i A" }}</time>
-            <button type="button" class="read-more" aria-expanded="false">
-              <span class="label">Read more</span>
-              <span class="material-symbols-outlined">expand_more</span>
-            </button>
-            <div class="post-actions">
-              <a href="{% url 'posts:update_post_view' post.id %}" class="icon-action" title="Edit post" aria-label="Edit post">
-                <span class="material-symbols-outlined">edit</span>
-              </a>
-              <a href="{% url 'posts:delete_post_view' post.id %}" class="icon-action danger" title="Delete post" aria-label="Delete post">
-                <span class="material-symbols-outlined">delete</span>
-              </a>
-            </div>
-          </div>
-        </article>
+        {% include 'posts/post_card.html' %}
       {% endfor %}
     </div>
   {% endif %}
 
 {% else %}
 
-  <div class="empty-state reveal">
-    <span class="label">Issue Nº 00</span>
-    <h3>The presses are waiting.</h3>
-    <p>Every journal begins with a single story. Be the first to set yours in ink.</p>
-    <a class="btn-ink" href="{% url 'posts:add_post_view' %}">
-      <span class="material-symbols-outlined">edit</span> Write the first story
-    </a>
+  <div class="empty">
+    <div class="empty-icon"><span class="icon">edit_note</span></div>
+    <h3>No posts yet</h3>
+    <p>Write your first post and it will show up here.</p>
+    <a class="btn btn-primary" href="{% url 'posts:add_post_view' %}"><span class="icon">add</span> Write the first post</a>
   </div>
 
 {% endif %}

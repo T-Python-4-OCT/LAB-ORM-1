@@ -1,0 +1,54 @@
+{% extends 'main/base.html' %}
+
+{% block title %}Blogger | Search{% endblock %}
+
+{% block content %}
+
+<section class="page-head">
+  <h1>Search</h1>
+  <p>Search titles and content, then filter by category and sort.</p>
+</section>
+
+<form class="panel filter-bar" action="{% url 'posts:search_posts_view' %}" method="get">
+  <div class="input-wrap">
+    <span class="icon">search</span>
+    <input type="search" name="search" class="input" placeholder="Type a word to search…" value="{{ search }}" dir="auto" />
+  </div>
+
+  <select name="category" class="select" aria-label="Category">
+    <option value="">All categories</option>
+    {% for value, label in categories %}
+      <option value="{{ value }}" {% if category == value %}selected{% endif %}>{{ label }}</option>
+    {% endfor %}
+  </select>
+
+  <select name="order_by" class="select" aria-label="Sort">
+    <option value="newest" {% if order_by == 'newest' %}selected{% endif %}>Newest first</option>
+    <option value="oldest" {% if order_by == 'oldest' %}selected{% endif %}>Oldest first</option>
+    <option value="title" {% if order_by == 'title' %}selected{% endif %}>Title A–Z</option>
+  </select>
+
+  <button type="submit" class="btn btn-primary"><span class="icon">search</span> Search</button>
+</form>
+
+<div class="results-head">
+  <h2 dir="auto">{% if search %}Results for “{{ search }}”{% elif category_label %}{{ category_label }}{% else %}All posts{% endif %}</h2>
+  <span class="count-pill">{{ posts.count }} result{{ posts.count|pluralize }}</span>
+</div>
+
+{% if posts %}
+  <div class="card-grid">
+    {% for post in posts %}
+      {% include 'posts/post_card.html' %}
+    {% endfor %}
+  </div>
+{% else %}
+  <div class="empty">
+    <div class="empty-icon"><span class="icon">search_off</span></div>
+    <h3>No posts match your search</h3>
+    <p>Try another word or pick a different category.</p>
+    <a class="btn btn-light" href="{% url 'posts:search_posts_view' %}">Show all posts</a>
+  </div>
+{% endif %}
+
+{% endblock %}

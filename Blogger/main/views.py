@@ -11,7 +11,6 @@ def home_view(request: HttpRequest):
     # get only the published posts, latest first
     posts = Post.objects.filter(is_published=True).order_by("-published_at")
 
-    # the newest post is featured at the top, the rest go in the grid
     featured_post = posts.first()
     other_posts = posts[1:]
 
@@ -19,6 +18,7 @@ def home_view(request: HttpRequest):
         "featured_post": featured_post,
         "other_posts": other_posts,
         "posts_count": posts.count(),
+        "categories": Post.Category.choices,
     }
 
     return render(request, "main/index.html", context)
