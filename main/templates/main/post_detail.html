@@ -11,6 +11,7 @@
         <time datetime="{{ post.published_at|date:'c' }}">
             {{ post.published_at|date:"F j, Y" }} &middot; {{ post.published_at|time:"g:i A" }}
         </time>
+        <a href="{% url 'main:all_posts_view' %}?category={{ post.category }}" class="category-tag">{{ post.get_category_display }}</a>
         {% if not post.is_published %}<span class="badge">Draft</span>{% endif %}
     </div>
 

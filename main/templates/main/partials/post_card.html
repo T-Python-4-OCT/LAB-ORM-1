@@ -1,0 +1,14 @@
+<article class="post-card">
+    <a href="{% url 'main:post_detail_view' post.id %}" class="post-thumb">
+        <img src="{{ post.image.url }}" alt="{{ post.title }}">
+    </a>
+    <div class="post-body">
+        <span class="category-tag">{{ post.get_category_display }}</span>
+        <h2><a href="{% url 'main:post_detail_view' post.id %}">{{ post.title }}</a></h2>
+        <time datetime="{{ post.published_at|date:'c' }}">
+            {{ post.published_at|date:"F j, Y" }} &middot; {{ post.published_at|time:"g:i A" }}
+        </time>
+        <p>{{ post.content|truncatewords:40|linebreaksbr }}</p>
+        <a href="{% url 'main:post_detail_view' post.id %}" class="read-more">Read more &rarr;</a>
+    </div>
+</article>

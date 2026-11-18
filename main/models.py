@@ -2,8 +2,16 @@ from django.db import models
 
 
 class Post(models.Model):
+
+    class Category(models.TextChoices):
+        GENERAL = "general", "General"
+        TECH = "tech", "Technology"
+        SPORTS = "sports", "Sports"
+        LIFESTYLE = "lifestyle", "Lifestyle"
+
     title = models.CharField(max_length=2048)
     content = models.TextField()
+    category = models.CharField(max_length=32, choices=Category.choices, default=Category.GENERAL)
     is_published = models.BooleanField(default=True)
     published_at = models.DateTimeField(auto_now_add=True)
     image = models.ImageField(upload_to="images/", default="images/default.jpg")

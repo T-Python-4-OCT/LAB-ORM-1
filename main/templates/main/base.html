@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="{% static 'main/css/style.css' %}">
 </head>
 <body>
+    {% with url_name=request.resolver_match.url_name %}
     <header class="navbar">
         <div class="container nav-inner">
             <a href="{% url 'main:home_view' %}" class="brand">
@@ -18,11 +19,20 @@
                 <span>Blogger</span>
             </a>
             <nav>
-                <a href="{% url 'main:home_view' %}" class="{% if request.resolver_match.url_name == 'home_view' %}active{% endif %}">Home</a>
-                <a href="{% url 'main:add_post_view' %}" class="btn {% if request.resolver_match.url_name == 'add_post_view' %}active{% endif %}">+ New Post</a>
+                <a href="{% url 'main:home_view' %}" class="{% if url_name == 'home_view' %}active{% endif %}">Home</a>
+                <a href="{% url 'main:all_posts_view' %}" class="{% if url_name == 'all_posts_view' %}active{% endif %}">All Posts</a>
+                <a href="{% url 'main:add_post_view' %}" class="btn">+ New Post</a>
             </nav>
         </div>
+        <div class="container">
+            <form class="search-bar" method="get" action="{% url 'main:search_posts_view' %}" role="search">
+                <input type="search" name="search" placeholder="Search posts..." aria-label="Search posts"
+                       value="{{ request.GET.search|default:'' }}" required minlength="3">
+                <button type="submit" class="btn">Search</button>
+            </form>
+        </div>
     </header>
+    {% endwith %}
 
     <main class="container">
         {% block content %}{% endblock %}
