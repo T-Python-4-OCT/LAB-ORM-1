@@ -2,7 +2,8 @@ from django.contrib import messages
 from django.db.models import Count, Q
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PostForm
-from .models import Post
+from .models import Post, Review
+from django.http import HttpRequest
 
 
 def home(request):
@@ -76,8 +77,13 @@ def add_post(request):
 def post_detail(request, post_id):
     post = get_object_or_404(Post, id=post_id)
 
+    reviews = Review.objects.filter(
+        post=post
+    ).order_by('-created_at', '-id')
+
     return render(request, 'posts/post_detail.html', {
         'post': post,
+        'reviews': reviews,
     })
 
 
@@ -112,3 +118,26 @@ def delete_post(request, post_id):
     return render(request, 'posts/delete_post.html', {
         'post': post,
     })
+
+
+def add_review_view(request, post_id):
+    post = get_object_or_404(Post, id=post_id)
+
+    if request.method == 'POST':
+        name = request.POST.get('name', '').strip()
+        comment = request.POST.get('comment', '').strip()
+        rating = request.POST.get('rating', '0')
+
+        if name and comment and len(name) <= 1024 and rating in ['1', '2', '3', '4', '5']:
+            Review.objects.create(
+                post=post,
+                name=name,
+                comment=comment,
+                rating=int(rating)
+            )
+
+            messages.success(request, 'تم إضافة التعليق والتقييم بنجاح')
+        else:
+            messages.error(request, 'يرجى إدخال البيانات واختيار تقييم من 1 إلى 5')
+
+    return redirect('posts:post_detail', post_id=post.id)

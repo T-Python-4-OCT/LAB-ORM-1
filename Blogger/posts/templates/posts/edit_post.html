@@ -57,7 +57,10 @@
             <div class="current-image">
                 {% if post.poster %}
                     {% if post.poster.name != 'images/default.jpg' %}
-                        <img src="{{ post.poster.url }}" alt="الصورة الحالية">
+                        <img
+                            src="{{ post.poster.url }}"
+                            alt="الصورة الحالية"
+                        >
                     {% else %}
                         <img
                             src="{% static 'posts/img/covers/blog-cover.webp' %}"
@@ -75,8 +78,10 @@
             <div class="image-upload">
                 {{ form.poster }}
 
-                <label class="image-upload-btn"
-                       for="{{ form.poster.id_for_label }}">
+                <label
+                    class="image-upload-btn"
+                    for="{{ form.poster.id_for_label }}"
+                >
                     <span class="material-symbols-outlined">
                         add_photo_alternate
                     </span>
@@ -84,7 +89,10 @@
                 </label>
 
                 <div class="image-preview" id="image-preview" hidden>
-                    <img id="preview-img" alt="معاينة الصورة الجديدة">
+                    <img
+                        id="preview-img"
+                        alt="معاينة الصورة الجديدة"
+                    >
 
                     <button
                         type="button"
@@ -120,12 +128,15 @@
                 حفظ التعديلات
             </button>
 
-            <a class="btn btn-outline"
-               href="{% url 'posts:post_detail' post.id %}">
+            <a
+                class="btn btn-outline"
+                href="{% url 'posts:post_detail' post.id %}"
+            >
                 <span class="material-symbols-outlined">close</span>
                 إلغاء
             </a>
         </div>
+
     </form>
 
 </section>

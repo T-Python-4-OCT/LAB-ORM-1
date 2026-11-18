@@ -8,20 +8,10 @@
 <article class="detail-card">
 
     <div class="detail-cover">
-        {% if post.poster %}
-            {% if post.poster.name != 'images/default.jpg' %}
-                <img src="{{ post.poster.url }}" alt="{{ post.title }}">
-            {% else %}
-                <img
-                    src="{% static 'posts/img/covers/blog-cover.webp' %}"
-                    alt="{{ post.title }}"
-                >
-            {% endif %}
+        {% if post.poster and post.poster.name != 'images/default.jpg' %}
+            <img src="{{ post.poster.url }}" alt="{{ post.title }}">
         {% else %}
-            <img
-                src="{% static 'posts/img/covers/blog-cover.webp' %}"
-                alt="{{ post.title }}"
-            >
+            <img src="{% static 'posts/img/covers/blog-cover.webp' %}" alt="{{ post.title }}">
         {% endif %}
     </div>
 
@@ -30,40 +20,182 @@
         <h1 dir="auto">{{ post.title }}</h1>
 
         <div class="post-date">
-
-            <span class="material-symbols-outlined">
-                calendar_month
-            </span>
-
-            <span>
-                {{ post.published_at|date:"d F Y - h:i A" }}
-            </span>
+            <span class="material-symbols-outlined">calendar_month</span>
+            <span>{{ post.published_at|date:"d F Y - h:i A" }}</span>
 
             {% if post.is_published %}
-                <span class="status status-on">
-                    منشور
-                </span>
+                <span class="status status-on">منشور</span>
             {% else %}
-                <span class="status status-off">
-                    غير منشور
-                </span>
+                <span class="status status-off">غير منشور</span>
             {% endif %}
-
         </div>
 
         <div class="detail-text" dir="auto">
             {{ post.content|linebreaks }}
         </div>
 
+        <section class="reviews-section">
+
+            <h2 class="reviews-title">
+                <span class="material-symbols-outlined">forum</span>
+                التعليقات والتقييمات
+            </h2>
+
+            <form
+                class="review-form"
+                method="post"
+                action="{% url 'posts:add_review' post.id %}"
+            >
+                {% csrf_token %}
+
+                <div class="field">
+                    <label for="review-name">الاسم</label>
+                    <input
+                        type="text"
+                        id="review-name"
+                        name="name"
+                        placeholder="أدخل اسمك"
+                        maxlength="1024"
+                        required
+                    >
+                </div>
+
+                <div class="field">
+                    <label for="review-comment">التعليق</label>
+                    <textarea
+                        id="review-comment"
+                        name="comment"
+                        rows="4"
+                        placeholder="اكتب تعليقك هنا..."
+                        required
+                    ></textarea>
+                </div>
+
+                <div class="field">
+                    <label>تقييم التدوينة</label>
+
+                    <div class="rating-stars" id="rating-stars" role="group" aria-label="اختر تقييم التدوينة">
+
+                        <button type="button" class="star-btn" data-rating="1" aria-label="نجمة واحدة" aria-pressed="false">
+                            <span class="star-icon">★</span>
+                        </button>
+
+                        <button type="button" class="star-btn" data-rating="2" aria-label="نجمتان" aria-pressed="false">
+                            <span class="star-icon">★</span>
+                        </button>
+
+                        <button type="button" class="star-btn" data-rating="3" aria-label="ثلاث نجوم" aria-pressed="false">
+                            <span class="star-icon">★</span>
+                        </button>
+
+                        <button type="button" class="star-btn" data-rating="4" aria-label="أربع نجوم" aria-pressed="false">
+                            <span class="star-icon">★</span>
+                        </button>
+
+                        <button type="button" class="star-btn" data-rating="5" aria-label="خمس نجوم" aria-pressed="false">
+                            <span class="star-icon">★</span>
+                        </button>
+
+                    </div>
+
+                    <input
+                        type="hidden"
+                        name="rating"
+                        id="rating-value"
+                        value="0"
+                    >
+
+                    <p class="rating-hint" id="rating-hint">
+                        اختر تقييمًا من 1 إلى 5 نجوم
+                    </p>
+                </div>
+
+                <button class="btn" type="submit">
+                    <span class="material-symbols-outlined">send</span>
+                    إضافة تعليق
+                </button>
+
+            </form>
+
+            <div class="reviews-list">
+
+                {% for review in reviews %}
+
+                    <div class="review-card">
+
+                        <div class="review-header">
+                            <h3>{{ review.name }}</h3>
+
+                            <span class="review-date">
+                                {{ review.created_at|date:"d F Y" }}
+                            </span>
+                        </div>
+
+                        {% if review.rating > 0 %}
+                            <div
+                                class="review-rating"
+                                aria-label="التقييم {{ review.rating }} من 5"
+                            >
+                                {% for number in "12345" %}
+                                    <span class="review-star {% if forloop.counter <= review.rating %}filled{% endif %}">★</span>
+                                {% endfor %}
+                            </div>
+                        {% endif %}
+
+                        <p dir="auto">{{ review.comment|linebreaksbr }}</p>
+
+                    </div>
+
+                {% empty %}
+
+                    <p class="no-reviews">
+                        لا توجد تعليقات حتى الآن. كن أول من يعلق.
+                    </p>
+
+                {% endfor %}
+
+            </div>
+
+        </section>
+
         <a class="btn btn-outline" href="{% url 'posts:home' %}">
-            <span class="material-symbols-outlined">
-                arrow_forward
-            </span>
+            <span class="material-symbols-outlined">arrow_forward</span>
             العودة للرئيسية
         </a>
 
     </div>
 
 </article>
+
+<script>
+    const stars = document.querySelectorAll('.star-btn');
+    const ratingInput = document.getElementById('rating-value');
+    const ratingHint = document.getElementById('rating-hint');
+    const reviewForm = document.querySelector('.review-form');
+
+    stars.forEach(function (star) {
+        star.addEventListener('click', function () {
+            const rating = Number(this.dataset.rating);
+
+            ratingInput.value = rating;
+            ratingHint.textContent = 'تقييمك: ' + rating + ' من 5';
+
+            stars.forEach(function (item) {
+                const selected = Number(item.dataset.rating) <= rating;
+
+                item.classList.toggle('selected', selected);
+                item.setAttribute('aria-pressed', String(selected));
+            });
+        });
+    });
+
+    reviewForm.addEventListener('submit', function (event) {
+        if (ratingInput.value === '0') {
+            event.preventDefault();
+            ratingHint.textContent = 'يرجى اختيار عدد النجوم أولًا';
+            ratingHint.style.color = '#a02e26';
+        }
+    });
+</script>
 
 {% endblock %}

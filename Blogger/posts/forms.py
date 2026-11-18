@@ -23,7 +23,6 @@ class PostForm(forms.ModelForm):
         error_messages = {
             'title': {
                 'required': 'عنوان التدوينة مطلوب.',
-                'max_length': 'عنوان التدوينة طويل جدا.',
             },
             'content': {
                 'required': 'محتوى التدوينة مطلوب.',
@@ -37,12 +36,10 @@ class PostForm(forms.ModelForm):
             'title': forms.TextInput(attrs={
                 'placeholder': 'أدخل عنوان التدوينة ...',
             }),
-
             'content': forms.Textarea(attrs={
                 'placeholder': 'اكتب محتوى التدوينة هنا ...',
                 'rows': 7,
             }),
-
             'poster': forms.FileInput(attrs={
                 'accept': 'image/*',
                 'class': 'image-input',
