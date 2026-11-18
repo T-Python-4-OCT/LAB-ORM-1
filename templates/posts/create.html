@@ -17,6 +17,7 @@
             <p class="image-help">Choose a photo from your device. To replace it, choose another file. Select Clear to remove the saved photo.</p>
         </div>
         <div class="form-field"><label for="{{ form.title.id_for_label }}">Title</label>{{ form.title }}{{ form.title.errors }}</div>
+        <div class="form-field"><label for="{{ form.category.id_for_label }}">Category</label>{{ form.category }}{{ form.category.errors }}</div>
         <div class="form-field"><label for="{{ form.content.id_for_label }}">Your story</label>{{ form.content }}{{ form.content.errors }}</div>
         <div class="publish-option"><label for="{{ form.is_published.id_for_label }}">{{ form.is_published }} {{ form.is_published.label }}</label><p>Unpublished posts are saved and can be managed in the admin.</p>{{ form.is_published.errors }}</div>
         <div class="form-actions"><a class="back-link" href="{% url 'posts:home' %}">Cancel</a><button class="button" type="submit">Save post <span aria-hidden="true">↗</span></button></div>

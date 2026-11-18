@@ -9,6 +9,54 @@ from PIL import Image
 
 
 class BlogTests(TestCase):
+    def test_repeatable_demo_data(self):
+        from django.core.management import call_command
+        from io import StringIO
+
+        call_command("seed_demo", stdout=StringIO())
+        call_command("seed_demo", stdout=StringIO())
+        self.assertEqual(Post.objects.count(), 6)
+        self.assertEqual(Post.objects.filter(is_published=False).count(), 1)
+
+    def test_search_category_sort_and_count(self):
+        older = Post.objects.create(title="Hilal story", content="Football", category="sports")
+        newer = Post.objects.create(title="Another story", content="Hilal fans", category="sports")
+        Post.objects.create(title="Hilal technology", content="Computers", category="technology")
+        Post.objects.create(title="Hilal draft", content="Hidden", category="sports", is_published=False)
+        response = self.client.get(reverse("posts:home"), {"q": "hilal", "category": "sports", "sort": "oldest"})
+        self.assertEqual(list(response.context["posts"]), [older, newer])
+        self.assertEqual(response.context["result_count"], 2)
+        self.assertContains(response, "رياضة")
+
+    def test_search_finds_arabic_and_english_category_names(self):
+        tech = Post.objects.create(title="Django ORM", content="Programming", category="technology")
+        Post.objects.create(title="Football", content="Match", category="sports")
+        Post.objects.create(title="Hidden", content="Text", category="technology", is_published=False)
+        for query in ("تقنية", "التقنية", "التقنيه", "technology", "Tech"):
+            response = self.client.get(reverse("posts:home"), {"q": query})
+            self.assertEqual(list(response.context["posts"]), [tech])
+        response = self.client.get(reverse("posts:home"), {"q": "التقنية", "category": "sports"})
+        self.assertEqual(response.context["result_count"], 0)
+
+    def test_pagination_preserves_filters_and_handles_invalid_page(self):
+        for number in range(8):
+            Post.objects.create(title=f"Story {number}", content="Text", category="sports")
+        response = self.client.get(reverse("posts:home"), {"category": "sports"})
+        self.assertEqual(len(response.context["posts"]), 6)
+        self.assertEqual(response.context["result_count"], 8)
+        self.assertContains(response, "category=sports&amp;page=2")
+        response = self.client.get(reverse("posts:home"), {"category": "sports", "page": 2})
+        self.assertEqual(len(response.context["posts"]), 2)
+        self.assertEqual(self.client.get(reverse("posts:home"), {"page": "bad", "sort": "bad"}).status_code, 200)
+
+    def test_manage_draft_filter_and_category_validation(self):
+        draft = Post.objects.create(title="Draft", content="Text", is_published=False)
+        Post.objects.create(title="Published", content="Text")
+        response = self.client.get(reverse("posts:manage"), {"status": "draft"})
+        self.assertEqual(list(response.context["posts"]), [draft])
+        response = self.client.post(reverse("posts:create"), {"title": "Invalid", "content": "Text", "category": "unknown"})
+        self.assertIn("category", response.context["form"].errors)
+
     def test_edit_and_delete_confirmation(self):
         post = Post.objects.create(title="Original", content="Original content")
         response = self.client.post(reverse("posts:edit", args=[post.pk]), {

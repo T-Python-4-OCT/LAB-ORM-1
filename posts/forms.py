@@ -3,9 +3,12 @@ from .models import Post
 
 
 class PostForm(forms.ModelForm):
+    def clean_category(self):
+        return self.cleaned_data.get("category") or Post.Category.GENERAL
+
     class Meta:
         model = Post
-        fields = ["title", "content", "image", "is_published"]
+        fields = ["title", "category", "content", "image", "is_published"]
         labels = {"is_published": "Publish this post now"}
         widgets = {
             "image": forms.ClearableFileInput(attrs={"accept": "image/*"}),

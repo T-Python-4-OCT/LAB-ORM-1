@@ -1,5 +1,20 @@
 # LAB-ORM-1
 
+## عرض المشروع على الدكتور
+
+لتجهيز بيانات العرض على جهاز آخر بعد تنفيذ migrations:
+
+```powershell
+.\.venv\Scripts\python.exe manage.py seed_demo
+```
+
+الأمر يضيف أمثلة تعليمية في التصنيفات المختلفة ومسودة، ولا يكرر الأمثلة عند
+تشغيله مرة أخرى. صور الهلال الموجودة محليًا ليست ضمن Git لأن `media/` وقاعدة
+البيانات مستثناة؛ عند نقل المشروع انقل الصور وقاعدة البيانات أيضًا إذا أردت نفس المحتوى.
+
+خطوات العرض: الرئيسية وعدد النتائج، البحث عن الهلال، تصنيف Sports، تغيير
+الترتيب، الصفحة الثانية، إضافة منشور وصورة وتصنيف، تعديل، مسودة في الإدارة، ثم حذف مع تأكيد.
+
 ## Run Blogger locally
 
 Requires Python 3.10 or newer.
@@ -34,6 +49,15 @@ The default settings are for local development. For deployment, configure
 for your domain.
 
 ## Original lab requirements
+
+### ORM lesson features
+
+- Categories use `Post.Category` (`TextChoices`): General, Sports, Technology, Daily life.
+- Search uses `icontains` on titles and content; category and publication status use `filter()`.
+- Sort newest or oldest with `order_by()`.
+- Lists show the matching count and six posts per page using Django's `Paginator`
+  (QuerySet count and slicing), preserving the filters when changing pages.
+- Category labels use `get_category_display` in templates.
 
 ## Using what you learned , Create a Blog website called `Blogger` . Has the following pages:
 - A homepage : displays the lates posts (Post title, content, date & time published) .
