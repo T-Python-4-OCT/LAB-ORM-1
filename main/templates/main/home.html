@@ -76,11 +76,18 @@
             </a>
 
             <div class="post-footer">
-              {% if post.is_published %}
-                <span class="badge badge--published">Published</span>
-              {% else %}
-                <span class="badge badge--draft">Not published</span>
-              {% endif %}
+              <div class="post-stats">
+                {% if post.is_published %}
+                  <span class="badge badge--published">Published</span>
+                {% else %}
+                  <span class="badge badge--draft">Not published</span>
+                {% endif %}
+                <a href="{% url 'main:post_detail' post.id %}#comments-title" class="comment-count"
+                   aria-label="{{ post.comment_set.count }} comments">
+                  <i class="ti ti-message-circle" aria-hidden="true"></i>
+                  {{ post.comment_set.count }}
+                </a>
+              </div>
 
               <a href="{% url 'main:update_post' post.id %}" class="action">
                 <i class="ti ti-edit" aria-hidden="true"></i>

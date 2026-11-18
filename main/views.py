@@ -1,8 +1,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpRequest
 from django.core.exceptions import ValidationError
-from .models import Post
-
+from .models import Post, Comment
 
 def home(request: HttpRequest):
     sort = request.GET.get("sort", "newest")
@@ -42,7 +41,8 @@ def home(request: HttpRequest):
 
 def post_detail(request: HttpRequest, post_id: int):
     post = Post.objects.get(id=post_id)
-    return render(request, "main/post_detail.html", {"post": post})
+    comments = post.comment_set.all().order_by("-created_at")
+    return render(request, "main/post_detail.html", {"post": post, "comments": comments})
 
 
 def save_post(request: HttpRequest, post: Post) -> dict:
@@ -105,3 +105,18 @@ def delete_post(request: HttpRequest, post_id: int):
         return redirect("main:home")
 
     return redirect("main:update_post", post_id=post.id)
+
+
+def add_comment(request: HttpRequest, post_id: int):
+    post = Post.objects.get(id=post_id)
+
+    if request.method == "POST":
+        name = request.POST.get("name", "").strip()
+        content = request.POST.get("content", "").strip()
+        if name and content:
+            comment = Comment(post=post, name=name, content=content)
+            comment.save()
+
+    return redirect("main:post_detail", post_id=post.id)
+
+

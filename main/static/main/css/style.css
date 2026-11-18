@@ -751,6 +751,121 @@ a.category:hover {
 .has-error .input { border-color: var(--danger-text); }
 
 .has-error label { color: var(--danger-text); }
+
+/* ===== عدد التعليقات على البطاقة ===== */
+.post-stats {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.comment-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 13px;
+  color: var(--sand-muted);
+  text-decoration: none;
+}
+
+.comment-count .ti { font-size: 16px; }
+
+.comment-count:hover { color: var(--gold); }
+
+/* ===== قسم التعليقات ===== */
+.comments {
+  margin-top: 48px;
+  padding-top: 32px;
+  border-top: 1px solid var(--line);
+}
+
+.comments-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--font-head);
+  font-weight: 500;
+  font-size: 24px;
+  color: var(--cream);
+  margin: 0 0 20px;
+}
+
+.comment-form {
+  padding: 20px;
+  margin-bottom: 28px;
+  background: var(--card);
+  border: 1px solid var(--line);
+  border-radius: 14px;
+}
+
+.comment-actions {
+  display: flex;
+  justify-content: flex-end;
+}
+
+.comment-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.comment {
+  display: flex;
+  gap: 14px;
+  padding: 18px 0;
+  border-bottom: 1px solid var(--line);
+}
+
+.comment:last-child { border-bottom: none; }
+
+.comment-avatar {
+  flex: none;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(217, 164, 65, 0.16);
+  color: var(--gold);
+  font-family: var(--font-head);
+  font-size: 18px;
+}
+
+.comment-body { min-width: 0; }
+
+.comment-head {
+  display: flex;
+  align-items: baseline;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 4px;
+}
+
+.comment-name {
+  font-weight: 500;
+  color: var(--cream);
+}
+
+.comment-head time {
+  font-size: 12px;
+  color: var(--sand-muted);
+}
+
+.comment-text {
+  font-size: 15px;
+  color: var(--sand);
+  overflow-wrap: break-word;
+}
+
+.comment-text p { margin: 0 0 8px; }
+
+.comments-empty {
+  color: var(--sand-muted);
+  font-size: 15px;
+}
+
+
 /* ===== التابلت: صورة أصغر ===== */
 @media (max-width: 900px) {
   .post { grid-template-columns: 200px 1fr; gap: 18px; }

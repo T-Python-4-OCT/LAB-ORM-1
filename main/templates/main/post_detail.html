@@ -8,9 +8,12 @@
     <i class="ti ti-arrow-left" aria-hidden="true"></i> All posts
   </a>
 
-  <time class="post-date" datetime="{{ post.published_at|date:'c' }}">
-    {{ post.published_at|date:"j M Y, g:i a" }}
-  </time>
+  <div class="post-meta">
+    <span class="category">{{ post.get_category_display }}</span>
+    <time class="post-date" datetime="{{ post.published_at|date:'c' }}">
+      {{ post.published_at|date:"j M Y, g:i a" }}
+    </time>
+  </div>
   <h1 class="article-title">{{ post.title }}</h1>
 
   <div class="article-meta">
@@ -28,5 +31,46 @@
   <img src="{{ post.image.url }}" alt="{{ post.title }}" class="article-image">
 
   <div class="article-content">{{ post.content|linebreaks }}</div>
+
+  <section class="comments" aria-labelledby="comments-title">
+    <h2 id="comments-title" class="comments-title">
+      Comments <span class="tab-count">{{ comments|length }}</span>
+    </h2>
+
+    <form method="post" action="{% url 'main:add_comment' post.id %}" class="comment-form">
+      {% csrf_token %}
+      <div class="field">
+        <label for="name">Your name</label>
+        <input type="text" id="name" name="name" class="input" maxlength="100" required placeholder="Sami">
+      </div>
+      <div class="field">
+        <label for="comment">Comment</label>
+        <textarea id="comment" name="content" class="input" rows="3" required
+                  placeholder="Share your thoughts"></textarea>
+      </div>
+      <div class="comment-actions">
+        <button type="submit" class="btn">Post comment</button>
+      </div>
+    </form>
+
+    {% if comments %}
+      <ul class="comment-list">
+        {% for comment in comments %}
+          <li class="comment">
+            <div class="comment-avatar" aria-hidden="true">{{ comment.name|first|upper }}</div>
+            <div class="comment-body">
+              <div class="comment-head">
+                <span class="comment-name">{{ comment.name }}</span>
+                <time datetime="{{ comment.created_at|date:'c' }}">{{ comment.created_at|date:"j M Y, g:i a" }}</time>
+              </div>
+              <div class="comment-text">{{ comment.content|linebreaks }}</div>
+            </div>
+          </li>
+        {% endfor %}
+      </ul>
+    {% else %}
+      <p class="comments-empty">No comments yet. Be the first to share your thoughts.</p>
+    {% endif %}
+  </section>
 </article>
 {% endblock %}
