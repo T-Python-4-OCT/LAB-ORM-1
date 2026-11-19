@@ -31,3 +31,15 @@ class Post(models.Model):
 
     def __str__(self):
         return self.title
+
+class Review(models.Model):
+
+    post = models.ForeignKey(Post, on_delete=models.CASCADE)
+
+    name = models.CharField(max_length=1024)
+
+    rating = models.SmallIntegerField()
+
+    comment = models.TextField()
+
+    created_at = models.DateTimeField(auto_now_add=True)

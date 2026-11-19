@@ -13,7 +13,6 @@
     {% endif %}
 
     <h2>{{ post.title }}</h2>
-    
 
     <p>{{ post.content }}</p>
 
@@ -35,27 +34,27 @@
     </div>
 
 
-    <!-- Star Rating -->
+    <!-- Post Rating -->
 
     <div class="rating-section">
 
-    <h3>Post Rating</h3>
+        <h3>Post Rating</h3>
 
-    <div class="card-rating">
+        <div class="card-rating">
 
-        {% for star in "12345" %}
+            {% for star in "12345" %}
 
-            {% if forloop.counter <= post.rating %}
-                ★
-            {% else %}
-                ☆
-            {% endif %}
+                {% if forloop.counter <= post.rating %}
+                    ★
+                {% else %}
+                    ☆
+                {% endif %}
 
-        {% endfor %}
+            {% endfor %}
 
-    </div>
+        </div>
 
-    <p>{{ post.rating }}/5 — {{ post.get_rating_display }}</p>
+        <p>{{ post.rating }}/5 — {{ post.get_rating_display }}</p>
 
     </div>
 
@@ -74,6 +73,137 @@
                 data-bs-target="#deleteDialog">
             Delete Post
         </button>
+
+    </div>
+
+</div>
+
+
+<!-- Add Comment -->
+
+<<div class="reviews-section">
+
+    <!-- Display Reviews -->
+
+    <div class="reviews-heading">
+
+        <h2>Reviews</h2>
+
+        <span class="posts-label">
+            {{ post.review_set.count }} Reviews
+        </span>
+
+    </div>
+
+    {% for review in post.review_set.all %}
+
+        <div class="comment-card">
+
+            <div class="comment-header">
+
+                <div class="comment-avatar">
+                    {{ review.name|first|upper }}
+                </div>
+
+                <div>
+
+                    <h4>{{ review.name }}</h4>
+
+                    <small>
+                        {{ review.created_at|date:"d M Y, h:i A" }}
+                    </small>
+
+                </div>
+
+            </div>
+
+            <div class="card-rating">
+
+                {% for star in "12345" %}
+
+                    {% if forloop.counter <= review.rating %}
+                        ★
+                    {% else %}
+                        ☆
+                    {% endif %}
+
+                {% endfor %}
+
+                <small>{{ review.rating }}/5</small>
+
+            </div>
+
+            <p>{{ review.comment }}</p>
+
+        </div>
+
+    {% empty %}
+
+        <div class="no-reviews">
+
+            <h4>No Reviews Yet</h4>
+
+            <p>Be the first to review this post.</p>
+
+        </div>
+
+    {% endfor %}
+
+
+    <!-- Add Comment -->
+
+    <div class="mt-4">
+
+        <h3 class="comment-title">Add Comment</h3>
+
+        <form method="POST"
+              action="{% url 'add_review' post.id %}"
+              class="review-form">
+
+            {% csrf_token %}
+
+            <input type="text"
+                   name="name"
+                   placeholder="Your name"
+                   aria-label="Your name"
+                   maxlength="1024"
+                   required>
+
+            <textarea name="comment"
+                      placeholder="Write your comment..."
+                      aria-label="Your comment"
+                      rows="2"
+                      required></textarea>
+
+            <div class="review-bottom">
+
+                <div class="star-input">
+
+                    {% for star in "54321" %}
+
+                        <input type="radio"
+                               name="rating"
+                               id="review-star{{ star }}"
+                               value="{{ star }}"
+                               required>
+
+                        <label for="review-star{{ star }}"
+                               title="{{ star }} out of 5"
+                               aria-label="{{ star }} out of 5">
+                            ★
+                        </label>
+
+                    {% endfor %}
+
+                </div>
+
+                <button type="submit">
+                    Submit
+                </button>
+
+            </div>
+
+        </form>
 
     </div>
 

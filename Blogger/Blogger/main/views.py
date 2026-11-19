@@ -1,5 +1,7 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from .models import Post
+from .models import Post, Review
+from django.http import HttpRequest
+
 
 
 # Homepage
@@ -144,3 +146,22 @@ def search_post(request):
         'search': search,
         'order': order
     })
+
+
+def add_review_view(request, post_id):
+
+    post = get_object_or_404(Post, id=post_id)
+
+    if request.method == "POST":
+
+        new_review = Review(
+            post=post,
+            name=request.POST.get("name"),
+            comment=request.POST.get("comment"),
+            rating=request.POST.get("rating")
+        )
+
+        new_review.save()
+
+    return redirect("post_detail", post_id=post.id)
+
