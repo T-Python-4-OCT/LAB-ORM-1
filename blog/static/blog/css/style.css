@@ -1,14 +1,32 @@
 
-/* ===== General Settings ===== */
+/* ========================================
+   BLOGGER - COMPLETE DESIGN
+======================================== */
+
+/* ===== 1. Design System ===== */
+
 :root {
-    --primary: #635bff;
-    --primary-dark: #5046e5;
-    --background: #f7f8fc;
+    --primary: #c8a96a;
+    --primary-dark: #ad8e52;
+
+    --background: #f7f6f2;
     --surface: #ffffff;
-    --text: #20243a;
-    --muted: #777d91;
-    --border: #e8eaf1;
+    --surface-soft: #eeede7;
+
+    --text: #252522;
+    --muted: #77766f;
+    --border: #e7e5dd;
+
+    --success-bg: #e9f5ec;
+    --success-text: #27633a;
+
+    --error-bg: #fff0ed;
+    --error-text: #a33c2d;
+
+    --shadow: 0 12px 35px rgba(35, 32, 24, 0.06);
 }
+
+/* ===== 2. Reset & General ===== */
 
 * {
     margin: 0;
@@ -16,235 +34,482 @@
     box-sizing: border-box;
 }
 
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     font-family: Arial, sans-serif;
     background: var(--background);
     color: var(--text);
-    line-height: 1.7;
+    line-height: 1.75;
     min-height: 100vh;
     display: flex;
     flex-direction: column;
 }
 
 a {
-    text-decoration: none;
     color: inherit;
+    text-decoration: none;
 }
 
-/* ===== Navigation ===== */
+button,
+input,
+textarea,
+select {
+    font: inherit;
+}
+
+button,
+a,
+input,
+textarea,
+select {
+    -webkit-tap-highlight-color: transparent;
+}
+
+a:focus-visible,
+button:focus-visible,
+input:focus-visible,
+textarea:focus-visible,
+select:focus-visible {
+    outline: 3px solid var(--primary);
+    outline-offset: 3px;
+}
+
+/* ===== 3. Skip Link ===== */
+
+.skip-link {
+    position: absolute;
+    top: -100px;
+    left: 20px;
+    z-index: 200;
+    padding: 10px 16px;
+    background: var(--text);
+    color: white;
+    border-radius: 6px;
+}
+
+.skip-link:focus {
+    top: 15px;
+}
+
+/* ===== 4. Navigation ===== */
+
 .site-header {
-    background: var(--surface);
+    background: rgba(255, 255, 255, 0.94);
     border-bottom: 1px solid var(--border);
+    position: sticky;
+    top: 0;
+    z-index: 100;
+    backdrop-filter: blur(14px);
 }
 
 .navbar {
-    max-width: 1100px;
+    width: min(100% - 40px, 1150px);
     margin: auto;
-    padding: 18px 24px;
+    padding: 18px 0;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    gap: 20px;
 }
 
 .logo {
-    font-size: 26px;
-    font-weight: bold;
-    letter-spacing: -1px;
+    display: flex;
+    flex-direction: column;
+    font-size: 27px;
+    font-weight: 800;
+    letter-spacing: -1.2px;
+    line-height: 1.2;
 }
 
 .logo span {
-    color: var(--primary);
+    color: var(--primary-dark);
+}
+
+.logo small {
+    margin-top: 5px;
+    color: var(--muted);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 2px;
 }
 
 .nav-links {
     display: flex;
     align-items: center;
-    gap: 26px;
+    gap: 28px;
     font-size: 14px;
     font-weight: bold;
 }
 
+.nav-links a {
+    transition: color 0.2s ease, background 0.2s ease;
+}
+
 .nav-links a:hover {
-    color: var(--primary);
+    color: var(--primary-dark);
 }
 
-.nav-links .nav-button {
-    background: var(--primary);
+/* ===== 5. Buttons ===== */
+
+.nav-button,
+.submit-button {
+    display: inline-flex;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
+    border: none;
+    border-radius: 6px;
+    padding: 11px 20px;
+    background: var(--text);
     color: white;
-    padding: 10px 18px;
-    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background 0.2s ease,
+                transform 0.2s ease;
 }
 
-.nav-links .nav-button:hover {
+.nav-button:hover,
+.submit-button:hover {
     background: var(--primary-dark);
     color: white;
+    transform: translateY(-2px);
 }
 
-/* ===== Main Content ===== */
+.submit-button {
+    background: var(--primary-dark);
+}
+
+/* ===== 6. Main Content ===== */
+
 .container {
-    width: min(100% - 40px, 900px);
-    margin: 55px auto;
+    width: min(100% - 40px, 1000px);
+    margin: 65px auto;
     flex: 1;
 }
 
 .page-heading {
-    margin-bottom: 32px;
+    max-width: 750px;
+    margin-bottom: 42px;
 }
 
 .eyebrow {
-    color: var(--primary);
-    font-size: 12px;
+    display: inline-block;
+    color: var(--primary-dark);
+    font-size: 11px;
     font-weight: bold;
-    letter-spacing: 2px;
+    letter-spacing: 2.5px;
     text-transform: uppercase;
+    margin-bottom: 10px;
 }
 
 .page-heading h1 {
-    font-size: clamp(30px, 5vw, 42px);
-    margin: 8px 0;
+    font-size: clamp(34px, 5vw, 50px);
+    font-weight: 800;
+    letter-spacing: -1.8px;
     line-height: 1.2;
+    margin: 8px 0 14px;
+    overflow-wrap: anywhere;
 }
 
 .page-heading p {
     color: var(--muted);
+    font-size: 16px;
+    max-width: 600px;
 }
 
-/* ===== Post Cards ===== */
+/* ===== 7. Search Form ===== */
+
+.page-heading form {
+    display: flex;
+    align-items: stretch;
+    gap: 10px;
+    max-width: 650px;
+    margin-top: 28px;
+}
+
+.page-heading form input {
+    flex: 1;
+    min-width: 0;
+    padding: 13px 16px;
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    background: var(--surface);
+    color: var(--text);
+}
+
+.page-heading form input:focus {
+    border-color: var(--primary-dark);
+    outline: none;
+    box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.15);
+}
+
+.page-heading form button {
+    flex-shrink: 0;
+}
+
+.page-heading form ~ p {
+    margin-top: 12px;
+    font-size: 14px;
+}
+
+.page-heading > a {
+    display: inline-block;
+    margin-top: 8px;
+    color: var(--primary-dark);
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.page-heading > a:hover {
+    text-decoration: underline;
+}
+
+/* ===== 8. Post Cards ===== */
+
 .post-list {
     display: grid;
-    gap: 20px;
+    grid-template-columns: 1fr;
+    gap: 24px;
 }
 
 .post-card {
+    min-width: 0;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 25px;
-    transition: transform 0.2s, box-shadow 0.2s;
+    border-radius: 12px;
+    padding: 30px;
+    box-shadow: var(--shadow);
+    transition: transform 0.25s ease,
+                box-shadow 0.25s ease;
 }
 
 .post-card:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 10px 30px rgba(30, 35, 70, 0.07);
+    transform: translateY(-4px);
+    box-shadow: 0 18px 40px rgba(35, 32, 24, 0.10);
+}
+
+.post-card img,
+.form-card img {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
 .post-card h2 {
-    font-size: 22px;
-    margin-bottom: 8px;
+    font-size: 24px;
+    font-weight: 750;
+    letter-spacing: -0.5px;
+    line-height: 1.35;
+    margin-bottom: 10px;
+    overflow-wrap: anywhere;
+}
+
+.post-card h2 a {
+    transition: color 0.2s ease;
+}
+
+.post-card h2 a:hover {
+    color: var(--primary-dark);
 }
 
 .post-date {
     color: var(--muted);
     font-size: 13px;
-    margin-bottom: 15px;
+    margin-bottom: 18px;
 }
 
 .post-content {
-    color: #555c70;
+    color: #55544e;
     white-space: pre-line;
     overflow-wrap: anywhere;
+    line-height: 1.85;
+    margin-bottom: 22px;
 }
 
-/* ===== Add Post Form ===== */
+/* ===== 9. Forms ===== */
+
 .form-card {
+    min-width: 0;
     background: var(--surface);
     border: 1px solid var(--border);
-    border-radius: 14px;
-    padding: 30px;
+    border-radius: 12px;
+    padding: 35px;
+    box-shadow: var(--shadow);
 }
 
 .form-group {
-    margin-bottom: 22px;
+    margin-bottom: 24px;
 }
 
 .form-group label {
     display: block;
+    color: var(--text);
+    font-size: 14px;
     font-weight: bold;
-    margin-bottom: 8px;
+    margin-bottom: 9px;
 }
 
 .form-group input,
-.form-group textarea {
+.form-group textarea,
+.form-group select {
+    display: block;
     width: 100%;
     padding: 13px 15px;
     border: 1px solid var(--border);
-    border-radius: 8px;
-    font: inherit;
+    border-radius: 7px;
+    background: #fff;
     color: var(--text);
-    background: var(--surface);
     outline: none;
+    transition: border-color 0.2s ease,
+                box-shadow 0.2s ease;
 }
 
 .form-group input:focus,
-.form-group textarea:focus {
-    border-color: var(--primary);
-    box-shadow: 0 0 0 3px rgba(99, 91, 255, 0.1);
+.form-group textarea:focus,
+.form-group select:focus {
+    border-color: var(--primary-dark);
+    box-shadow: 0 0 0 3px rgba(200, 169, 106, 0.15);
 }
 
 .form-group textarea {
     min-height: 220px;
     resize: vertical;
+    line-height: 1.7;
 }
 
-.submit-button {
-    border: none;
-    border-radius: 8px;
-    background: var(--primary);
-    color: white;
-    padding: 12px 24px;
-    font-size: 15px;
-    font-weight: bold;
+.form-group input[type="file"] {
+    padding: 12px;
+    background: var(--surface-soft);
     cursor: pointer;
 }
 
-.submit-button:hover {
+.form-group input[type="file"]::file-selector-button {
+    padding: 8px 13px;
+    margin-right: 12px;
+    border: none;
+    border-radius: 5px;
+    background: var(--text);
+    color: white;
+    cursor: pointer;
+}
+
+.form-group input[type="file"]::file-selector-button:hover {
     background: var(--primary-dark);
 }
 
-/* ===== Messages ===== */
+/* ===== 10. Form Validation Errors ===== */
+
+.errorlist {
+    list-style: none;
+    color: var(--error-text);
+    background: var(--error-bg);
+    border-radius: 6px;
+    padding: 9px 12px;
+    margin-top: 8px;
+    font-size: 13px;
+}
+
+/* ===== 11. Messages ===== */
+
+.messages-container {
+    margin-bottom: 25px;
+}
+
 .message {
-    padding: 13px 17px;
-    border-radius: 8px;
-    margin-bottom: 20px;
+    padding: 14px 18px;
+    border-radius: 7px;
+    margin-bottom: 12px;
+    font-size: 14px;
 }
 
 .message.success {
-    background: #e7f8ee;
-    color: #176b3a;
+    background: var(--success-bg);
+    color: var(--success-text);
 }
 
 .message.error {
-    background: #fff0f0;
-    color: #b42318;
+    background: var(--error-bg);
+    color: var(--error-text);
 }
 
-/* ===== Empty State ===== */
+/* ===== 12. Empty State ===== */
+
 .empty-state {
     background: var(--surface);
     border: 1px dashed var(--border);
-    border-radius: 14px;
-    padding: 45px 25px;
+    border-radius: 12px;
+    padding: 50px 25px;
     text-align: center;
+}
+
+.empty-state h2 {
+    font-size: 24px;
+    margin-bottom: 8px;
 }
 
 .empty-state p {
     color: var(--muted);
-    margin: 8px 0 20px;
+    margin-bottom: 22px;
 }
 
-/* ===== Footer ===== */
-.site-footer {
+/* ===== 13. Detail & Delete Pages ===== */
+
+.form-card > p {
+    color: var(--muted);
+    margin-bottom: 22px;
+}
+
+.form-card form {
+    margin-top: 20px;
+}
+
+.form-card > div[style] {
+    align-items: center;
+}
+
+.form-card > div[style] .submit-button {
     text-align: center;
-    padding: 24px;
+}
+
+/* ===== 14. Footer ===== */
+
+.site-footer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 5px;
+    text-align: center;
+    padding: 28px 20px;
     color: var(--muted);
     border-top: 1px solid var(--border);
     font-size: 13px;
 }
 
-/* ===== Responsive Design ===== */
+.site-footer span {
+    font-size: 12px;
+}
+
+/* ===== 15. Responsive Design ===== */
+
 @media (max-width: 600px) {
+
     .navbar {
-        padding: 15px 18px;
+        width: min(100% - 32px, 1150px);
+        padding: 15px 0;
+    }
+
+    .logo {
+        font-size: 23px;
+    }
+
+    .logo small {
+        font-size: 8px;
+        letter-spacing: 1.5px;
     }
 
     .nav-links {
@@ -252,102 +517,74 @@ a {
         font-size: 13px;
     }
 
+    .nav-links .nav-button {
+        padding: 9px 12px;
+    }
+
     .container {
-        width: min(100% - 28px, 900px);
-        margin: 35px auto;
+        width: min(100% - 28px, 1000px);
+        margin: 38px auto;
+    }
+
+    .page-heading {
+        margin-bottom: 30px;
+    }
+
+    .page-heading h1 {
+        font-size: clamp(30px, 8vw, 40px);
+        letter-spacing: -1px;
+    }
+
+    .page-heading p {
+        font-size: 14px;
     }
 
     .post-card,
     .form-card {
-        padding: 20px;
+        padding: 21px;
+    }
+
+    .post-card h2 {
+        font-size: 21px;
+    }
+
+    .page-heading form {
+        flex-direction: column;
+    }
+
+    .page-heading form button {
+        width: 100%;
+    }
+
+    .form-card > div[style] {
+        align-items: stretch;
     }
 }
 
-
-
-/* ===== Accessibility & Final Polish ===== */
-
-/* Clear keyboard focus for links and buttons */
-a:focus-visible,
-button:focus-visible,
-input:focus-visible,
-textarea:focus-visible {
-    outline: 3px solid var(--primary);
-    outline-offset: 3px;
-}
-
-/* Smooth button interactions */
-.nav-button,
-.submit-button {
-    transition: background-color 0.2s ease,
-                transform 0.2s ease;
-}
-
-.submit-button:hover {
-    transform: translateY(-1px);
-}
-
-/* Prevent long content from breaking the layout */
-.post-card,
-.form-card {
-    min-width: 0;
-}
-
-/* Better spacing on very small screens */
 @media (max-width: 400px) {
+
     .navbar {
         flex-wrap: wrap;
         gap: 12px;
     }
 
     .nav-links {
-        gap: 12px;
-    }
-
-    .page-heading h1 {
-        font-size: 30px;
-    }
-
-    .form-card,
-    .post-card {
-        padding: 18px;
-    }
-
-    .submit-button {
         width: 100%;
+        justify-content: space-between;
+    }
+
+    .post-card,
+    .form-card {
+        padding: 17px;
+    }
+
+    .submit-button,
+    .form-card .nav-button {
+        text-align: center;
     }
 }
 
-/* Respect users who prefer reduced motion */
-@media (prefers-reduced-motion: reduce) {
-    *,
-    *::before,
-    *::after {
-        scroll-behavior: auto !important;
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
-        transition-duration: 0.01ms !important;
-    }
-}
-
-
-/* ===== Accessibility and Final Polish ===== */
-
-:focus-visible {
-    outline: 3px solid var(--primary);
-    outline-offset: 3px;
-}
-
-.form-group textarea {
-    overflow-wrap: anywhere;
-}
-
-button,
-a,
-input,
-textarea {
-    -webkit-tap-highlight-color: transparent;
-}
+/* ===== 16. Reduced Motion ===== */
 
 @media (prefers-reduced-motion: reduce) {
     *,

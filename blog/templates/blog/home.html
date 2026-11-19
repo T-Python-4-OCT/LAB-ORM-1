@@ -9,6 +9,33 @@
     <span class="eyebrow">THE BLOG</span>
     <h1>Ideas worth sharing.</h1>
     <p>Discover thoughts, stories, and ideas from our community.</p>
+
+    <form method="GET" action="{% url 'home' %}">
+        <input
+            type="text"
+            name="search"
+            placeholder="Search posts by title..."
+            value="{{ search_query }}"
+        >
+
+        <button type="submit" class="nav-button">
+            Search
+        </button>
+    </form>
+
+    {% if search_query %}
+        <p>
+            Search results for: "{{ search_query }}"
+        </p>
+
+        <p>
+            Found {{ result_count }} results
+        </p>
+
+        <a href="{% url 'home' %}">Clear Search</a>
+    {% endif %}
+
+
 </section>
 
 <section class="post-list">

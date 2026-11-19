@@ -1,7 +1,6 @@
 
 from django.test import TestCase
 from django.urls import reverse
-from django.core.files.uploadedfile import SimpleUploadedFile
 
 from .models import Post
 
@@ -60,11 +59,7 @@ class PostTests(TestCase):
             {
                 'title': 'My First Test Post',
                 'content': 'This is a test post.',
-                'image': SimpleUploadedFile(
-                    'test.jpg',
-                    b'test image content',
-                    content_type='image/jpeg'
-                )
+                'category': Post.Category.TECHNOLOGY,
             }
         )
 
@@ -74,6 +69,7 @@ class PostTests(TestCase):
 
         self.assertEqual(post.title, 'My First Test Post')
         self.assertEqual(post.content, 'This is a test post.')
+        self.assertEqual(post.category, Post.Category.TECHNOLOGY)
         self.assertTrue(post.is_published)
 
         self.assertRedirects(response, reverse('home'))
@@ -83,7 +79,8 @@ class PostTests(TestCase):
             reverse('add_post'),
             {
                 'title': '   ',
-                'content': '   '
+                'content': '   ',
+                'category': Post.Category.OTHER,
             }
         )
 
@@ -97,11 +94,7 @@ class PostTests(TestCase):
             {
                 'title': 'A' * 2049,
                 'content': 'Test content.',
-                'image': SimpleUploadedFile(
-                    'test.jpg',
-                    b'test image content',
-                    content_type='image/jpeg'
-                )
+                'category': Post.Category.OTHER,
             }
         )
 
@@ -111,8 +104,6 @@ class PostTests(TestCase):
             response,
             'The title must not exceed 2048 characters.'
         )
-
-
 
     def test_post_detail_page_loads(self):
         post = Post.objects.create(
@@ -151,7 +142,8 @@ class PostTests(TestCase):
             reverse('edit_post', args=[post.pk]),
             {
                 'title': 'New Title',
-                'content': 'New content.'
+                'content': 'New content.',
+                'category': Post.Category.EDUCATION,
             }
         )
 
@@ -159,6 +151,8 @@ class PostTests(TestCase):
 
         self.assertEqual(post.title, 'New Title')
         self.assertEqual(post.content, 'New content.')
+        self.assertEqual(post.category, Post.Category.EDUCATION)
+
         self.assertRedirects(
             response,
             reverse('post_detail', args=[post.pk])
